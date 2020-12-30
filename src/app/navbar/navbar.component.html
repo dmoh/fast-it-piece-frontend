@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand navbar-light bg-light">
+  <div class="container">
+    <button *ngIf="isMedia || showMenu" mat-icon-button color="white" (click)="onToggleSideNav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <a class="navbar-brand" routerLink="/home" style="font-style: italic; font-weight: bold; color: white">
+       <!--<img src="logo_png.png"/>-->
+       <mat-icon>settings</mat-icon>FAST-IT PIECE 
+      </a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <!-- <a style="display: flex; flex-direction: row"  *ngIf="cart.total > 0" [ngClass]="{'not-allowed': cart.total == 0}" class="nav-link btn btn-sm" routerLink="/cart-detail">
+            <div style="color: white; font-size: large;padding-right: .4rem;" class="material-icons">shopping_basket</div><div *ngIf="cart.total > 0" style="color: white; font-size: small">{{ cart.total.toFixed(2) }} €</div>
+          </a> -->
+        </li>
+        <li >
+          <button *ngIf="user.token" mat-button [matMenuTriggerFor]="menu">
+            <div style="color: white;font-size: large;padding-right: .4rem; cursor: pointer" class="material-icons">home</div>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button *ngIf="user.token"  mat-menu-item>
+              <a style="text-decoration: none; color: #0a0a0a" routerLink="customer">Profil</a>
+            </button>
+            <button *ngIf="isDeliverer"  mat-menu-item>
+              <a style="text-decoration: none; color: #0a0a0a" routerLink="delivery/overview">Livreur</a>
+            </button>
+            <button *ngIf="isAdmin" mat-menu-item>
+              <a (click)="goTo()">Restaurant</a>
+            </button>
+            <button *ngIf="isSuper" mat-menu-item>
+              <a style="text-decoration: none; color: #0a0a0a" routerLink="admin/commerce">Dashboard</a>
+            </button>
+          </mat-menu>
+        </li>
+        <li class="nav-item">
+          <div style="display: flex">
+            <a *ngIf="user.token" class="nav-link" title="Se déconnecter" (click)="onLogout()" style="color: white">
+              <!-- <div style="color: white;font-size: large;padding-right: .4rem; cursor: pointer" class="material-icons">power_settings_new</div> -->
+              <mat-icon style="color: white;font-size: large;padding-right: .4rem; cursor: pointer" class="material-icons">power_settings_new</mat-icon>
+            </a>
+          </div>
+          <a *ngIf="!user.token" class="nav-link" routerLink="/login" style="color: white">
+            <!-- <mat-icon style="color: white;font-size: large;padding-right: .4rem; cursor: pointer" class="material-icons">account_circle</mat-icon> -->
+            <mat-icon>account_circle</mat-icon>
+            <mat-icon>menu</mat-icon>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

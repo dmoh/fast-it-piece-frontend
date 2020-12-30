@@ -1,0 +1,41 @@
+.home {
+  background-size: cover;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  padding: 1rem;
+}
+
+.label-small {
+  font-size: small;
+  color: #a2a2a2;
+  margin-bottom: 0 !important;
+}
+
+.home-section {
+  height: 420px;
+  background: url(/assets/bg_top.jpg) no-repeat top left;
+  background-size: cover;
+  background-position-y: -120px;
+}
+
+.content {
+  padding: 0.5rem;
+  margin: 0.2rem;
+  background: #fff;
+  border-radius: 3px;
+}
+
+@media (min-width: 250px) and (max-width: 968px) {
+  .wrapper {
+    width: 90%;
+  }
+  .home-section {
+    background-position-y: 0;
+  }
+}

@@ -1,0 +1,56 @@
+// import {Restaurant} from "@app/_models/restaurant";
+
+export class Schedule {
+  // restaurant: Restaurant;
+  mondayStartMorning: string = '';
+  mondayEndMorning: string = '';
+  mondayStartNight: string = '';
+  mondayEndNight: string = '';
+  mondayStartAllDay: string = '';
+  mondayEndAllDay: string = '';
+  tuesdayStartMorning: string = '';
+  tuesdayEndMorning: string = '';
+  tuesdayStartNight: string = '';
+  tuesdayEndNight: string = '';
+  tuesdayStartAllDay: string = '';
+  tuesdayEndAllDay: string = '';
+  wednesdayStartMorning: string = '';
+  wednesdayEndMorning: string = '';
+  wednesdayStartNight: string = '';
+  wednesdayEndNight: string = '';
+  wednesdayStartAllDay: string = '';
+  wednesdayEndAllDay: string = '';
+  thursdayStartMorning: string = '';
+  thursdayEndMorning: string = '';
+  thursdayStartNight: string = '';
+  thursdayEndNight: string = '';
+  thursdayStartAllDay: string = '';
+  thursdayEndAllDay: string = '';
+  fridayStartMorning: string = '';
+  fridayEndMorning: string = '';
+  fridayStartNight: string = '';
+  fridayEndNight: string = '';
+  fridayStartAllDay: string = '';
+  fridayEndAllDay: string = '';
+  saturdayStartMorning: string = '';
+  saturdayEndMorning: string = '';
+  saturdayStartNight: string = '';
+  saturdayEndNight: string = '';
+  saturdayStartAllDay: string = '';
+  saturdayEndAllDay: string = '';
+  sundayStartMorning: string = '';
+  sundayEndMorning: string = '';
+  sundayStartNight: string = '';
+  sundayEndNight: string = '';
+  sundayStartAllDay: string = '';
+  sundayEndAllDay: string = '';
+  dayByDay: boolean = true;
+  byWeek: boolean = false;
+  allDaysStartMorning: string = '';
+  allDaysEndMorning: string = '';
+  allDaysStartNight: string = '';
+  allDaysEndNight: string = '';
+  allDaysStartAllDay: string = '';
+  allDaysEndAllDay: string = '';
+
+}
