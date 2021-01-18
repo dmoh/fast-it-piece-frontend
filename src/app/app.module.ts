@@ -5,7 +5,6 @@ import { DocCliComponent } from './doc-cli/doc-cli.component';
 import { HomeComponent } from './home/home.component';
 import { HomeFeaturesComponent } from './home/home-features/home-features.component';
 import { CardComponent } from './home/home-features/card/card.component';
-import { LoginPageComponent } from './login-page/login-page.component';
 import { LoginComponent } from './login/login.component';
 import { Page404Component } from './page404/page404.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -27,7 +26,6 @@ import { MatIconModule } from '@angular/material/icon';
     HomeFeaturesComponent,
     CardComponent,
     LoginComponent,
-    LoginPageComponent,
     Page404Component,
     PasswordComponent,
     SidenavResponsiveComponent,

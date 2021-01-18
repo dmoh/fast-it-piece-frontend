@@ -1,450 +1,224 @@
-<section class=" d-block container pt-5">
-  <h2 style="font-size: 1.5rem" class="text-center">NOUVEAUX  <span class="main-color-primary">ARRIVANTS </span></h2>
-  <div style="margin-top: 3rem" class="row">
-    
-    <div (click)="goTo('pizzeria-de-la-gare')" class="col-md-3 mb-2 cursor-pointer">
-      <div style="height: 375px" class="wrapper-img-left box-shadow-color">
-        <img class="zoom" src="https://mediafastitprod.s3.eu-west-3.amazonaws.com/photo-1513104890138-7c749659a591.jpeg" alt="La Pizzeria de la gare">
-        <div style="position: absolute; bottom: 0; width: 100%;    height: 175px;overflow: hidden; box-shadow: -3px 13px 23px rgba(253, 134, 134, 0.3);" class="desc-bottom reduce-padding">
-          <h4 style="font-size: 1.2rem;text-transform: uppercase; font-style: italic; font-weight: bold; font-family: 'Raleway', sans-serif; text-align: center;">La Pizzeria de la Gare</h4>
-          <div class="divider"></div>
-          <div class="text-center">
-            <span style="font-size: .7rem" class="material-icons">
-              place
-            </span>
-            <div>
-              <p style="font-size: small; font-style: italic">215 Avenue de la Gare, 74130 Bonneville</p>
-            </div>
-          </div>
-          <div style="position:relative;">
-            <ul style=" padding-left: .1rem;font-family: sans-serif;">
-              <li>
-                <a href="">
-                  <div style="margin-bottom: 1rem">
-                    <span class="main-color-primary material-icons" style="padding-right: .5rem; vertical-align: middle; font-size: 1rem" >
-                      schedule
-                    </span>
-                    <span style="font-size: .7rem">
-                      Mar - Dim
-                  </span>
-                    <span class="text-right" style="font-size: .7rem">11h à 13h30 et 17h00 à 21h30</span>
-                    <div class="text-center">
-                      <span style="font-size: .7rem">Lun</span>
-                      <span class="text-right" style="font-size: .7rem"> fermé</span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="">
-
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
+<mat-tab-group color="warn" mat-align-tabs="center">
+  <mat-tab label="Professionel">
+    <form class="mt-3" [formGroup]="proForm" (ngSubmit)="getDevis('professional')">
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" >
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="text"
+            formControlName="proDevis"
+            placeholder="Numero de devis"/>
+             <!-- [errorStateMatcher]="matcher" -->
+            <mat-icon matSuffix>receipt</mat-icon>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
       </div>
-    </div>
-
-    <div (click)="goTo('wactoob')" class="col-md-3 mb-2 cursor-pointer">
-      <div style="height: 375px" class="wrapper-img-left box-shadow-color">
-        <img class="zoom" src="https://mediafastitprod.s3.eu-west-3.amazonaws.com/kIvQQ7uyQF4YtLRt.jpeg" alt="Wactoob">
-        <div style="position: absolute; bottom: 0; width: 100%;    height: 175px;overflow: hidden; box-shadow: -3px 13px 23px rgba(253, 134, 134, 0.3);" class="desc-bottom reduce-padding">
-          <h4 style="font-size: 1.2rem;text-transform: uppercase; font-style: italic; font-weight: bold; font-family: 'Raleway', sans-serif; text-align: center;">Wactoob</h4>
-          <div class="divider"></div>
-          <div class="text-center">
-            <span style="font-size: .7rem" class="material-icons">
-              place
-            </span>
-            <div>
-              <p style="font-size: small; font-style: italic">5 Avenue Charles Poncet, 74300 Cluses</p>
-            </div>
-          </div>
-          <div style="position:relative;">
-            <ul style=" padding-left: .1rem;font-family: sans-serif;">
-              <li>
-                <a href="">
-                  <div style="margin-bottom: 1rem">
-                    <span class="main-color-primary material-icons" style="padding-right: .5rem; vertical-align: middle; font-size: 1rem" >
-                      schedule
-                    </span>
-                    <span style="font-size: .7rem">
-                      Lun - Dim
-                    </span>
-                    <span class="text-right" style="font-size: .7rem">11h à 13h30 et 18h00 à 22h</span>
-                    <div class="text-center">
-                      <span style="font-size: .7rem">Dim. Ven (midi)</span>
-                      <span class="text-right" style="font-size: .7rem"> fermé</span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="">
-
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" >
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="text"
+            formControlName="proAddress"
+            placeholder="Adresse"/>
+             <!-- [errorStateMatcher]="matcher" -->
+            <mat-icon matSuffix>apartment</mat-icon>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
       </div>
-    </div>
-
-    <div (click)="goTo('on-nem')" class="col-md-3 mb-2 cursor-pointer">
-      <div style="height: 375px" class="wrapper-img-left box-shadow-color">
-        <img class="zoom" src="https://mediafastitprod.s3.eu-west-3.amazonaws.com/FB_IMG_1607004062170.jpg" alt="On Nem">
-        <div style="position: absolute; bottom: 0; width: 100%;    height: 175px;overflow: hidden; box-shadow: -3px 13px 23px rgba(253, 134, 134, 0.3);" class="desc-bottom reduce-padding">
-          <h4 style="font-size: 1.2rem;text-transform: uppercase; font-style: italic; font-weight: bold; font-family: 'Raleway', sans-serif; text-align: center;">On Nem</h4>
-          <div class="divider"></div>
-          <div class="text-center">
-            <span style="font-size: .7rem" class="material-icons">
-              place
-            </span>
-            <div>
-              <p style="font-size: small; font-style: italic">82 rue décret, 74130, Bonneville</p>
-            </div>
-          </div>
-          <div style="position:relative;">
-            <ul style=" padding-left: .1rem;font-family: sans-serif;">
-              <li>
-                <a href="">
-                  <div style="margin-bottom: 1rem">
-                    <span class="main-color-primary material-icons" style="padding-right: .5rem; vertical-align: middle; font-size: 1rem" >
-                      schedule
-                    </span>
-                    <span style="font-size: .7rem">
-                      Mar - Dim
-                  </span>
-                    <span class="text-right" style="font-size: .7rem">12h à 13h30 et 18h30 à 21h</span>
-                    <div class="text-center">
-                      <span style="font-size: .7rem">Lun</span>
-                      <span class="text-right" style="font-size: .7rem"> fermé</span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="">
-
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" >
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="text"
+            formControlName="proCity"
+            placeholder="Ville"/>
+             <!-- [errorStateMatcher]="matcher" -->
+            <mat-icon matSuffix>apartment</mat-icon>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
       </div>
-    </div>
-
-    <div (click)="goTo('le-soixante-14')" class="col-md-3 mb-2 cursor-pointer">
-      <div style="height: 375px" class="wrapper-img-left box-shadow-color">
-        <img class="zoom" src="https://mediafastitprod.s3.eu-west-3.amazonaws.com/bg_soixante14.jpg" alt="le soixante 14">
-        <div style="position: absolute; bottom: 0; width: 100%;    height: 175px;overflow: hidden; box-shadow: -3px 13px 23px rgba(253, 134, 134, 0.3);" class="desc-bottom reduce-padding">
-          <h4 style="font-size: 1.2rem;text-transform: uppercase; font-style: italic; font-weight: bold; font-family: 'Raleway', sans-serif; text-align: center;">Le Soixante 14</h4>
-          <div class="divider"></div>
-          <div class="text-center">
-            <span style="font-size: .7rem" class="material-icons">
-              place
-            </span>
-            <div>
-              <p style="font-size: small; font-style: italic">72 place de l'hôtel de ville, 74130, Bonneville</p>
-            </div>
-          </div>
-          <div style="position:relative;">
-            <ul style=" padding-left: .1rem;font-family: sans-serif;">
-              <li>
-                <a href="">
-                  <div style="margin-bottom: 1rem">
-                    <span class="main-color-primary material-icons" style="padding-right: .5rem; vertical-align: middle; font-size: 1rem" >
-                      schedule
-                    </span>
-                    <span style="font-size: .7rem">
-                      Mar - Dim
-                  </span>
-                    <span class="text-right" style="font-size: .7rem">11h30 à 14h et 18h à 22h</span>
-                    <div class="text-center">
-                      <span style="font-size: .7rem">Lun</span>
-                      <span class="text-right" style="font-size: .7rem"> fermé</span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="">
-
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" >
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="text"
+            formControlName="proZipCode"
+            placeholder="Code Postal"/>
+             <!-- [errorStateMatcher]="matcher" -->
+            <mat-icon matSuffix>apartment</mat-icon>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
       </div>
-    </div>
-
-    <div (click)="goTo('o-gout-braise')" class="col-md-3 mb-2 cursor-pointer">
-      <div style="height: 375px" class="wrapper-img-left box-shadow-color">
-        <img class="zoom" src="https://mediafastitprod.s3.eu-west-3.amazonaws.com/brasier-300x300%20%281%29.png" alt="photo pizza bella">
-        <div style="position: absolute; bottom: 0; width: 100%;    height: 175px;overflow: hidden; box-shadow: -3px 13px 23px rgba(253, 134, 134, 0.3);" class="desc-bottom reduce-padding">
-          <h4 style="font-size: 1.2rem;text-transform: uppercase; font-style: italic; font-weight: bold; font-family: 'Raleway', sans-serif; text-align: center;">o'goût bRAISé</h4>
-          <div class="divider"></div>
-          <div class="text-center">
-            <span style="font-size: .7rem" class="material-icons">
-              place
-            </span>
-            <div>
-              <p style="font-size: small; font-style: italic">48 rue du 8 mai 1945 Marnaz, 74460</p>
-            </div>
-          </div>
-          <div style="position:relative;">
-            <ul style=" padding-left: .1rem;font-family: sans-serif;">
-              <li>
-                <a href="">
-                  <div style="margin-bottom: 1rem">
-                    <span class="main-color-primary material-icons" style="padding-right: .5rem; vertical-align: middle; font-size: 1rem" >
-                      schedule
-                    </span>
-                    <span style="font-size: .7rem">
-                      Lun - Sam
-                  </span>
-                    <span class="text-right" style="font-size: .7rem">11h à 14h et 18h à 22h</span>
-                    <div class="text-center">
-                      <span style="font-size: .7rem">Dim</span>
-                      <span class="text-right" style="font-size: .7rem"> fermé</span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="">
-
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline">
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="email" formControlName="proMail" placeholder="Email">
+            <mat-icon matSuffix>alternate_email</mat-icon>
+            <mat-hint></mat-hint>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
       </div>
-    </div>
-
-    <div (click)="goTo('marnaz-pizza')" class="col-md-3 mb-2 cursor-pointer">
-      <div style="height: 375px" class="wrapper-img-left box-shadow-color">
-        <img class="zoom" src="https://mediafastitprod.s3.eu-west-3.amazonaws.com/chad-montano-MqT0asuoIcU-unsplash%20%283%29.jpg" alt="photo marnaz pizza">
-        <div style="position: absolute;height: 175px; bottom: 0; width: 100%; overflow: hidden; box-shadow: -3px 13px 23px rgba(253, 134, 134, 0.3);" class="desc-bottom reduce-padding">
-          <h4 style="font-size: 1.2rem; font-style: italic; font-weight: bold; font-family: 'Raleway', sans-serif; text-align: center;">Marnaz Pizza</h4>
-          <div class="divider"></div>
-          <div class="text-center">
-            <span style="font-size: .7rem" class="material-icons">
-              place
-            </span>
-            <div>
-              <p style="font-size: small; font-style: italic">88 Avenue du Mt-Blanc Marnaz, 74460</p>
-            </div>
-          </div>
-          <ul style="padding-left: .1rem;font-family: sans-serif;">
-            <li>
-              <a href="">
-                <div style="margin-bottom: 1rem">
-                  <!--<span style="color: #d800ff; display: block; padding-right: .5rem; vertical-align: middle; font-size: 1rem" class="material-icons">
-                    schedule
-                  </span>-->
-                  <div class="text-center">
-                    <span style="font-size: x-small">Lun - Mar - Jeu</span>
-                    <span class="text-right" style="font-size: x-small"> 11h30 à 13h30 et 17h30 à 21h30</span>
-                  </div>
-                  <div class="text-center">
-                    <span style="font-size: x-small">Mercredi </span>
-                    <span class="text-right" style="font-size: x-small"> fermé</span>
-                  </div>
-                  <div class="text-center">
-                    <span style="font-size: x-small">Ven - Sam</span>
-                    <span class="text-right" style="font-size: x-small"> 11h30 à 13h30 et 17h30 à 22h</span>
-                  </div>
-                  <div class="text-center">
-                    <span style="font-size: x-small">Dim</span>
-                    <span class="text-right" style="font-size: x-small"> de 17h30 à 21h30</span>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a href="">
-
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" floatLabel="always">
+            <!-- <mat-label>Numero de telephone</mat-label> -->
+            <input matInput type="tel" formControlName="proPhone" placeholder="Numero de telephone">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-hint></mat-hint>
+          </mat-form-field>
+        </p>
       </div>
-    </div>
-    
-  </div>
-</section>
-
-<section class=" d-block container pt-5">
-  <h2 style="font-size: 1.5rem" class="text-center">Quelles envies <span class="main-color-primary" >aujourd'hui </span> ?</h2>
-  <div style="margin-top: 3rem" class="row">
-    <div (click)="goTo('pizza-bella')" class="col-md-3 mb-2 cursor-pointer">
-      <div style="height: 375px" class="wrapper-img-left box-shadow-color">
-        <img class="zoom" src="assets/img-first-page-pizza-bella.jpg" alt="photo pizza bella">
-        <div style="position: absolute; bottom: 0; width: 100%;    height: 175px;overflow: hidden; box-shadow: -3px 13px 23px rgba(253, 134, 134, 0.3);" class="desc-bottom reduce-padding">
-          <h4 style="font-size: 1.2rem; font-style: italic; font-weight: bold; font-family: 'Raleway', sans-serif; text-align: center;">Pizza Bella</h4>
-          <div class="divider"></div>
-          <div class="text-center">
-            <span style="font-size: .7rem" class="material-icons">
-              place
-            </span>
-            <div>
-              <p style="font-size: small; font-style: italic">25 Impasse de la Gravière, 74950 Scionzier</p>
-            </div>
-          </div>
-          <div style="position:relative;">
-            <ul style=" padding-left: .1rem;font-family: sans-serif;">
-              <li>
-                <a href="">
-                  <div style="margin-bottom: 1rem">
-                    <span class="main-color-primary material-icons" style="padding-right: .5rem; vertical-align: middle; font-size: 1rem" >
-                      schedule
-                    </span>
-                    <span style="font-size: .7rem">
-                      Lun - Sam
-                  </span>
-                    <span class="text-right" style="font-size: .7rem">12h à 14h et 19h à 22h</span>
-                    <div class="text-center">
-                      <span style="font-size: .7rem">Dim</span>
-                      <span class="text-right" style="font-size: .7rem"> fermé</span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="">
-
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" >
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="text"
+            formControlName="proAmountDevis"
+            placeholder="Montant"/>
+             <!-- [errorStateMatcher]="matcher" -->
+            <mat-icon matSuffix>euro</mat-icon>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
       </div>
-    </div>
+      <button mat-raised-button [disabled]="loading" color="primary">
+        Envoyer devis
+        <mat-icon>send</mat-icon></button>
+      <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+    </form>
+  </mat-tab>
 
-    <div (click)="goTo('mister-food')" class="col-md-3 mb-2 cursor-pointer">
-      <div style="height: 375px" class="wrapper-img-left box-shadow-color">
-        <img class="zoom" src="assets/burger_home.jpg" alt="photo mister food">
-        <div style="position: absolute;height: 175px; bottom: 0; width: 100%; overflow: hidden; box-shadow: -3px 13px 23px rgba(253, 134, 134, 0.3);" class="desc-bottom reduce-padding">
-          <h4 style="font-size: 1.2rem; font-style: italic; font-weight: bold; font-family: 'Raleway', sans-serif; text-align: center;">Mister FOOD</h4>
-          <div class="divider"></div>
-          <div class="text-center">
-            <span style="font-size: .7rem" class="material-icons">
-              place
-            </span>
-            <div>
-              <p style="font-size: small; font-style: italic">2 Rue de la Grenette, 74300 Cluses</p>
-            </div>
-          </div>
-          <ul style="padding-left: .1rem;font-family: sans-serif;">
-            <li>
-              <a href="">
-                <div style="margin-bottom: 1rem">
-                  <span class="main-color-primary material-icons" style="padding-right: .5rem; vertical-align: middle; font-size: 1rem" >
-                    schedule
-                  </span>
-                  <span style="font-size: .7rem">
-                      Lun - Ven
-                  </span>
-                  <span class="text-right" style="font-size: .7rem">11h30 à 14h et 18h à 23h</span>
-                  <div class="text-center">
-                    <span style="font-size: .7rem">Sam</span>
-                    <span class="text-right" style="font-size: .7rem"> de 18h à 23h</span>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a href="">
-
-              </a>
-            </li>
-          </ul>
-        </div>
+  <mat-tab label="Client">
+    <form class="mt-3" [formGroup]="customerForm" (ngSubmit)="getDevis('customer')">
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" >
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="text"
+            formControlName="customerDevis"
+            placeholder="Numero de devis"/>
+             <!-- [errorStateMatcher]="matcher" -->
+            <mat-icon matSuffix>receipt</mat-icon>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
       </div>
-    </div>
-
-    <div (click)="goTo('pizza-delices')" class="col-md-3 mb-2 cursor-pointer">
-      <div style="height: 375px" class="wrapper-img-left box-shadow-color">
-        <img class="zoom" src="assets/pizz-delice.jpg" alt="photo pizza des délices">
-        <div style="position: absolute;height: 175px; bottom: 0; width: 100%; overflow: hidden; box-shadow: -3px 13px 23px rgba(253, 134, 134, 0.3);" class="desc-bottom reduce-padding">
-          <h4 style="font-size: 1.2rem; font-style: italic; font-weight: bold; font-family: 'Raleway', sans-serif; text-align: center;">Pizza des Délices</h4>
-          <div class="divider"></div>
-          <div class="text-center">
-            <span style="font-size: .7rem" class="material-icons">
-              place
-            </span>
-            <div>
-              <p style="font-size: small; font-style: italic">42 Avenue Georges Clémenceau, 74300 Cluses</p>
-            </div>
-          </div>
-          <ul style="padding-left: .1rem;font-family: sans-serif;">
-            <li>
-              <a href="">
-                <div style="margin-bottom: 1rem">
-                  <span class="main-color-primary material-icons" style="padding-right: .5rem; vertical-align: middle; font-size: 1rem" >
-                    schedule
-                  </span>
-                  <span style="font-size: .7rem">
-                      Lun - Dim
-                  </span>
-                  <span class="text-right" style="font-size: .7rem"> 18h à 00h</span>
-                  <!--<div class="text-center">
-                    <span style="font-size: .7rem">Sam</span>
-                    <span class="text-right" style="font-size: .7rem"> de 18h à 23h</span>
-                  </div>-->
-                </div>
-              </a>
-            </li>
-            <li>
-              <a href="">
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" >
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="text"
+            formControlName="customerAddress"
+            placeholder="Adresse"/>
+             <!-- [errorStateMatcher]="matcher" -->
+            <mat-icon matSuffix>apartment</mat-icon>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
       </div>
-    </div>
-
-    <div (click)="goTo('pizza-des-lacs')" class="col-md-3 mb-2 cursor-pointer">
-      <div style="height: 375px" class="wrapper-img-left box-shadow-color">
-        <img class="zoom" src="assets/pizza-d-lacs.jpg" alt="photo pizza bella">
-        <div style="position: absolute;height: 175px; bottom: 0; width: 100%; overflow: hidden; box-shadow: -3px 13px 23px rgba(253, 134, 134, 0.3);" class="desc-bottom reduce-padding">
-          <h4 style="font-size: 1.2rem; font-style: italic; font-weight: bold; font-family: 'Raleway', sans-serif; text-align: center;">Pizzeria des Lacs</h4>
-          <div class="divider"></div>
-          <div class="text-center">
-            <span style="font-size: .7rem" class="material-icons">
-              place
-            </span>
-            <div>
-              <p style="font-size: small; font-style: italic">650 Avenue Louis Coppel, 74300 Thyez</p>
-            </div>
-          </div>
-          <ul style="padding-left: .1rem;font-family: sans-serif;">
-            <li>
-              <a href="">
-                <div style="margin-bottom: 1rem">
-                  <span class="main-color-primary material-icons" style="padding-right: .5rem; vertical-align: middle; font-size: 1rem" >
-                    schedule
-                  </span>
-                  <span style="font-size: .7rem">
-                      Lun - Sam
-                  </span>
-                  <span class="text-right" style="font-size: .7rem">11h à 14h et 17h00 à 23h</span>
-                  <div class="text-center">
-                    <span style="font-size: .7rem">Dim</span>
-                    <span class="text-right" style="font-size: .7rem"> de 16h30 à 23h</span>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a href="">
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" >
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="text"
+            formControlName="customerCity"
+            placeholder="Ville"/>
+             <!-- [errorStateMatcher]="matcher" -->
+            <mat-icon matSuffix>apartment</mat-icon>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
       </div>
-    </div>
-  </div>
-</section>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" >
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="text"
+            formControlName="customerZipCode"
+            placeholder="Code Postal"/>
+             <!-- [errorStateMatcher]="matcher" -->
+            <mat-icon matSuffix>apartment</mat-icon>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
+      </div>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline">
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="email" formControlName="customerMail" placeholder="Email">
+            <mat-icon matSuffix>alternate_email</mat-icon>
+            <mat-hint></mat-hint>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
+      </div>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" floatLabel="always">
+            <!-- <mat-label>Numero de telephone</mat-label> -->
+            <input matInput type="tel" formControlName="customerPhone" placeholder="Numero de telephone">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-hint></mat-hint>
+          </mat-form-field>
+        </p>
+      </div>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" >
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="text"
+            formControlName="customerAmountDevis"
+            placeholder="Montant"/>
+             <!-- [errorStateMatcher]="matcher" -->
+            <mat-icon matSuffix>euro</mat-icon>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
+      </div>
+      <button mat-raised-button [disabled]="loading"  type="button" (click)="getDevis('paiement')" color="primary">
+        Envoyer devis 
+        <mat-icon>send</mat-icon>
+      </button>
+      <!--<button  class="btn btn-primary">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        Login
+      </button>-->
+      <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+    </form>
+  </mat-tab>
+</mat-tab-group>
+
+
+
 

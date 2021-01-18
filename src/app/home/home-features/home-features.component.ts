@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {ActivatedRoute, Router} from "@angular/router";
+import { AuthenticationService } from 'src/app/_services/authentication.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home-features',
@@ -7,47 +10,70 @@ import {Router} from "@angular/router";
   styleUrls: ['./home-features.component.scss']
 })
 export class HomeFeaturesComponent implements OnInit {
-
-  constructor(private router: Router) { }
+  proForm: FormGroup;
+  customerForm: FormGroup;
+  loading = false;
+  submitted = false;
+  hide = true;
+  returnUrl: string;
+  error = '';
+  showPassword: boolean;
+  showPass: boolean;
+  showConfirmPassword: boolean;
+  showRegisterPassword: boolean;
+  
+  constructor(private router: Router,
+              private formBuilder: FormBuilder,
+              private route: ActivatedRoute,
+              private authenticationService: AuthenticationService,
+              ) { }
 
   ngOnInit(): void {
+    this.proForm = this.formBuilder.group({
+      proDevis: ['', Validators.required],
+      proAmountDevis: ['', Validators.required],
+      proAddress: ['', Validators.required],
+      proCity: ['', Validators.required],
+      proZipCode: ['', Validators.required],
+      proMail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
+      proPhone: [''],
+    });
+
+    this.customerForm = this.formBuilder.group({
+      customerDevis: ['', Validators.required],
+      customerAmountDevis: ['', Validators.required],
+      customerAddress: ['', Validators.required],
+      customerCity: ['', Validators.required],
+      customerZipCode: ['', Validators.required],
+      customerMail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
+      customerPhone: ['', Validators.required],
+    });
+    // get return url from route parameters or default to '/'
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
 
-
-  goTo(restaurant: string) {
-    switch (restaurant) {
-      case 'pizza-bella':
-        this.router.navigate(['/restaurant/21']);
+  getDevis(typeCustomer: string) {
+    switch (typeCustomer) {
+      case 'professional':
+        this.router.navigate(['/professional']);
         break;
-      case 'pizza-delices':
-        this.router.navigate(['/restaurant/24']);
-        break;
-      case 'mister-food':
-        this.router.navigate(['/restaurant/22']);
-        break;
-      case 'pizza-des-lacs':
-        this.router.navigate(['/restaurant/23']);
-        break;
-      case 'o-gout-braise':
-        this.router.navigate(['/restaurant/30']);
-        break;
-      case 'marnaz-pizza':
-        this.router.navigate(['/restaurant/31']);
-        break;
-      case 'le-soixante-14':
-        this.router.navigate(['/restaurant/34']);
-        break;
-      case 'on-nem':
-        this.router.navigate(['/restaurant/32']);
-        break;
-      case 'wactoob':
-        this.router.navigate(['/restaurant/29']);
-        break;
-      case 'pizzeria-de-la-gare':
-        this.router.navigate(['/restaurant/33']);
+      case 'customer':
+        if ( this.customerForm.value.customerDevis != "" && 
+              (this.customerForm.value.customerMail != "" || this.customerForm.value.customerPhone != "")) 
+              {
+          this.router.navigate(['/customer']);
+        } 
+        else alert(this.customerForm.value.customerDevis);
         break;
     }
   }
 
+  toggle() {
+    this.showPass = !this.showPass;
+  }
+
+  // convenience getter for easy access to form fields
+  get proCtrl() { return this.proForm.controls; }
+  get customerCtrl() { return this.customerForm.controls; }
 
 }

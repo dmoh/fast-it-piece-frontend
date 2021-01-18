@@ -46,8 +46,8 @@ export class LoginComponent implements OnInit {
 
     this.registerForm = this.formBuilder.group({
       registerEmail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
-      registerPassword: ['', Validators.required],
-      confirmPassword: ['', Validators.required]
+      registerDevis: ['', Validators.required],
+      registerPhone: ['', Validators.required]
     });
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';

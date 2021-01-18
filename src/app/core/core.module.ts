@@ -40,6 +40,7 @@ import { NotificationsComponent } from '../notifications/notifications.component
 import { MaterialLibModule } from '../sidenav-responsive/material-lib.module';
 import { JwtInterceptor } from '../_helpers/jwt.interceptor';
 import { ErrorInterceptor } from '../_helpers/error.interceptor';
+import { CartModule } from '../cart/cart.module';
 
 
 @NgModule({
@@ -81,7 +82,8 @@ import { ErrorInterceptor } from '../_helpers/error.interceptor';
         MatToolbarModule,
         MatMenuModule,
         MatSidenavModule,
-        MatSortModule
+        MatSortModule,
+        CartModule,
     ],
   exports: [
       CommonModule,
@@ -116,8 +118,9 @@ import { ErrorInterceptor } from '../_helpers/error.interceptor';
       MatToolbarModule,
       MatMenuModule,
       MatSidenavModule,
-      MatSortModule
-  ],
+      MatSortModule,
+      CartModule,
+      ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
