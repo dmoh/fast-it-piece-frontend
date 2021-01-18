@@ -1,10 +1,10 @@
 <div *ngIf="showLoader" class="wrapper-loader mb-5">
   <div class="loader"></div>
 </div>
-<section class="container">
+<section class="content">
   <div class="row">
     <div class="col-md-12">
-      <h3 style="padding: .5rem; background: #ffa217; font-size: larger; color: white;">Récapitulatif du panier</h3>
+      <h3 class="recap-title">Récapitulatif du panier</h3>
     </div>
   </div>
   <hr>
@@ -102,26 +102,7 @@
     </div>
   </div>
   <hr>
-  <div class="row">
-    <div class="col-md-6">
-    </div>
-    <div style="display: flex" class="col-md-6">
-      <div style="flex: 1">
-        Frais de livraison
-        <p style="font-size: x-small"><em>(entièrement reversé au livreur)</em></p>
-      </div>
-      <div>
-        <div *ngIf="!cartCurrent.deliveryCost">
-          <div style="font-size: small">
-            <mat-spinner></mat-spinner>
-          </div>
-        </div>
-        <div *ngIf="cartCurrent.deliveryCost">
-          {{ cartCurrent.deliveryCost }} €
-        </div>
-      </div>
-    </div>
-  </div>
+
   <div class="row">
     <div class="col-md-6">
     </div>

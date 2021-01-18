@@ -29,12 +29,12 @@ export class UserService {
     return this.http.post<any>(`${this.urlApi}/user/phone/save`,{ phoneUser: phone}, this.headers);
   }
 
-
   getUserAddresses(): Observable<any> {
     return this.http.get<any>(`${this.urlApi}/user/address`, this.headers);
   }
 
-  getRestaurantIdByUsername(username: string): Observable<any> {
-    return this.http.post<any>(`${this.urlApi}/user/restaurant`, {email: username},this.headers);
+  getDevisByUserInfo(numDevis: string, username: string): Observable<any> {
+    // return this.http.post<any>(`${this.urlApi}/user/devis`, {devis: numDevis, info: username},this.headers);
+    return new Observable<void>();
   }
 }

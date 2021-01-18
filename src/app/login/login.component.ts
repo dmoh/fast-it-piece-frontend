@@ -62,39 +62,28 @@ export class LoginComponent implements OnInit {
   get register() { return this.registerForm.controls; }
 
   onSubmit(isRegisterForm?: string) {
+    console.log(isRegisterForm);
     this.submitted = true;
     if (isRegisterForm) {
-      let registerPass = this.register.registerPassword.value;
-
-      if (this.register.confirmPassword.value !== this.register.registerPassword.value) {
-        this.error = 'Les mots de passe ne sont pas identiques';
-        return;
-      }
-
-      if (registerPass.length < 8) {
-        this.error = '8 caractères minimum';
-        return;
-      }
-      registerPass = registerPass.trim();
-      const rPaswd = /^[a-zA-Z0-9\-_.!@#$&*]{8,15}$/;
-      if (registerPass.match(rPaswd) === null) {
-        this.error = 'Le mot de passe contient un ou des caractère(s) non autorisé(s)';
-        return;
-      }
-      // this.userService.registerUser(JSON.stringify(this.registerForm.value))
-      //   .subscribe((res) => {
-      //     if (res.ok === 'success') {
-      //         alert('Bienvenu.e :)');
-      //         this.authenticationService.login(this.register.registerEmail.value, this.register.registerPassword.value)
-      //            .subscribe(() => {
-      //              this.router.navigate([this.returnUrl]);
-      //          });
-
-      //     } else if (res.error) {
-      //       this.error = res.error;
-      //     }
-      //   });
-      return;
+      let registerDevis = this.register.registerDevis.value;
+      let registerMail = this.register.registerMail.value;
+      let registerPhone = this.register.registerPhone.value;
+      this.userService.getDevisByUserInfo(registerDevis, registerMail)
+      .subscribe(
+        data => {
+          if (this.returnUrl === '/') {
+              this.router.navigate(['/customer']);
+          } else {
+            this.router.navigate([this.returnUrl]);
+          }
+        },        
+        error => {
+          if (/Invalid/.test(error)) {
+            error = 'Numero de devis ou coordonnées incorrects';
+          }
+          this.error = error;
+          this.loading = false;
+        });
     }
     // stop here if form is invalid
     if (this.loginForm.invalid) {

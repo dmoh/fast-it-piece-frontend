@@ -5,7 +5,9 @@
     </button>
     <a class="navbar-brand" routerLink="/home" style="font-style: italic; font-weight: bold; color: white">
        <!--<img src="logo_png.png"/>-->
-       <mat-icon>settings</mat-icon>FAST-IT PIECE 
+       <mat-icon>settings</mat-icon>
+       FAST-IT PIECE 
+       <!-- <mat-icon>flash_on</mat-icon> -->
       </a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ml-auto">
@@ -41,7 +43,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a *ngIf="!user.token" class="nav-link" routerLink="/home" style="color: white">
+          <a *ngIf="user.token" class="nav-link" routerLink="/home" style="color: white">
             <mat-icon>home</mat-icon>
           </a>
       </li>

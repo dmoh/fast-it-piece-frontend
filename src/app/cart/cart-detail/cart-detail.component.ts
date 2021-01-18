@@ -57,13 +57,15 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
     // Choix de l'adresse
     this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
       this.cartCurrent = cartUpdated;
-      if (this.cartCurrent.products.length < 1) {
-        this.route.navigate(['home']);
-      }
+      // if (this.cartCurrent.products.length < 1) {
+      //   this.route.navigate(['home']);
+      // }
     });
     // check if restau not closed
     // this.userService.getUserAddresses().subscribe((result) => {
-    //   this.showLoader = false;
+    setTimeout(() => {
+      this.showLoader = false;
+    }, 1000);
     //   this.phoneCustomer = result.data[0].phone;
     //   this.userAddresses = result.data[0].addresses;
     //   const modalRef = this.addressConfirmationModal.open(AddressModalComponent, {

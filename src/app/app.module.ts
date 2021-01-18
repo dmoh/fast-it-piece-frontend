@@ -16,6 +16,8 @@ import { PasswordComponent } from './password/password.component';
 import { SidenavResponsiveComponent } from './sidenav-responsive/sidenav-responsive.component';
 import { SidenavService } from './sidenav-responsive/sidenav.service';
 import { MatIconModule } from '@angular/material/icon';
+import { CustomerComponent } from './customer/customer.component';
+import { ProfessionalComponent } from './professional/professional.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { MatIconModule } from '@angular/material/icon';
     Page404Component,
     PasswordComponent,
     SidenavResponsiveComponent,
+    CustomerComponent,
+    ProfessionalComponent,
     // ConfirmationCodePaymentModalComponent,
     // CheckoutComponent,
     // InfoModalComponent,

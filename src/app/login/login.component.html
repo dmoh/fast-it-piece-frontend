@@ -28,9 +28,6 @@
                       <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
                     </mat-form-field>
                   </p>
-                  <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                    <div *ngIf="f.username.errors.required">Username is required</div>
-                  </div>-->
                 </div>
                 <div class="form-group">
                   <p>
@@ -81,14 +78,14 @@
                   <p>
                     <mat-form-field class="full-width" appearance="outline" floatLabel="always">
                       <!-- <mat-label>Numero de telephone</mat-label> -->
-                      <input matInput type="tel" formControlName="registerDevis" placeholder="Numero de telephone">
+                      <input matInput type="tel" formControlName="registerPhone" placeholder="Numero de telephone">
                       <mat-icon matSuffix>phone</mat-icon>
                       <mat-hint></mat-hint>
                     </mat-form-field>
                   </p>
                 </div>
                 
-                <button mat-raised-button [disabled]="loading"  type="button" (click)="onSubmit('paiement')" color="primary">
+                <button mat-raised-button [disabled]="loading"  type="button" color="primary">
                   Payer 
                   <mat-icon>toll</mat-icon>
                 </button>
