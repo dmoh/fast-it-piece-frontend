@@ -8,8 +8,6 @@ import {Router} from '@angular/router';
 import jwt_decode from "jwt-decode";
 import { User } from '../_models/user';
 
-
-
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
@@ -28,13 +26,13 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
-
   public get currentRolesValue(): string[] {
     return this.currentRolesSubject.value;
   }
   public get tokenUserCurrent(): string {
-    return; // this.currentUserSubject.value.token;
+    return this.currentUserSubject?.value?.token;
   }
+  
   login(email: string, password: string) {
     const optionRequete = {
       headers: new HttpHeaders({
@@ -61,6 +59,8 @@ export class AuthenticationService {
             localStorage.setItem('roles', JSON.stringify(roles));
             this.currentRolesSubject.next(roles);
           }
+          alert(this.tokenUserCurrent);
+          console.info(this.tokenUserCurrent);
           return user;
         }
       }));
@@ -72,7 +72,7 @@ export class AuthenticationService {
     localStorage.removeItem('roles');
     this.currentUserSubject.next(null);
     this.currentRolesSubject.next(null);
-    this.router.navigate(['home']);
+    this.router.navigate(['login']);
   }
 
   public checkIsAdmin() {

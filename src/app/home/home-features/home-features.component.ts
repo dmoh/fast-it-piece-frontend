@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {ActivatedRoute, Router} from "@angular/router";
 import { AuthenticationService } from 'src/app/_services/authentication.service';
 import { first } from 'rxjs/operators';
+import { EstimateService } from 'src/app/_services/estimate.service';
 
 @Component({
   selector: 'app-home-features',
@@ -25,6 +26,7 @@ export class HomeFeaturesComponent implements OnInit {
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private route: ActivatedRoute,
+              private estimateService: EstimateService,
               private authenticationService: AuthenticationService,
               ) { }
 
@@ -52,20 +54,75 @@ export class HomeFeaturesComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
 
-  getDevis(typeCustomer: string) {
+  sendEstimate(typeCustomer: string) {
     switch (typeCustomer) {
-      case 'professional':
-        this.router.navigate(['/professional']);
-        break;
-      case 'customer':
+      case 'professional': {
+        this.saveEstimateCustomer();
+        // this.router.navigate(['/professional']);
+      }
+      break;
+      case 'customer': {
         if ( this.customerForm.value.customerDevis != "" && 
-              (this.customerForm.value.customerMail != "" || this.customerForm.value.customerPhone != "")) 
-              {
-          this.router.navigate(['/customer']);
+          (this.customerForm.value.customerMail != "" || this.customerForm.value.customerPhone != "")) 
+        {
+          this.saveEstimateProfessional();
+          // this.router.navigate(['/customer']);
         } 
-        else alert(this.customerForm.value.customerDevis);
-        break;
+      }
+      break;
+      default : alert(this.customerForm.value.customerDevis);
+      break;
     }
+  }
+
+  private saveEstimateCustomer() {
+    console.log(this.authenticationService);
+    let estimateSave: any;
+    estimateSave = {
+      estimate : {
+        estimateNumber: this.proForm.value.proDevis,
+        amount: this.proForm.value.proAmountDevis,
+        street: this.proForm.value.proAddress,
+        city: this.proForm.value.proCity,
+        ZipCode: this.proForm.value.proZipCode,
+        mail: this.proForm.value.proMail,
+        phone: this.proForm.value.proPhone,
+        distanceInfos: null,
+        business: this.authenticationService?.currentUserValue?.id,
+        serviceCharge: "",
+        isPayed: false,
+        // status: 3,
+      }
+    };
+    this.estimateService.saveEstimate(estimateSave).subscribe( orderSaved => {
+      // this.router.navigate([`/estimate/${estimateSave.estimateNumber}`]);
+    });
+  }
+
+  private saveEstimateProfessional() {
+    let estimateSave: any;
+    estimateSave = {
+      estimate : {
+        estimateNumber: this.proForm.value.proDevis,
+        amount: this.proForm.value.proAmountDevis,
+        street: this.proForm.value.proAddress,
+        city: this.proForm.value.proCity,
+        ZipCode: this.proForm.value.proZipCode,
+        mail: this.proForm.value.proMail,
+        phone: this.proForm.value.proPhone,
+        distanceInfos: null,
+        business: null,
+        serviceCharge: "",
+        isPayed: false,
+      }
+    };
+
+    this.estimateService.saveEstimate(estimateSave).subscribe( orderSaved => {
+      // this.router.navigate([`/estimate/${estimateSave.estimateNumber}`]);
+    }, error => {
+      console.error(error);
+    }
+    );
   }
 
   toggle() {

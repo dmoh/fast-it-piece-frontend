@@ -50,7 +50,7 @@
             </mat-tab>
 
             <mat-tab label="Devis Client">
-              <form class="mt-3" [formGroup]="registerForm" (ngSubmit)="onSubmit('register')">
+              <form class="mt-3" [formGroup]="registerForm" (ngSubmit)="onPayClick()">
                 <div class="form-group">
                   <p>
                     <mat-form-field class="full-width" appearance="outline">
@@ -85,14 +85,10 @@
                   </p>
                 </div>
                 
-                <button mat-raised-button [disabled]="loading"  type="button" color="primary">
+                <button mat-raised-button [disabled]="loading" (click)="onPayClick()" type="button" color="primary">
                   Payer 
                   <mat-icon>toll</mat-icon>
                 </button>
-                <!--<button  class="btn btn-primary">
-              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-              Login
-            </button>-->
                 <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
               </form>
             </mat-tab>

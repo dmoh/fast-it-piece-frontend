@@ -1,0 +1,15 @@
+.businessCard{
+    padding: 10px 0;
+}
+
+.disabledContain {
+    pointer-events: none;
+    cursor: not-allowed; 
+    opacity: 0.4;
+}
+
+.pos {
+    display: flex ;
+    flex: auto;
+    justify-content: center;
+}

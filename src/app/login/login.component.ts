@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
     });
 
     this.registerForm = this.formBuilder.group({
+      // registerEmail: ['', Validators.required],
       registerEmail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
       registerDevis: ['', Validators.required],
       registerPhone: ['', Validators.required]
@@ -61,30 +62,8 @@ export class LoginComponent implements OnInit {
   get f() { return this.loginForm.controls; }
   get register() { return this.registerForm.controls; }
 
-  onSubmit(isRegisterForm?: string) {
-    console.log(isRegisterForm);
+  onSubmit() {
     this.submitted = true;
-    if (isRegisterForm) {
-      let registerDevis = this.register.registerDevis.value;
-      let registerMail = this.register.registerMail.value;
-      let registerPhone = this.register.registerPhone.value;
-      this.userService.getDevisByUserInfo(registerDevis, registerMail)
-      .subscribe(
-        data => {
-          if (this.returnUrl === '/') {
-              this.router.navigate(['/customer']);
-          } else {
-            this.router.navigate([this.returnUrl]);
-          }
-        },        
-        error => {
-          if (/Invalid/.test(error)) {
-            error = 'Numero de devis ou coordonnées incorrects';
-          }
-          this.error = error;
-          this.loading = false;
-        });
-    }
     // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
@@ -107,6 +86,39 @@ export class LoginComponent implements OnInit {
           this.error = error;
           this.loading = false;
         });
+  }
+
+  onPayClick() {
+    if (this.registerForm.invalid) {
+      console.error("formulaire invalid");
+      return;
+    }
+    let registerDevis = this.register.registerDevis.value;
+    let registerMail = this.register.registerEmail.value;
+    let registerPhone = this.register.registerPhone.value;
+    
+    this.userService.getDevisByUserInfo(registerDevis, registerMail)
+    .subscribe(
+      data => {
+        console.log(" " + data);
+        // if (this.returnUrl !== '/') {
+        //   this.router.navigate([this.returnUrl]);
+        // } else {
+          const urlRedirect = `/customer?devis=${registerDevis}&mail=${registerMail}&phone=${registerPhone}`;
+          this.router.navigate([urlRedirect]);
+          // this.router.navigate([`/customer/devis=${registerDevis}/mail=${registerMail}/phone=${registerPhone}`]);
+        // }
+      },        
+      error => {
+        if (/Invalid/.test(error)) {
+          error = 'Numero de devis ou coordonnées incorrects';
+        }
+        alert(error);
+        console.error(error);
+
+        this.error = error;
+        this.loading = false;
+      });
   }
 
   onShowPassword(type: string): void {

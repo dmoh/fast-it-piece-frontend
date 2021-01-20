@@ -18,6 +18,9 @@ import { SidenavService } from './sidenav-responsive/sidenav.service';
 import { MatIconModule } from '@angular/material/icon';
 import { CustomerComponent } from './customer/customer.component';
 import { ProfessionalComponent } from './professional/professional.component';
+import { InfoModalComponent } from './info-modal/info-modal.component';
+import { EstimateModule } from './estimate/estimate.module';
+import { DeliveryModule } from './delivery/delivery.module';
 
 @NgModule({
   declarations: [
@@ -44,6 +47,8 @@ import { ProfessionalComponent } from './professional/professional.component';
     NgbModule,
     BrowserAnimationsModule,
     MatIconModule,
+    DeliveryModule,
+    EstimateModule,
     // CustomerModule,
     // AdminModule
   ],

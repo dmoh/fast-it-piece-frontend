@@ -38,14 +38,10 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
 
   constructor(
     private cartService: CartService,
-    // private userService: UserService,
     private route: Router,
     private codeConfirmationModal: NgbModal,
     private infoModal: NgbModal,
-    private addressConfirmationModal: NgbModal,
-    private authenticationService: AuthenticationService,
-    private router: Router,
-    private toastService: ToastService,
+    private addressConfirmationModal: NgbModal
   ) {
     this.paymentValidation = false;
     this.showLoader = true;
@@ -63,9 +59,10 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
     });
     // check if restau not closed
     // this.userService.getUserAddresses().subscribe((result) => {
-    setTimeout(() => {
-      this.showLoader = false;
-    }, 1000);
+      setTimeout(() => {
+        this.showLoader = false;
+      }, 1000);
+      this.addressChose = null;
     //   this.phoneCustomer = result.data[0].phone;
     //   this.userAddresses = result.data[0].addresses;
     //   const modalRef = this.addressConfirmationModal.open(AddressModalComponent, {
@@ -89,8 +86,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
     //     // this.userService.savePhoneNumber(res.phone)
     //     //   .subscribe((responseServer) => {
     //     //   });
-    //     this.addressChose = res;
-    //     const addressChoosen = `${res.street}, ${res.city}, ${res.zipcode}`;
+        // const addressChoosen = `${res.street}, ${res.city}, ${res.zipcode}`;
     //     // send result google for calculate backend side
     //     const directionsService = new google.maps.DistanceMatrixService();
     //     directionsService.getDistanceMatrix({
@@ -135,17 +131,6 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
   private loadStripe(): void {
     this.loadStripeElements();
   }
-
-  private showModalErrorAddress() {
-    const modalError = this.infoModal.open(InfoModalComponent, {
-      backdrop: 'static',
-      keyboard: false
-    });
-    modalError.componentInstance.title = 'Erreur';
-    modalError.componentInstance.message = 'Cette adresse est introuvable.';
-    modalError.componentInstance.isCartError = true;
-  }
-
 
   private loadStripeElements(): void {
     this.stripe = window['Stripe'](this.stripeKey);
