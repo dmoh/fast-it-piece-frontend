@@ -13,11 +13,9 @@ export class CustomerComponent implements OnInit {
   public email: Observable<string>;
   public phone: Observable<string>;
   constructor(route: ActivatedRoute) {
-    route.params.pipe(map(p => {
-      this.devis = p.devis;
-      this.email = p.mail;
-      this.phone = p.phone;
-    }));
+    this.devis = route.params.pipe(map(p => p.devis));
+    this.email = route.params.pipe(map(p => p.mail));
+    this.phone = route.params.pipe(map(p => p.phone));
     // const url: Observable<string> = route.url.pipe(map(segments => segments.join('')));
   }
 
