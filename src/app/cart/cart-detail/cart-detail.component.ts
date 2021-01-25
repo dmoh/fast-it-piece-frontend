@@ -57,71 +57,65 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       //   this.route.navigate(['home']);
       // }
     });
-    // check if restau not closed
-    // this.userService.getUserAddresses().subscribe((result) => {
-      setTimeout(() => {
-        this.showLoader = false;
-      }, 1000);
-      this.addressChose = null;
-    //   this.phoneCustomer = result.data[0].phone;
-    //   this.userAddresses = result.data[0].addresses;
-    //   const modalRef = this.addressConfirmationModal.open(AddressModalComponent, {
-    //     backdrop: 'static',
-    //     keyboard: false,
-    //   });
+    // this.userService.getUserAddresses().subscribe((result) => {});
+    setTimeout(() => {
+      this.showLoader = false;
+    }, 1000);
 
-    //   if (typeof this.userAddresses[0] === 'undefined') {
-    //     modalRef.componentInstance.address = null;
-    //   } else {
-    //     modalRef.componentInstance.address = this.userAddresses[0];
-    //     modalRef.componentInstance.firstname = this.userAddresses[0].firstname;
-    //   }
-    //   modalRef.componentInstance.phoneCustomer = this.phoneCustomer;
-    //   modalRef.result.then((res) => {
-    //     const origin = `${this.cartCurrent.restaurant.street},
-    //      ${this.cartCurrent.restaurant.city},
-    //      ${this.cartCurrent.restaurant.zipcode}`
-    //     ;
-    //     // save phone user number
-    //     // this.userService.savePhoneNumber(res.phone)
-    //     //   .subscribe((responseServer) => {
-    //     //   });
-        // const addressChoosen = `${res.street}, ${res.city}, ${res.zipcode}`;
+    const originAdd = {
+      street : "597 Avenue du Mont Blanc",
+      city : "Marnaz",
+      zipcode : "74460",
+    };
+
+    const dest = {
+      street : "28 Rue Ampere",
+      city : "CLUSES",
+      zipcode : "74300",
+    };
+
+    console.info(dest);
+    alert(dest);
+    
+    const addressChoosen = `${dest.street}, ${dest.city}, ${dest.zipcode}`;
+    this.addressChose = dest;
+    const origin = `${originAdd.street}, ${originAdd.city}, ${originAdd.zipcode}`;
     //     // send result google for calculate backend side
-    //     const directionsService = new google.maps.DistanceMatrixService();
-    //     directionsService.getDistanceMatrix({
-    //       origins: [origin],
-    //       destinations: [addressChoosen],
-    //       travelMode: google.maps.TravelMode.DRIVING,
-    //     }, (response, status) => {
-    //       if (response.rows === null) {
-    //         this.showModalErrorAddress();
-    //       }
-    //       if (response.rows[0].elements[0].status === 'OK') {
-    //         const responseDistance = response.rows[0].elements[0];
-    //         this.responseDistanceGoogle = responseDistance;
-    //         this.cartService.getCostDelivery(responseDistance)
-    //           .subscribe((resp) => {
-    //             setTimeout(() => {
-    //               this.showLoader = false;
-    //             }, 1000);
-    //             const pro = new Promise(() => {
-    //               this.cartService.setDeliveryCost(resp.deliveryInfos);
-    //               this.hasAddressSelected = true;
-    //             });
-    //             pro.then((respPro) => {
-    //               this.cartService.generateTotalCart(true);
-    //               this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
-    //                 this.cartCurrent = cartUpdated;
-    //               });
-    //             });
-    //           });
-    //       } else {
-    //         this.showModalErrorAddress();
-    //       }
-    //     });
-    //   });
-    // });
+    const directionsService = new google.maps.DistanceMatrixService();
+    directionsService.getDistanceMatrix({
+      origins: [addressChoosen],
+      destinations: [addressChoosen],
+      travelMode: google.maps.TravelMode.DRIVING,
+    }, 
+    (response, status) => {
+      console.info("ressss",response);
+      if (response.rows === null) {
+        this.showModalErrorAddress();
+      }
+      if (response.rows[0].elements[0].status === 'OK') {
+        const responseDistance = response.rows[0].elements[0];
+        this.responseDistanceGoogle = responseDistance;
+        this.cartService.getCostDelivery(responseDistance)
+          .subscribe((resp) => {
+            setTimeout(() => {
+              this.showLoader = false;
+            }, 1000);
+            const pro = new Promise(() => {
+              this.cartService.setDeliveryCost(resp.deliveryInfos);
+              alert(this.cartCurrent.deliveryCost);
+              this.hasAddressSelected = true;
+            });
+            pro.then((respPro) => {
+              this.cartService.generateTotalCart(true);
+              this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
+                this.cartCurrent = cartUpdated;
+              });
+            });
+          });
+      } else {
+        this.showModalErrorAddress();
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -130,6 +124,16 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
 
   private loadStripe(): void {
     this.loadStripeElements();
+  }
+
+  private showModalErrorAddress() {
+    // const modalError = this.infoModal.open(InfoModalComponent, {
+    //   backdrop: 'static',
+    //   keyboard: false
+    // });
+    // modalError.componentInstance.title = 'Erreur';
+    // modalError.componentInstance.message = 'Cette adresse est introuvable.';
+    // modalError.componentInstance.isCartError = true;
   }
 
   private loadStripeElements(): void {
@@ -178,7 +182,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       this.paymentValidation = true;
       event.preventDefault();
       this.cartService.getTokenPaymentIntent(
-        +(this.cartCurrent.total) * 100,
+        + (this.cartCurrent.total) * 100,
         this.cartCurrent.deliveryCost
       ).subscribe((token: any ) => {
           if (token.errorClosed) {

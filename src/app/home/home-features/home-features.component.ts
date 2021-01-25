@@ -99,8 +99,9 @@ export class HomeFeaturesComponent implements OnInit {
         isPayed: false,
       }
     };
-    console.log("STOP", estimateSave);
+    // console.log("STOP", estimateSave);
     this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( orderSaved => {
+      this.router.navigate(['estimate/my-estimate']);
       // this.router.navigate([`/estimate/${estimateSave.estimateNumber}`]);
     });
   }
@@ -125,6 +126,7 @@ export class HomeFeaturesComponent implements OnInit {
     };
 
     this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( orderSaved => {
+      this.router.navigate(['estimate/my-estimate']);
       // this.router.navigate([`/estimate/${estimateSave.estimateNumber}`]);
     }, error => {
       console.error(error);

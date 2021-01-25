@@ -169,6 +169,13 @@
             <!-- <mat-label>Email</mat-label> -->
             <input matInput type="text"
             formControlName="customerAddress"
+            (onAddressChange)="handleAddressChange($event)"
+            autocomplete="off"
+            type="text"
+            id="locate-me"
+            ngx-google-places-autocomplete
+            [options]='options'
+            #placesRef="ngx-places"
             placeholder="Adresse"/>
              <!-- [errorStateMatcher]="matcher" -->
             <mat-icon matSuffix>apartment</mat-icon>
