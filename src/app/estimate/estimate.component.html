@@ -1,0 +1,95 @@
+<!-- <section class="wrapper-container">
+  <div class="container-dashboard">
+    <div class="sidebar-left">
+      <div style="display: flex; justify-content: center; margin-bottom: 1.5rem" class="">
+        <div>
+          <img style="border: 2px solid #c823f1" class="rounded-circle" src="assets/user.png" width="65px" alt="">
+        </div>
+      </div>
+      <div id="dashboard" class="nav">
+        <a routerLink="/delivery/overview">
+          <div class="wrapper-link-sidebar">
+            <div>
+              Vue globale
+            </div>
+          </div>
+        </a>
+        <a routerLink="/delivery/awaiting-delivery">
+          <div class="wrapper-link-sidebar">
+            <div>
+              Commandes en cours
+            </div>
+          </div>
+        </a>
+        <a routerLink="/delivery/my-delivery">
+          <div class="wrapper-link-sidebar">
+            <div>
+              Commandes livrées
+            </div>
+          </div>
+        </a>
+        <a routerLink="/delivery/parameter">
+          <div class="wrapper-link-sidebar">
+            <div>
+              Paramètres du profil
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div [style.marginLeft.px]="isMedia ? 0 : 250" class="content-dashboard">
+      <section style="margin-top: 1rem" class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section> -->
+
+<mat-sidenav-container >
+    <mat-sidenav #sidebarLeft mode="side" opened role="navigation">
+      <mat-nav-list>
+        <div class="sidebar-left">
+          <div style="display: flex; justify-content: center; margin-bottom: 1.5rem" class="">
+            <div>
+              <img style="border: 2px solid #c823f1" class="rounded-circle" src="assets/user.png" width="65px" alt="">
+            </div>
+          </div>
+          <div id="dashboard" class="nav">
+            <a routerLink="/my-estimate">
+              <div class="wrapper-link-sidebar">
+                <div>
+                  Devis
+                </div>
+              </div>
+            </a>
+            <a routerLink="/my-delivery" >
+              <div class="wrapper-link-sidebar">
+                <div>
+                  Commandes
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <div id="main-content-customer">
+        <section style="margin-top: 1rem" class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <router-outlet></router-outlet>
+            </div>
+          </div>
+        </section>
+      </div>
+    </mat-sidenav-content>
+  
+  </mat-sidenav-container>
+  

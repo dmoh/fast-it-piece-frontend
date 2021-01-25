@@ -1,0 +1,16 @@
+<section style="padding: 1rem">
+  <header class="modal-header">
+    <h1 class="text-success text-center">Paiement Accepté :) </h1>
+  </header>
+  <div class="modal-body pb-0">
+    <p style="color: black;font-style: italic; font-size: small" >Dans un souci de suivi et de traçabilité. Pouvez-vous donner ce code au livreur ?</p>
+    <div style="padding-bottom: .5rem; text-align: center; color: red; font-size: x-large">
+      <span style="display: block; padding-bottom: .5rem">CODE POUR LE LIVREUR</span>
+      <span>{{ infos.code }}</span>
+    </div>
+    <div class="modal-footer">
+      <button class="mr-2" (click)="onCheckResponseCustomer('ok')" mat-raised-button color="primary">Je donne le code</button>
+      <button (click)="onCheckResponseCustomer('no')"  mat-raised-button color="warn">Non, merci</button>
+    </div>
+  </div>
+</section>

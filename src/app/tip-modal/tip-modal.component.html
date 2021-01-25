@@ -1,0 +1,20 @@
+<section>
+  <div class="modal-header" style="justify-content: center">
+    <span style="font-size: larger; font-weight: lighter">Soutenir le livreur</span> <i class="em em-blush" aria-role="presentation" aria-label="BIRD"></i>
+    <span style="float: right" class="cursor-pointer" (click)="modalActive.close()">Fermer</span>
+  </div>
+  <div class="modal-body">
+    <div class="w-100 text-center mb-2">
+      <span>En Ajoutant un pourboire</span>
+    </div>
+    <div style="text-align: center">
+      <button type="button" mat-raised-button color="primary" [disabled]="tipAmount && +tipAmount == 0" (click)="updateQuantity('less')" ><i style="vertical-align:middle; font-size: medium" class="material-icons">remove</i></button>
+      <span style="font-size: x-large; padding-left: 2rem; padding-right: 2rem" >{{ ((tipAmount).toFixed(2)).replace('.', ',') + '€'}}</span>
+      <button type="button" mat-raised-button color="primary" (click)="updateQuantity('more')"><i style="min-width: 20px !important; line-height: 1px !important; padding: 0px 2px !important;" class="material-icons">add</i></button>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button mat-raised-button color="primary" (click)="onValidate()">Oui</button>
+    <button mat-raised-button class="ml-3" (click)="onRefuse()" color="warn">Non</button>
+  </div>
+</section>

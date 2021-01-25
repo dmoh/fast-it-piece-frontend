@@ -1,0 +1,97 @@
+<div *ngIf="showLoader" class="wrapper-loader mb-5">
+  <div class="loader"></div>
+</div>
+<section class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <h3 class="recap-title">Récapitulatif du panier</h3>
+    </div>
+  </div>
+  <hr>
+  <div *ngIf="cartCurrent" class="row">
+
+    <div class="col-md-4">
+      <div style="width: 100%; border-radius: 4px; background: linear-gradient(74deg, #0d43a0, transparent); color: white;padding: 1.4rem;" class="checkout-stripe-form">
+        <div style="width: 100%;display: flex; justify-content: space-between; padding: 0">
+          <div>
+            <h5 style="font-size: large">Stripe</h5>
+          </div>
+          <div style="">
+            <img style="" src="../../../assets/cards_logo.png" width="150" height="auto" alt="logo stripe">
+          </div>
+        </div>
+        <div class="form-row">
+          <label style="font-family: 'Inconsolata', sans-serif; font-size: medium" for="card-element">
+            Carte de paiement
+          </label>
+          <div id="card-element">
+          </div>
+          <div id="card-errors" role="alert"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Adresse de livraison</h4>
+      <div *ngIf="addressChose">
+        Rue: <b>{{ addressChose.street }}</b>
+        <div>
+          Ville: <b>{{ addressChose.city }}</b>
+        </div>
+        <div>
+          Code postale: <b>{{ addressChose.zipcode }}</b>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <div class="row">
+    <div class="col-md-6">
+    </div>
+    <hr>
+    <div style="display: flex" class="col-md-6">
+      <div style="flex: 1">Frais de service</div>
+      <div>0.80 €</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+    </div>
+    <hr>
+    <div style="display: flex" class="col-md-6">
+      <div style="flex: 1">TOTAL</div>
+      <div>
+        {{ (cartCurrent.total.toFixed(2)).replace('.', ',') }} €
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+  </div>
+  <div class="row">
+      <div style="display: flex; justify-content: center" class="col-md-12">
+
+      </div>
+    <div style="display: flex;margin-top: -.5rem;" class="col-md-12">
+
+    </div>
+  </div>
+
+
+  <div class="row mb-5">
+    <div class="col-md-6">
+    </div>
+      <div style="display: flex;text-align: right;justify-content: flex-end;margin-top: 2rem;" class="col-md-6">
+      <button mat-raised-button color="primary" [disabled]="paymentValidation == true" (click)="onProceedCheckout($event)" style="align-self: flex-end">VALIDER LE PAIEMENT</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+    </div>
+  </div>
+</section>

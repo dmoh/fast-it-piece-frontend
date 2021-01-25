@@ -1,0 +1,87 @@
+<div class="wrapper">
+  <div class="card">
+    <div class="card-body">
+      <div style="width: 100%" class="d-md-flex align-items-center">
+        <div>
+          <h4 class="card-title">Résumé des livraisons</h4>
+          <h5 class="card-subtitle">Mois en cours</h5>
+        </div>
+        <div style="">
+          <div>
+            <span *ngIf="dateDisplay" style="font-style: italic;color: darkgrey;">
+              {{ dateDisplay }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <h1 *ngIf="amountOrderCurrentMonth" class="mb-0 mt-4 font-xx-large">{{ amountOrderCurrentMonth }} €</h1>
+          <h6 class="font-light text-muted">Montant total des livraisons (du mois)</h6>
+          <h3 *ngIf="countOrderCurrentMonth" class="mt-4 mb-0 font-x-large">{{ countOrderCurrentMonth }}</h3>
+          <h6 class="font-light text-muted">Livraisons du mois (en cours)</h6>
+        </div>
+        <div  class="col-lg-8">
+          <canvas id="myChart" style="width: 100%; height: 250px !important;">{{ chart }}</canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="margin: 2rem 0" class="card">
+    <div class="card-body">
+      <div style="width: 100%" class="d-md-flex align-items-center">
+        <div>
+          <h4 class="card-title">Dernières livraisons</h4>
+          <h5 class="card-subtitle">Mois en cours</h5>
+        </div>
+        <div style="">
+          <div>
+            <span>Trier par</span>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table no-wrap v-middle">
+          <thead>
+          <tr>
+            <th class="border-0">Rèf.</th>
+            <th class="border-0">Date</th>
+            <th class="border-0">Heure</th>
+            <th class="border-0">Montant</th>
+            <th class="border-0">Part Livreur</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr class="pd-top-bottom-1" *ngFor="let order of orders">
+              <td>
+                <div class="">
+                  <span>{{ order.idReference }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="">
+                  <span>{{ order.date_delivered.date | date: "dd/MM/yyyy" }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="">
+                  <span>{{ order.date_delivered.date | date: "HH:mm:ss" }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="">
+                  <span>{{ (+(order.amount) / 100).toFixed(2) + '€' }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="">
+                  <span>{{ (order.delivery_cost/ 100).toFixed(2) + '€' }}</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

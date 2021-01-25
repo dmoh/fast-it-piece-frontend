@@ -1,0 +1,63 @@
+ <!-- <div class="example-container" [class.example-is-mobile]="mobileQuery.matches"> -->
+  
+    <mat-sidenav-container class="example-sidenav-container"
+                           [style.marginTop.px]="isMedia ? 0 : 0">
+      <mat-sidenav #snav [fixedInViewport]="!isMedia" fixedTopGap="110">
+        <mat-nav-list>
+            <a routerLink="/delivery/overview">
+                <div>
+                    Vue globale
+                </div>
+            </a>
+            <a routerLink="/delivery/awaiting-delivery">
+                <div>
+                    Commandes en cours
+                </div>
+            </a>
+            <a routerLink="/delivery/my-delivery">
+                <div>
+                    Mes courses
+                </div>
+            </a>
+            <a routerLink="/delivery/parameter">
+                <div>
+                    Paramètres du profil
+                </div>
+            </a>
+
+        </mat-nav-list>
+      </mat-sidenav>
+  
+      <mat-sidenav-content>
+        <p *ngFor="let content of fillerContent">{{content}}</p>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  <!-- </div> -->
+  
+  
+
+   
+
+
+<!-- 
+  <mat-sidenav-container class='app-drawer-container' fullscreen>
+    <mat-sidenav #sidenav mode="over">
+      sidenav bar
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <button mat-button (click)="sidenav.toggle()">Main content</button>
+    </mat-sidenav-content>
+  </mat-sidenav-container> 
+-->
+
+  <!-- <mat-sidenav-container
+    class="example-container" (backdropClick)="alert('backdrop')">
+  <mat-sidenav #sidenav (keydown.escape)="alert('escape')" disableClose>
+    <p><button mat-button (click)="alert('toggle button')">Toggle</button></p>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <p><button mat-button (click)="sidenav.open()">Open</button></p>
+    <p>Closed due to: reason</p>
+  </mat-sidenav-content>
+</mat-sidenav-container> -->
