@@ -44,6 +44,7 @@ export class AuthenticationService {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
+        console.info("Token", user.token);
         const jwtDecode = jwt_decode(user.token);
         // @ts-ignore
         if (jwtDecode.roles) {
@@ -59,7 +60,7 @@ export class AuthenticationService {
             localStorage.setItem('roles', JSON.stringify(roles));
             this.currentRolesSubject.next(roles);
           }
-          alert(this.tokenUserCurrent);
+          // alert(this.tokenUserCurrent);
           console.info(this.tokenUserCurrent);
           return user;
         }

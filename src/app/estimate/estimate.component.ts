@@ -37,7 +37,7 @@ export class EstimateComponent implements OnInit, AfterViewInit {
     private mediaQueryService: MediaQueryService,
     private sidenavService: SidenavService,
     private bottomSheet: MatBottomSheet) {
-      this.rolesBloqued();
+      // this.rolesBloqued();
     }
 
   // @Output() sidenavChange = new EventEmitter<MatSidenav>();

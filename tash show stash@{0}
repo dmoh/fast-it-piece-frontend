@@ -1,0 +1,20 @@
+ src/app/_helpers/error.interceptor.ts              |   9 [32m+[m[31m-[m
+ src/app/_models/media.ts                           |  10 [31m--[m
+ src/app/_models/schedule.ts                        |  56 [31m---------[m
+ src/app/_services/authentication.service.ts        |   3 [32m+[m[31m-[m
+ src/app/_services/estimate.service.ts              |  13 [32m+[m[31m-[m
+ src/app/_services/user.service.ts                  |   4 [31m-[m
+ src/app/app-routing.module.ts                      |  27 [32m++[m[31m--[m
+ src/app/app.module.ts                              |   2 [32m+[m[31m-[m
+ src/app/cart/cart.component.html                   |  83 [31m------------[m
+ src/app/customer/customer.component.ts             |  22 [32m++[m[31m--[m
+ .../detail-estimate/detail-estimate.component.html |   6 [32m+[m[31m-[m
+ src/app/estimate/estimate.component.ts             |   2 [32m+[m[31m-[m
+ .../my-estimate/my-estimate.component.html         |  39 [32m+++[m[31m---[m
+ .../estimate/my-estimate/my-estimate.component.ts  | 139 [32m++++[m[31m-----------------[m
+ .../estimate/services/business-estimate.service.ts |  44 [32m++[m[31m-----[m
+ .../home-features/home-features.component.html     |  51 [32m+++++++[m[31m-[m
+ .../home/home-features/home-features.component.ts  |  49 [32m+++++[m[31m---[m
+ src/app/home/home.component.ts                     |  31 [31m-----[m
+ src/app/login/login.component.ts                   |  39 [32m+++[m[31m---[m
+ 19 files changed, 195 insertions(+), 434 deletions(-)

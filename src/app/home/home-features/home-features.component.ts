@@ -16,12 +16,12 @@ export class HomeFeaturesComponent implements OnInit {
   loading = false;
   submitted = false;
   hide = true;
-  returnUrl: string;
   error = '';
   showPassword: boolean;
   showPass: boolean;
   showConfirmPassword: boolean;
   showRegisterPassword: boolean;
+  selectedAddress: any;
   
   constructor(private router: Router,
               private formBuilder: FormBuilder,
@@ -31,8 +31,10 @@ export class HomeFeaturesComponent implements OnInit {
               ) { }
 
   ngOnInit(): void {
+    
     this.proForm = this.formBuilder.group({
       proDevis: ['', Validators.required],
+      proName: ['', Validators.required],
       proAmountDevis: ['', Validators.required],
       proAddress: ['', Validators.required],
       proCity: ['', Validators.required],
@@ -43,6 +45,8 @@ export class HomeFeaturesComponent implements OnInit {
 
     this.customerForm = this.formBuilder.group({
       customerDevis: ['', Validators.required],
+      customerLastName: ['', Validators.required],
+      customerFirstName: ['', Validators.required],
       customerAmountDevis: ['', Validators.required],
       customerAddress: ['', Validators.required],
       customerCity: ['', Validators.required],
@@ -50,51 +54,53 @@ export class HomeFeaturesComponent implements OnInit {
       customerMail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
       customerPhone: ['', Validators.required],
     });
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
 
   sendEstimate(typeCustomer: string) {
+
     switch (typeCustomer) {
       case 'professional': {
-        this.saveEstimateCustomer();
+        if ( this.proForm.value.customerDevis != "") this.saveEstimateProfessional();
         // this.router.navigate(['/professional']);
       }
       break;
       case 'customer': {
         if ( this.customerForm.value.customerDevis != "" && 
-          (this.customerForm.value.customerMail != "" || this.customerForm.value.customerPhone != "")) 
+        (this.customerForm.value.customerMail != "" || this.customerForm.value.customerPhone != "")) 
         {
-          this.saveEstimateProfessional();
+          this.saveEstimateCustomer();
           // this.router.navigate(['/customer']);
         } 
       }
       break;
-      default : alert(this.customerForm.value.customerDevis);
+      default : console.log(this.customerForm.value.customerDevis);
       break;
     }
   }
 
   private saveEstimateCustomer() {
-    console.log(this.authenticationService);
+    // console.info("customer form", this.customerForm);
+
     let estimateSave: any;
     estimateSave = {
       estimate : {
-        estimateNumber: this.proForm.value.proDevis,
-        amount: this.proForm.value.proAmountDevis,
-        street: this.proForm.value.proAddress,
-        city: this.proForm.value.proCity,
-        ZipCode: this.proForm.value.proZipCode,
-        mail: this.proForm.value.proMail,
-        phone: this.proForm.value.proPhone,
+        estimateNumber: this.customerForm.value.customerDevis,
+        amount: this.customerForm.value.customerAmountDevis,
+        firstName: this.customerForm.value.customerFirstName,
+        lastName: this.customerForm.value.customerLastName,
+        street: this.customerForm.value.customerAddress,
+        city: this.customerForm.value.customerCity,
+        zipCode: this.customerForm.value.customerZipCode,
+        mail: this.customerForm.value.customerMail,
+        phone: this.customerForm.value.customerPhone,
         distanceInfos: null,
         business: this.authenticationService?.currentUserValue?.id,
         serviceCharge: "",
         isPayed: false,
-        // status: 3,
       }
     };
-    this.estimateService.saveEstimate(estimateSave).subscribe( orderSaved => {
+    console.log("STOP", estimateSave);
+    this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( orderSaved => {
       // this.router.navigate([`/estimate/${estimateSave.estimateNumber}`]);
     });
   }
@@ -104,6 +110,7 @@ export class HomeFeaturesComponent implements OnInit {
     estimateSave = {
       estimate : {
         estimateNumber: this.proForm.value.proDevis,
+        userName: this.proForm.value.proName,
         amount: this.proForm.value.proAmountDevis,
         street: this.proForm.value.proAddress,
         city: this.proForm.value.proCity,
@@ -117,7 +124,7 @@ export class HomeFeaturesComponent implements OnInit {
       }
     };
 
-    this.estimateService.saveEstimate(estimateSave).subscribe( orderSaved => {
+    this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( orderSaved => {
       // this.router.navigate([`/estimate/${estimateSave.estimateNumber}`]);
     }, error => {
       console.error(error);
@@ -127,6 +134,12 @@ export class HomeFeaturesComponent implements OnInit {
 
   toggle() {
     this.showPass = !this.showPass;
+  }
+
+  handleAddressChange(event) {
+    if (!!event.formatted_address) {
+      this.selectedAddress = event;
+    }
   }
 
   // convenience getter for easy access to form fields

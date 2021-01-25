@@ -21,8 +21,8 @@
           <mat-form-field class="full-width" appearance="outline" >
             <!-- <mat-label>Email</mat-label> -->
             <input matInput type="text"
-            formControlName="proAddress"
-            placeholder="Adresse"/>
+            formControlName="proName"
+            placeholder="Nom de la societe"/>
              <!-- [errorStateMatcher]="matcher" -->
             <mat-icon matSuffix>apartment</mat-icon>
           </mat-form-field>
@@ -33,11 +33,19 @@
       </div>
       <div class="form-group">
         <p>
+
           <mat-form-field class="full-width" appearance="outline" >
             <!-- <mat-label>Email</mat-label> -->
             <input matInput type="text"
-            formControlName="proCity"
-            placeholder="Ville"/>
+            formControlName="proAddress"
+            (onAddressChange)="handleAddressChange($event)"
+            autocomplete="off"
+            type="text"
+            id="locate-me"
+            ngx-google-places-autocomplete
+            [options]='options'
+            #placesRef="ngx-places"
+            placeholder="Adresse"/>
              <!-- [errorStateMatcher]="matcher" -->
             <mat-icon matSuffix>apartment</mat-icon>
           </mat-form-field>
@@ -118,6 +126,36 @@
             placeholder="Numero de devis"/>
              <!-- [errorStateMatcher]="matcher" -->
             <mat-icon matSuffix>receipt</mat-icon>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
+      </div>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" >
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="text"
+            formControlName="customerLastName"
+            placeholder="Nom"/>
+             <!-- [errorStateMatcher]="matcher" -->
+            <mat-icon matSuffix>face</mat-icon>
+          </mat-form-field>
+        </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
+      </div>
+      <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" >
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="text"
+            formControlName="customerFirstName"
+            placeholder="Prénom"/>
+             <!-- [errorStateMatcher]="matcher" -->
+            <mat-icon matSuffix>face</mat-icon>
           </mat-form-field>
         </p>
         <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">

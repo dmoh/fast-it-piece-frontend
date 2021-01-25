@@ -3,7 +3,7 @@
     Detail commande
   </h2>
   <ng-container *ngIf="!isDelivering">
-    <button class="mb-3 pos" mat-raised-button color="primary" (click)="onTakenDelivery()">Recuperer commande</button>
+    <button class="mb-3 pos" mat-raised-button color="primary" (click)="onTakenEstimate()">Recuperer commande</button>
   </ng-container>
 
   <!-- <ng-container> -->
@@ -44,7 +44,7 @@
     </div>
     <div class="row" [ngClass]="{ 'disabledContain': !isDelivering }">
       <div class="col-md-12 card" *ngIf="delivererForm" style="padding-top: 2rem" >
-        <form [formGroup]="delivererForm" (ngSubmit)="onValidateDelivery()">
+        <form [formGroup]="delivererForm" (ngSubmit)="onValidateEstimate()">
           <h2>Validation livraison</h2>
           <p>
             <mat-form-field style="width: 40%;" appearance="outline">
@@ -58,7 +58,7 @@
             <button class="float-right mb-3" mat-raised-button color="basic" (click)="onValidateWithoutCode()" disabled={{!isDelivering}}>
               Sans code
             </button>
-            <button *ngIf="hasDeliveryCode" class="float-right mb-3" mat-raised-button type="submit" color="primary" disabled={{!isDelivering}}>
+            <button *ngIf="hasEstimateCode" class="float-right mb-3" mat-raised-button type="submit" color="primary" disabled={{!isDelivering}}>
               Valider
             </button>
           </div>
