@@ -6,6 +6,7 @@ import {AuthenticationService} from './../_services/authentication.service';
 import {HttpHeaderResponse} from '@angular/common/http';
 import jwt_decode from 'jwt-decode';
 import { UserService } from '../_services/user.service';
+import { BusinessEstimateService } from '../estimate/services/business-estimate.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private userService: UserService,
+    private businessEstimateService: BusinessEstimateService,
   ) {
     this.showPass = false;
     // redirect to home if already logged in
@@ -46,9 +47,9 @@ export class LoginComponent implements OnInit {
 
     this.registerForm = this.formBuilder.group({
       // registerEmail: ['', Validators.required],
-      registerEmail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
       registerDevis: ['', Validators.required],
-      registerPhone: ['', Validators.required]
+      registerEmail: [''],
+      registerPhone: ['']
     });
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
@@ -93,29 +94,31 @@ export class LoginComponent implements OnInit {
       console.error("formulaire invalid");
       return;
     }
-    let registerDevis = this.register.registerDevis.value;
-    let registerMail = this.register.registerEmail.value;
-    let registerPhone = this.register.registerPhone.value;
+    const numEstimate = this.register.registerDevis.value;
+    const registerMail = this.register.registerEmail.value;
+    const registerPhone = this.register.registerPhone.value;
+    const infoUser = {
+      mail: registerMail,
+      phone: registerPhone,
+    }
     
-    this.userService.getDevisByUserInfo(registerDevis, registerMail)
+    this.businessEstimateService.getEstimateByUserInfo(numEstimate, infoUser)
     .subscribe(
       data => {
-        console.log(" " + data);
-        // if (this.returnUrl !== '/') {
-        //   this.router.navigate([this.returnUrl]);
-        // } else {
-          const urlRedirect = `/customer?devis=${registerDevis}&mail=${registerMail}&phone=${registerPhone}`;
-          this.router.navigate([urlRedirect]);
-          // this.router.navigate([`/customer/devis=${registerDevis}/mail=${registerMail}/phone=${registerPhone}`]);
-        // }
+        console.log(" data info " + data);
+          this.router.navigate(['/customer'], { 
+            queryParams: { 
+              devis: numEstimate, 
+              mail: registerMail,
+              phone: registerPhone
+            } 
+        });
       },        
       error => {
+        console.error(error);
         if (/Invalid/.test(error)) {
           error = 'Numero de devis ou coordonnées incorrects';
         }
-        alert(error);
-        console.error(error);
-
         this.error = error;
         this.loading = false;
       });

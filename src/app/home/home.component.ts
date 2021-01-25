@@ -10,7 +10,6 @@ import {element} from "protractor";
 export class HomeComponent implements OnInit, OnDestroy {
 
   options: {} = {};
-  selectedAddress: any;
   constructor(
               private route: Router,
               ) { }
@@ -25,34 +24,4 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
 
   }
-
-  handleAddressChange(event) {
-    if (!!event.formatted_address) {
-      this.selectedAddress = event;
-    }
-  }
-
-  goto() {
-      if (this.selectedAddress) {
-          const addressComponents = this.selectedAddress.address_components;
-          let zipcode = '';
-          addressComponents.forEach( (elem) => {
-                elem.types.forEach((type) => {
-                  if (type === 'postal_code') {
-                    zipcode = elem.long_name;
-                  }
-                });
-          });
-          console.log(this.selectedAddress);
-          console.log(zipcode);
-          const cityDatas1 = {
-            formatted: this.selectedAddress.formatted_address,
-            name: this.selectedAddress.name,
-            city: this.selectedAddress.vicinity,
-            zipCode: zipcode
-            };
-          this.route.navigate(['/restaurants-city']);
-      }
-  }
-
 }

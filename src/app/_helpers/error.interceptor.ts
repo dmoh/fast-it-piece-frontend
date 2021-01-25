@@ -13,11 +13,12 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(catchError(err => {
       if (err.status === 401) {
         // auto logout if 401 response returned from api
-        this.authenticationService.logout();
-        this.router.navigateByUrl('/login', { skipLocationChange: true }).then(() => {
-          this.router.navigate(['/login']);
-        });
+        // this.authenticationService.logout();
+        // this.router.navigateByUrl('/login', { skipLocationChange: true }).then(() => {
+        //   this.router.navigate(['/login']);
+        // });
         // location.reload(true);
+        console.error(err);
       }
       const error = err.error.message || err.statusText;
       return throwError(error);

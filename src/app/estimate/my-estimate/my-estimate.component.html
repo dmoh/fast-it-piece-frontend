@@ -1,40 +1,35 @@
 <h2>
-    Liste des commandes en cours
+    Liste des devis
 </h2>
 
 <div class="table-responsive">
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Numéro de commande</th>
-        <th>Restaurant</th>
+        <th>Numéro de devis</th>
+        <th>Nom du client</th>
         <th>Date</th>
         <th>Heure</th>
-        <th>Cout de la livraison</th>
+        <th>Montant</th>
         <th>Status</th>
         <!-- <th>Notification</th> -->
       </tr>
     </thead>
-    <tbody *ngIf="orders">
-      <tr class="order" *ngFor="let order of orders" routerLink="/delivery/detail-delivery/{{order.id}}" >
-        <td>{{ order.id }}</td>
-        <td *ngIf="order.business.name">{{ order.business.name }}</td>
-        <td *ngIf="!order.business.name"> </td>
-        <td>{{ order.date.date | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ order.date.date | date: 'HH:mm' }}</td>
-        <td>{{ order.delivery_cost / 100 }}</td>
+    <tbody *ngIf="estimates">
+      <!-- <tr class="order" *ngFor="let estimate of estimates" routerLink="/estimate/detail-estimate/{{estimate.estimateNumber}}" > -->
+        <tr class="order" *ngFor="let estimate of estimates">
+        <td>{{ estimate.estimateNumber }}</td>
+        <td *ngIf="estimate.customer.username || estimate.customer.lastName">{{ estimate.customer.name }}</td>
+        <td>{{ estimate.date.date | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ estimate.date.date | date: 'HH:mm' }}</td>
+        <td>{{ estimate.amount / 100 }}</td>
         <td>
-          <!-- <span matBadge="{{getLibelleStatus(order.status)}}" matBadgePosition="before" matBadgeColor="accent">
-          </span> -->
-          <div [ngSwitch]="order.status">
-            <!-- <span *ngSwitchCase="fastEatConst.status.WAITING_TAKING_BY_DELIVER " class="badge badge-warning"> -->
-            <span>  En prépation
+          <div [ngSwitch]="estimate.isPayed">
+            <span *ngSwitchCase="false" class="badge badge-warning">
+            <!-- <span>  En attente de paiement -->
             </span>
-            <!-- <span *ngSwitchCase=" fastEatConst.status.ORDER_ROUTING " class="badge badge-info"> -->
-            <span> En cours d'acheminement
-            </span>
-            <!-- <span *ngSwitchCase="fastEatConst.status.ORDER_CLOSED_WITH_SUCCESS || fastEatConst.status.ORDER_ROUTING " class="badge badge-success"> -->
-            <span> Livré
+            <span *ngSwitchCase="true" class="badge badge-info">
+            <!-- <span> Payé -->
             </span>
           </div>
         </td>

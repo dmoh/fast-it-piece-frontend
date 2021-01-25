@@ -14,9 +14,8 @@ export class EstimateService {
   urlApi: string = environment.apiUrl;
   constructor(private http: HttpClient,  private authenticate: AuthenticationService) {
     this.headers = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
-    console.log(this.headers);
-    console.log("auth",this.authenticate);
     if (this.authenticate.tokenUserCurrent) {
+      // console.info(this.authenticate.tokenUserCurrent);
       this.headers.append(`Authorization: Bearer ${this.authenticate.tokenUserCurrent}`) ;
     }
   }
@@ -30,16 +29,10 @@ export class EstimateService {
   }
 
   getEstimateByBusiness(numDevis: string, username: string): Observable<any> {
-    // return this.http.post<any>(`${this.urlApi}/user/devis`, {devis: numDevis, info: username},this.headers);
-    return of("success");
+    return this.http.post<any>(`${this.urlApi}/estimate/business/`, {devis: numDevis, info: username},this.headers);
   }
 
-  saveEstimateByBusiness(numDevis: string, username: string): Observable<any> {
-    return this.http.post<any>(`${this.urlApi}/estimate/save`, {devis: numDevis, info: username},this.headers);
-    return of("success");
-  }
-
-  saveEstimate(request: any[]){
+  saveEstimateByBusiness(request: any[]){
     return this.http.post<any>(`${this.urlApi}/estimate/save`, request, this.headers);
   }
 
