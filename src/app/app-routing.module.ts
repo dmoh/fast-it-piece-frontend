@@ -18,7 +18,6 @@ const routes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'professional', component: ProfessionalComponent},
     {path: 'customer', component: CustomerComponent},
-    // {path: 'customer/:devis/:mail/:phone', component: CustomerComponent},
     {path: 'password', component: PasswordComponent},
     { path: 'show-devis', component: EstimateComponent },
     // { path: 'admin', component: AdminComponent, canActivate: [AuthGuard]  },
