@@ -74,9 +74,6 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       zipcode : "74300",
     };
 
-    console.info(dest);
-    alert(dest);
-    
     const addressChoosen = `${dest.street}, ${dest.city}, ${dest.zipcode}`;
     this.addressChose = dest;
     const origin = `${originAdd.street}, ${originAdd.city}, ${originAdd.zipcode}`;
@@ -86,7 +83,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       origins: [addressChoosen],
       destinations: [addressChoosen],
       travelMode: google.maps.TravelMode.DRIVING,
-    }, 
+    },
     (response, status) => {
       console.info("ressss",response);
       if (response.rows === null) {
@@ -102,7 +99,6 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
             }, 1000);
             const pro = new Promise(() => {
               this.cartService.setDeliveryCost(resp.deliveryInfos);
-              alert(this.cartCurrent.deliveryCost);
               this.hasAddressSelected = true;
             });
             pro.then((respPro) => {
