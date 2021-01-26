@@ -20,21 +20,21 @@ const routes: Routes = [
     {path: 'password', component: PasswordComponent},
     {path: 'customer', component: CustomerComponent},
     {path: 'professional', component: ProfessionalComponent},
+    {path: 'estimate', component: EstimateComponent, canActivate: [AuthGuard],
+      children: [
+      {
+        path: 'detail-estimate/:id',
+        component: DetailEstimateComponent,
+      },
+      {
+        path: 'my-estimate',
+        component: MyEstimateComponent,
+      }
+    ]},
     // { path: 'show-devis', component: EstimateComponent },
     // { path: 'admin', component: AdminComponent, canActivate: [AuthGuard]  },
     {path: '', redirectTo: '/login', pathMatch: 'full'},
     {path: '**', component: Page404Component },
-    // {path: 'estimate', component: EstimateComponent, canActivate: [AuthGuard],
-    //   children: [
-    //   {
-    //     path: 'detail-estimate/:id',
-    //     component: DetailEstimateComponent,
-    //   },
-    //   {
-    //     path: 'my-estimate',
-    //     component: MyEstimateComponent,
-    //   }
-    // ]},
 ];
 
 @NgModule({

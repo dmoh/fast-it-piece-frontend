@@ -48,7 +48,7 @@ import { DeliveryModule } from './delivery/delivery.module';
     BrowserAnimationsModule,
     MatIconModule,
     DeliveryModule,
-    EstimateModule
+    EstimateModule,
     // CustomerModule,
     // AdminModule
   ],

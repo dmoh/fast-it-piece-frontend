@@ -16,10 +16,10 @@
       </tr>
     </thead>
     <tbody *ngIf="estimates">
-      <!-- <tr class="order" *ngFor="let estimate of estimates" routerLink="/estimate/detail-estimate/{{estimate.estimateNumber}}" > -->
-        <tr class="order" *ngFor="let estimate of estimates">
+      <tr class="order" *ngFor="let estimate of estimates" routerLink="/estimate/detail-estimate/{{estimate.estimateNumber}}" >
         <td>{{ estimate.estimateNumber }}</td>
-        <td *ngIf="estimate.customer.username || estimate.customer.lastName">{{ estimate.customer.name }}</td>
+        <td *ngIf="estimate.customer.username || estimate.customer.lastName else elseBlock">{{ estimate.customer.name }}</td>
+        <ng-template #elseBlock>test</ng-template>
         <td>{{ estimate.date.date | date: 'dd/MM/yyyy' }}</td>
         <td>{{ estimate.date.date | date: 'HH:mm' }}</td>
         <td>{{ estimate.amount / 100 }}</td>

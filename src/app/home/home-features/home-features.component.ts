@@ -22,6 +22,8 @@ export class HomeFeaturesComponent implements OnInit {
   showConfirmPassword: boolean;
   showRegisterPassword: boolean;
   selectedAddress: any;
+  options: {} = {};
+
   
   constructor(private router: Router,
               private formBuilder: FormBuilder,
@@ -29,9 +31,13 @@ export class HomeFeaturesComponent implements OnInit {
               private estimateService: EstimateService,
               private authenticationService: AuthenticationService,
               ) { }
-
+              
   ngOnInit(): void {
-    
+      
+    this.options = {
+          types: [],
+          componentRestrictions: { country: 'FR' }
+    };
     this.proForm = this.formBuilder.group({
       proDevis: ['', Validators.required],
       proName: ['', Validators.required],

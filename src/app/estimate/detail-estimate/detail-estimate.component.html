@@ -1,68 +1,28 @@
-<ng-container *ngIf="order">
+<ng-container *ngIf="estimate">
   <h2>
-    Detail commande
+    Detail devis n°{{estimate.estimateNumber}}
   </h2>
-  <ng-container *ngIf="!isDelivering">
-    <button class="mb-3 pos" mat-raised-button color="primary" (click)="onTakenEstimate()">Recuperer commande</button>
-  </ng-container>
 
   <!-- <ng-container> -->
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 card businessCard" style="flex-direction: row; flex-grow: 3 1 3;">
-        <div *ngIf="order.business" class="col-md-6 col-xs-12 float-md-left">
-          <p>
-            Commerçant
-          </p>
-          <div><b>{{order.business.name}}</b></div>
-          <div *ngIf="order.business.street"><b>Adresse:</b>{{order.business.street}}</div>
-          <div *ngIf="order.business.city"><b>Ville:</b> {{order.business.city}}</div>
-          <div *ngIf="order.business.zipcode"> <b>Code postal:</b> {{order.business.zipcode}}</div>
-          <div *ngIf="order.business.phone"><b>Telephone:</b> <a style="text-decoration: none" href="tel:{{order.business.phone}}">{{order.business.phone}}</a></div>
-          <div>
-            <h5>Navigation</h5>
-            <div *ngIf="order.business.street"><a
-              (click)="linkToAddresses('' + order.business.street + ', ' + order.business.zipcode + ' ' + order.business.city)">{{order.business.street}}, {{order.business.zipcode}} {{order.business.city}}</a></div>
-          </div>
-        </div>
-        <div class="col-md-6 col-xs-12">
+        <div *ngIf="estimate.customer" class="col-md-6 col-xs-12 float-md-left">
           <p>
             Client
           </p>
-          <div><b>Nom: {{order.customer.addresses[0].name | titlecase }}</b></div>
-          <div *ngIf="order.customer.addresses"><b>Adresse:</b>{{order.customer.addresses[0].street}}</div>
-          <div *ngIf="order.customer.addresses"><b>Ville:</b> {{order.customer.addresses[0].city}}</div>
-          <div *ngIf="order.customer.addresses"><b>Code postal:</b> {{order.customer.addresses[0].zipCode}}</div>
-          <div *ngIf="order.customer.addresses && order.customer.addresses[0].comment"><b>Commentaire:</b> {{order.customer.addresses[0].comment}}</div>
-          <div *ngIf="order.customer.phone"><b>Téléphone:</b> <a style="text-decoration: none" href="tel:{{order.customer.phone}}">{{order.customer.phone}}</a></div>
+          <div><b> {{estimate.customer?.username}} {{estimate.customer?.lastname}} {{estimate.customer?.firstname}}</b></div>
+          <div *ngIf="estimate.customer.addresses[0]?.street"><b>Adresse:</b>{{estimate.customer.addresses[0].street}}</div>
+          <div *ngIf="estimate.customer.addresses[0]?.city"><b>Ville:</b> {{estimate.customer.addresses[0].city}}</div>
+          <div *ngIf="estimate.customer.addresses[0]?.zipcode"> <b>Code postal:</b> {{estimate.customer.addresses[0].zipcode}}</div>
+          <div *ngIf="estimate.customer.phone"><b>Telephone:</b> <a style="text-decoration: none" href="tel:{{estimate.customer.phone}}"> {{estimate.customer.phone}} </a></div>
           <div>
             <h5>Navigation</h5>
-            <div *ngIf="order.customer.addresses[0].street"><a (click)="linkToAddresses('' + order.customer.addresses[0].street + ', ' + order.customer.addresses[0].zipCode + ' ' + order.customer.addresses[0].city)">{{order.customer.addresses[0].street}}, {{order.customer.addresses[0].zipCode}} {{order.customer.addresses[0].city}}</a></div>
+            <div *ngIf="estimate.customer.addresses[0]?.street"><a
+              (click)="linkToAddresses('' + estimate.customer.addresses[0].street + ', ' + estimate.customer.addresses[0].zipcode + ' ' + estimate.customer.addresses[0].city)">
+              {{estimate.customer.addresses[0].street}}, {{estimate.customer.addresses[0].zipcode}} {{estimate.customer.addresses[0].city}}</a></div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="row" [ngClass]="{ 'disabledContain': !isDelivering }">
-      <div class="col-md-12 card" *ngIf="delivererForm" style="padding-top: 2rem" >
-        <form [formGroup]="delivererForm" (ngSubmit)="onValidateEstimate()">
-          <h2>Validation livraison</h2>
-          <p>
-            <mat-form-field style="width: 40%;" appearance="outline">
-              <mat-label>Code Livraison</mat-label>
-              <input matInput type="text" formControlName="code" required="true" disabled="{{order.deliverCode == null}}" placeholder="Placeholder">
-              <mat-icon matSuffix>lock</mat-icon>
-            </mat-form-field>
-          </p>
-          <div *ngIf="!isValid" class="alert alert-danger">Code invalide</div>
-          <div class="mb-3">
-            <button class="float-right mb-3" mat-raised-button color="basic" (click)="onValidateWithoutCode()" disabled={{!isDelivering}}>
-              Sans code
-            </button>
-            <button *ngIf="hasEstimateCode" class="float-right mb-3" mat-raised-button type="submit" color="primary" disabled={{!isDelivering}}>
-              Valider
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   </div>
