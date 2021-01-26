@@ -59,6 +59,18 @@
           <mat-form-field class="full-width" appearance="outline" >
             <!-- <mat-label>Email</mat-label> -->
             <input matInput type="text"
+            formControlName="proCity"
+            placeholder="Ville"/>
+             <!-- [errorStateMatcher]="matcher" -->
+            <mat-icon matSuffix>apartment</mat-icon>
+          </mat-form-field>
+        </p>
+      </div>
+        <div class="form-group">
+        <p>
+          <mat-form-field class="full-width" appearance="outline" >
+            <!-- <mat-label>Email</mat-label> -->
+            <input matInput type="text"
             formControlName="proZipCode"
             placeholder="Code Postal"/>
              <!-- [errorStateMatcher]="matcher" -->

@@ -67,7 +67,6 @@ export class HomeFeaturesComponent implements OnInit {
     switch (typeCustomer) {
       case 'professional': {
         if ( this.proForm.value.customerDevis != "") this.saveEstimateProfessional();
-        // this.router.navigate(['/professional']);
       }
       break;
       case 'customer': {
@@ -75,7 +74,6 @@ export class HomeFeaturesComponent implements OnInit {
         (this.customerForm.value.customerMail != "" || this.customerForm.value.customerPhone != "")) 
         {
           this.saveEstimateCustomer();
-          // this.router.navigate(['/customer']);
         } 
       }
       break;
@@ -108,7 +106,7 @@ export class HomeFeaturesComponent implements OnInit {
     // console.log("STOP", estimateSave);
     this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( orderSaved => {
       this.router.navigate(['estimate/my-estimate']);
-      // this.router.navigate([`/estimate/${estimateSave.estimateNumber}`]);
+      // this.router.navigate([`/estimate/detail-estimate/${estimateSave.estimateNumber}`]);
     });
   }
 
