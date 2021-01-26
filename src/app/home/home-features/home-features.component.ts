@@ -132,9 +132,10 @@ export class HomeFeaturesComponent implements OnInit {
     this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( orderSaved => {
       this.router.navigate(['estimate/my-estimate']);
       // this.router.navigate([`/estimate/${estimateSave.estimateNumber}`]);
-    }, error => {
-      console.error(error);
     }
+    // , error => {
+    //   console.error(error);
+    // }
     );
   }
 
