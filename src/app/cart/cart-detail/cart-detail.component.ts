@@ -12,6 +12,8 @@ import { ToastService } from 'src/app/_services/toast.service';
 import { TipModalComponent } from 'src/app/tip-modal/tip-modal.component';
 import { ConfirmationCodePaymentModalComponent } from 'src/app/confirmation-code-payment-modal/confirmation-code-payment-modal.component';
 import { BusinessEstimateService } from 'src/app/estimate/services/business-estimate.service';
+import { AddressMatrix } from 'src/app/_models/address-matrix';
+import { Estimate } from 'src/app/_models/estimate';
 
 @Component({
   selector: 'app-cart-detail',
@@ -31,12 +33,16 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
   canBeDeliver: boolean = false;
   hasAddressSelected: boolean = false;
   showLoader: boolean;
-  addressChose: any;
   phoneCustomer: string;
   paymentValidation: boolean;
   responseDistanceGoogle: any;
   stripeKey = environment.stripeKey;
-  estimate: any;
+  estimate: Estimate;
+  
+  addressOriginFormat: any;
+  addressDestFormat: any;
+  adrOrigin: AddressMatrix;
+  adrDest: AddressMatrix;
 
   constructor(
     private cartService: CartService,
@@ -57,55 +63,50 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
     // Choix de l'adresse
     this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
       this.cartCurrent = cartUpdated;
-      console.log(this.route.snapshot);
-      const devis = this.route.snapshot.queryParams.devis;
-      const mail = this.route.snapshot.queryParams.mail;
-      const phone = this.route.snapshot.queryParams.phone;
-      const infoUser = {
-        mail: mail,
-        phone: phone,
-      }
-      this.estimateService.getEstimateByUserInfo(devis, infoUser).pipe( ).subscribe( estimate => {
-        // console.log("estimateById", estimateById);
-        // let order: Estimate = new Order();
-        console.info("this.estimate", estimate);
-        this.estimate = estimate;
-        this.showLoader = false;
-      },        
-      error => {
-        console.error(error);
-        if (/Invalid/.test(error)) {
-          error = 'Numero de devis ou coordonnées incorrects';
-        }
-        console.log(error);
-      });
     });  
 
     // this.userService.getUserAddresses().subscribe((result) => {});
     setTimeout(() => {
       this.showLoader = false;
     }, 1000);
+    // {
+    //   street : "28 Rue Ampere",
+    //   city : "CLUSES",
+    //   zipcode : "74300",
+    // };
 
-    const originAdd = {
-      street : "597 Avenue du Mont Blanc",
-      city : "Marnaz",
-      zipcode : "74460",
-    };
+    console.log(this.route.snapshot);
+    const devis = this.route.snapshot.queryParams.devis;
+    const mail = this.route.snapshot.queryParams.mail;
+    const phone = this.route.snapshot.queryParams.phone;
+    const infoUser = {
+      mail: mail,
+      phone: phone,
+    }
+    this.estimateService.getEstimateByUserInfo(devis, infoUser).pipe( ).subscribe( estimate => {
+      // console.log("estimateById", estimateById);
+      // let order: Estimate = new Order();
+      console.info("this.estimate", estimate);
+      this.estimate = estimate;
+      this.showLoader = false;
+      
+      this.adrOrigin = new AddressMatrix()
+      .setStreet(this.estimate.customer.addresses[0].street)
+      .setCity(this.estimate.customer.addresses[0].street)
+      .setZipCode(this.estimate.customer.addresses[0].street) ;
 
-    const dest = {
-      street : "28 Rue Ampere",
-      city : "CLUSES",
-      zipcode : "74300",
-    };
+      this.adrDest = new AddressMatrix()
+      .setStreet(this.estimate.customer.addresses[0].street)
+      .setCity(this.estimate.customer.addresses[0].street)
+      .setZipCode(this.estimate.customer.addresses[0].street) ;
 
-    const addressChoosen = `${dest.street}, ${dest.city}, ${dest.zipcode}`;
-    this.addressChose = dest;
-    const origin = `${originAdd.street}, ${originAdd.city}, ${originAdd.zipcode}`;
+    this.addressOriginFormat= `${this.adrOrigin.street}, ${this.adrOrigin.city}, ${this.adrOrigin.zipcode}`;
+    this.addressDestFormat = `${this.adrDest.street}, ${this.adrDest.city}, ${this.adrDest.zipcode}`;
     //     // send result google for calculate backend side
     const directionsService = new google.maps.DistanceMatrixService();
     directionsService.getDistanceMatrix({
-      origins: [addressChoosen],
-      destinations: [addressChoosen],
+      origins: [this.addressOriginFormat],
+      destinations: [this.addressDestFormat],
       travelMode: google.maps.TravelMode.DRIVING,
     },
     (response, status) => {
@@ -136,6 +137,15 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
         this.showModalErrorAddress();
       }
     });
+    },        
+    error => {
+      console.error(error);
+      if (/Invalid/.test(error)) {
+        error = 'Numero de devis ou coordonnées incorrects';
+      }
+      console.log(error);
+    });
+
   }
 
   ngAfterViewInit() {
@@ -204,7 +214,8 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       this.cartService.getTokenPaymentIntent(
         + (this.cartCurrent.total) * 100,
         this.cartCurrent.deliveryCost
-      ).subscribe((token: any ) => {
+      ).subscribe(
+        (token: any ) => {
           if (token.errorClosed) {
             this.showLoader = false;
             const modalRef = this.infoModal.open(InfoModalComponent, {
@@ -307,6 +318,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
           if (/Expired JWT/.test(error)) {
             this.router.navigate(['/login']);
           }
+          this.showLoader = false;
         }
       );
     });
