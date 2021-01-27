@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, HostListener, OnInit} from '@angular/core';
 import {CartService} from '../service/cart.service';
-import { Router} from '@angular/router';
+import { ActivatedRoute, Router} from '@angular/router';
 import {Cart} from '../model/cart';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 // import {ErrorInterceptor} from '@app/_helpers/error.interceptor';
@@ -11,6 +11,7 @@ import { AuthenticationService } from 'src/app/_services/authentication.service'
 import { ToastService } from 'src/app/_services/toast.service';
 import { TipModalComponent } from 'src/app/tip-modal/tip-modal.component';
 import { ConfirmationCodePaymentModalComponent } from 'src/app/confirmation-code-payment-modal/confirmation-code-payment-modal.component';
+import { BusinessEstimateService } from 'src/app/estimate/services/business-estimate.service';
 
 @Component({
   selector: 'app-cart-detail',
@@ -35,13 +36,16 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
   paymentValidation: boolean;
   responseDistanceGoogle: any;
   stripeKey = environment.stripeKey;
+  estimate: any;
 
   constructor(
     private cartService: CartService,
-    private route: Router,
+    private router: Router,
+    private route: ActivatedRoute,
     private codeConfirmationModal: NgbModal,
     private infoModal: NgbModal,
-    private addressConfirmationModal: NgbModal
+    private addressConfirmationModal: NgbModal,
+    private estimateService: BusinessEstimateService
   ) {
     this.paymentValidation = false;
     this.showLoader = true;
@@ -53,10 +57,30 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
     // Choix de l'adresse
     this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
       this.cartCurrent = cartUpdated;
-      // if (this.cartCurrent.products.length < 1) {
-      //   this.route.navigate(['home']);
-      // }
-    });
+      console.log(this.route.snapshot);
+      const devis = this.route.snapshot.queryParams.devis;
+      const mail = this.route.snapshot.queryParams.mail;
+      const phone = this.route.snapshot.queryParams.phone;
+      const infoUser = {
+        mail: mail,
+        phone: phone,
+      }
+      this.estimateService.getEstimateByUserInfo(devis, infoUser).pipe( ).subscribe( estimate => {
+        // console.log("estimateById", estimateById);
+        // let order: Estimate = new Order();
+        console.info("this.estimate", estimate);
+        this.estimate = estimate;
+        this.showLoader = false;
+      },        
+      error => {
+        console.error(error);
+        if (/Invalid/.test(error)) {
+          error = 'Numero de devis ou coordonnées incorrects';
+        }
+        console.log(error);
+      });
+    });  
+
     // this.userService.getUserAddresses().subscribe((result) => {});
     setTimeout(() => {
       this.showLoader = false;
@@ -281,7 +305,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
           }
         }, (error) => {
           if (/Expired JWT/.test(error)) {
-            this.route.navigate(['/login']);
+            this.router.navigate(['/login']);
           }
         }
       );

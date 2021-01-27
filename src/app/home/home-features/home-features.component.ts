@@ -102,6 +102,7 @@ export class HomeFeaturesComponent implements OnInit {
         firstName: (isCustomer) ? formValues.customerFirstName : null,
         lastName: (isCustomer) ? formValues.customerLastName : null,
         userName: (isCustomer) ? null : formValues.proName,
+        addressName: (isCustomer) ? formValues.customerAddressName : formValues.proAddressName,
         street: (isCustomer) ? formValues.customerAddress : formValues.proAddress,
         city: (isCustomer) ? formValues.customerCity : formValues.proCity,
         zipCode: (isCustomer) ? formValues.customerZipCode : formValues.proZipCode,
@@ -109,23 +110,22 @@ export class HomeFeaturesComponent implements OnInit {
         phone: (isCustomer) ? formValues.customerPhone : formValues.proPhone,
         dateEstimated: (isCustomer) ? formValues.customerDateEstimated : formValues.proDateEstimated,
         timeSlot: (isCustomer) ? formValues.customerTimeSlot : formValues.proTimeSlot,
-        distanceInfos: (isCustomer) ? null : null,
-        deliveryCost: (isCustomer) ? null : null,
+        distanceInfos: (isCustomer) ? null : null, // * 100
+        deliveryCost: (isCustomer) ? null : null, // * 100
         business: this.authenticationService?.currentUserValue?.id,
         serviceCharge: "",
         isPayed: false,
       }
     };
-    console.log("Values", estimateSave);
+    estimateSave.amount = Math.round(estimateSave * 100);
     this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( orderSaved => {
-    this.success = `Devis n° ${estimateSave.estimateNumber} cree`;
+    this.success = `Devis n° ${estimateSave.estimate.estimateNumber} cree`;
     this.error = '';
     // this.router.navigate(['estimate/my-estimate']);
     // this.router.navigate([`/estimate/detail-estimate/${estimateSave.estimateNumber}`]);
     }
       , error => {
-        console.error(error);
-        this.error = error;
+        this.error = error?.toString().toLowerCase().includes("integrity constraint violation") ? "Numero de devis (déja existant/mal renseigné)" : error;
         this.success = '';
       });
   }
@@ -141,23 +141,19 @@ export class HomeFeaturesComponent implements OnInit {
       
       const city = event?.address_components?.find(x => x.types.includes("locality"));
       const zipCode = event?.address_components?.find(x => x.types.includes("postal_code"));
-   
-      console.log(address);
-      console.log( address ?? event?.name);
+
       if (isCustomer) {
-        console.log("customer", event?.address_components);
         this.customerForm.controls['customerAddress'].setValue(address ?? event?.name);
         this.customerForm.controls['customerCity'].setValue(city?.long_name ?? event?.vicinity);
         this.customerForm.controls['customerZipCode'].setValue(zipCode?.short_name ?? "");
         this.customerForm.controls['customerAddressName'].setValue(event?.name);
       } else {
-        console.log("pro", event?.address_components);
         this.proForm.controls['proAddress'].setValue(address ?? event?.name);
         this.proForm.controls['proCity'].setValue(city?.long_name ?? event?.vicinity);
         this.proForm.controls['proZipCode'].setValue(zipCode?.short_name ?? "");
         this.proForm.controls['proAddressName'].setValue(event?.name);
       }
-      console.log("adr_address", event?.address_components);
+      console.log("adr_maps", event?.address_components);
       this.selectedAddress = event;
     }
   }
