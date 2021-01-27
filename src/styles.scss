@@ -31,6 +31,27 @@ $box-shadow-primary: $color-primary-transparent;
 $btn-color-primary: #2c41b4;
 $btn-color-secondary: white;
 
+.example-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.example-container > * {
+  width: 100%;
+}
+
+.example-container form {
+  margin-bottom: 20px;
+}
+
+.example-container form > * {
+  margin: 5px 0;
+}
+
+.example-container .mat-radio-button {
+  margin: 0 5px !important;
+}
+
 //Home features - Add color primary website 
 .main-color-primary {
   color: $btn-color-primary !important;
@@ -91,6 +112,11 @@ $btn-color-secondary: white;
 
 div.input-group .mat-form-field-wrapper {
   padding-bottom: 0 !important;
+}
+
+[aria-selected="true"]>.mat-tab-label-content{
+  color: $background-color-primary !important;
+  font-weight: 450;
 }
 
 input {
