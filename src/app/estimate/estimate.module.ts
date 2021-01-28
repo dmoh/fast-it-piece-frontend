@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { EstimateRoutingModule } from './estimate-routing.module';
 import {CoreModule} from "../core/core.module";
-import { DetailEstimateComponent } from './detail-estimate/detail-estimate.component';
 import { EstimateComponent } from './estimate.component';
 import { MyEstimateComponent } from './my-estimate/my-estimate.component';
+import { DetailEstimateComponent } from './detail-estimate/detail-estimate.component';
+import { EstimateRoutingModule } from './estimate-routing.module';
 
 @NgModule({
   declarations: [

@@ -57,8 +57,13 @@ export class BusinessEstimateService {
     return this.http.post<any>(`${this.urlApi}/estimate/${numDevis}`, request, this.headers);
   }
 
+  getEstimateById(numDevis: string): Observable<any> {
+    // return this.http.get<any>(`${this.urlApi}/estimate/${numDevis}`);
+    return this.http.get<any>(`${this.urlApi}/estimate/all`);
+  }
+
   getEstimates(): Observable<any> {
-    return this.http.get<any>(`${this.urlApi}/estimate/all}`);
+    return this.http.get<any>(`${this.urlApi}/estimate/all`);
   }
 
 }

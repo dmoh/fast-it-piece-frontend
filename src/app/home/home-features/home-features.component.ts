@@ -17,11 +17,9 @@ export class HomeFeaturesComponent implements OnInit {
   submitted = false;
   hide = true;
   error = '';
-  showPassword: boolean;
-  showPass: boolean;
-  showConfirmPassword: boolean;
-  showRegisterPassword: boolean;
+  success = '';
   selectedAddress: any;
+  options: {} = {};
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
@@ -32,6 +30,10 @@ export class HomeFeaturesComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.options = {
+          types: [],
+          componentRestrictions: { country: 'FR' }
+    };
     this.proForm = this.formBuilder.group({
       proDevis: ['', Validators.required],
       proName: ['', Validators.required],
@@ -39,6 +41,10 @@ export class HomeFeaturesComponent implements OnInit {
       proAddress: ['', Validators.required],
       proCity: ['', Validators.required],
       proZipCode: ['', Validators.required],
+      proCountry: [''],
+      proAddressName: [''],
+      proDateEstimated: ['', Validators.required],
+      proTimeSlot: ['', Validators.required],
       proMail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
       proPhone: [''],
     });
@@ -51,6 +57,10 @@ export class HomeFeaturesComponent implements OnInit {
       customerAddress: ['', Validators.required],
       customerCity: ['', Validators.required],
       customerZipCode: ['', Validators.required],
+      customerCountry: [''],
+      customerAddressName: [''],
+      customerDateEstimated: ['', Validators.required],
+      customerTimeSlot: ['', Validators.required],
       customerMail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
       customerPhone: ['', Validators.required],
     });
@@ -59,17 +69,19 @@ export class HomeFeaturesComponent implements OnInit {
   sendEstimate(typeCustomer: string) {
 
     switch (typeCustomer) {
-      case ' professional': {
-        if ( this.proForm.value.customerDevis != "") this.saveEstimateProfessional();
-        // this.router.navigate(['/professional']);
+      case 'professional': {
+        if ( this.proForm.value.customerDevis != "") {
+          // this.saveEstimateProfessional();
+          this.saveEstimate(this.proForm.value);
+        }
       }
       break;
       case 'customer': {
         if ( this.customerForm.value.customerDevis != "" &&
         (this.customerForm.value.customerMail != "" || this.customerForm.value.customerPhone != ""))
         {
-          this.saveEstimateCustomer();
-          // this.router.navigate(['/customer']);
+          //if typeCustomer == "customer" => saveEstimate(...,true)
+          this.saveEstimate(this.customerForm.value, true);
         }
       }
       break;
@@ -78,69 +90,76 @@ export class HomeFeaturesComponent implements OnInit {
     }
   }
 
-  private saveEstimateCustomer() {
+  private saveEstimate(formValues: any, isCustomer: boolean = false) {
     // console.info("customer form", this.customerForm);
 
     let estimateSave: any;
     estimateSave = {
       estimate : {
-        estimateNumber: this.customerForm.value.customerDevis,
-        amount: this.customerForm.value.customerAmountDevis,
-        firstName: this.customerForm.value.customerFirstName,
-        lastName: this.customerForm.value.customerLastName,
-        street: this.customerForm.value.customerAddress,
-        city: this.customerForm.value.customerCity,
-        zipCode: this.customerForm.value.customerZipCode,
-        mail: this.customerForm.value.customerMail,
-        phone: this.customerForm.value.customerPhone,
-        distanceInfos: null,
+        estimateNumber: (isCustomer) ? formValues.customerDevis : formValues.proDevis,
+        amount: (isCustomer) ? formValues.customerAmountDevis : formValues.proAmountDevis,
+        firstName: (isCustomer) ? formValues.customerFirstName : null,
+        lastName: (isCustomer) ? formValues.customerLastName : null,
+        userName: (isCustomer) ? null : formValues.proName,
+        addressName: (isCustomer) ? formValues.customerAddressName : formValues.proAddressName,
+        street: (isCustomer) ? formValues.customerAddress : formValues.proAddress,
+        city: (isCustomer) ? formValues.customerCity : formValues.proCity,
+        zipCode: (isCustomer) ? formValues.customerZipCode : formValues.proZipCode,
+        mail: (isCustomer) ? formValues.customerMail : formValues.proMail,
+        phone: (isCustomer) ? formValues.customerPhone : formValues.proPhone,
+        dateEstimated: (isCustomer) ? formValues.customerDateEstimated : formValues.proDateEstimated,
+        timeSlot: (isCustomer) ? formValues.customerTimeSlot : formValues.proTimeSlot,
+        distanceInfos: (isCustomer) ? null : null, // * 100
+        deliveryCost: (isCustomer) ? null : null, // * 100
         business: this.authenticationService?.currentUserValue?.id,
         serviceCharge: "",
         isPayed: false,
       }
     };
-    console.log("STOP", estimateSave);
+    estimateSave.amount = Math.round(estimateSave * 100);
     this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( orderSaved => {
-      // this.router.navigate([`/estimate/${estimateSave.estimateNumber}`]);
-    });
-  }
-
-  private saveEstimateProfessional() {
-    let estimateSave: any;
-    estimateSave = {
-      estimate : {
-        estimateNumber: this.proForm.value.proDevis,
-        userName: this.proForm.value.proName,
-        amount: this.proForm.value.proAmountDevis,
-        street: this.proForm.value.proAddress,
-        city: this.proForm.value.proCity,
-        ZipCode: this.proForm.value.proZipCode,
-        mail: this.proForm.value.proMail,
-        phone: this.proForm.value.proPhone,
-        distanceInfos: null,
-        business: null,
-        serviceCharge: "",
-        isPayed: false,
-      }
-    };
-
-    this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( orderSaved => {
-      // this.router.navigate([`/estimate/${estimateSave.estimateNumber}`]);
-    }, error => {
-      console.error(error);
+    this.success = `Devis n° ${estimateSave.estimate.estimateNumber} cree`;
+    this.error = '';
+    // this.router.navigate(['estimate/my-estimate']);
+    // this.router.navigate([`/estimate/detail-estimate/${estimateSave.estimateNumber}`]);
     }
-    );
+      , error => {
+        this.error = error?.toString().toLowerCase().includes("integrity constraint violation") ? "Numero de devis (déja existant/mal renseigné)" : error;
+        this.success = '';
+      });
   }
 
-  toggle() {
-    this.showPass = !this.showPass;
-  }
-
-  handleAddressChange(event) {
+  handleAddressChange(event, isCustomer:boolean = false) {
     if (!!event.formatted_address) {
+      console.log("event", event);
+
+      const streetNumber = event?.address_components?.find(x => x.types.includes("street_number"));
+      const street = event?.address_components?.find(x => x.types.includes("route"));
+
+      const address = (streetNumber && street ) ? streetNumber?.short_name + " " + street?.long_name : null;
+
+      const city = event?.address_components?.find(x => x.types.includes("locality"));
+      const zipCode = event?.address_components?.find(x => x.types.includes("postal_code"));
+
+      if (isCustomer) {
+        this.customerForm.controls['customerAddress'].setValue(address ?? event?.name);
+        this.customerForm.controls['customerCity'].setValue(city?.long_name ?? event?.vicinity);
+        this.customerForm.controls['customerZipCode'].setValue(zipCode?.short_name ?? "");
+        this.customerForm.controls['customerAddressName'].setValue(event?.name);
+      } else {
+        this.proForm.controls['proAddress'].setValue(address ?? event?.name);
+        this.proForm.controls['proCity'].setValue(city?.long_name ?? event?.vicinity);
+        this.proForm.controls['proZipCode'].setValue(zipCode?.short_name ?? "");
+        this.proForm.controls['proAddressName'].setValue(event?.name);
+      }
+      console.log("adr_maps", event?.address_components);
       this.selectedAddress = event;
     }
   }
+
+  // private setFormControlValue(addressFormValues: any, event: any, isCustomer:boolean) {
+  //   .setValue(event?.name);
+  // }
 
   // convenience getter for easy access to form fields
   get proCtrl() { return this.proForm.controls; }

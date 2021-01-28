@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, HostListener, OnInit} from '@angular/core';
 import {CartService} from '../service/cart.service';
-import { Router} from '@angular/router';
+import { ActivatedRoute, Router} from '@angular/router';
 import {Cart} from '../model/cart';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 // import {ErrorInterceptor} from '@app/_helpers/error.interceptor';
@@ -11,6 +11,9 @@ import { AuthenticationService } from 'src/app/_services/authentication.service'
 import { ToastService } from 'src/app/_services/toast.service';
 import { TipModalComponent } from 'src/app/tip-modal/tip-modal.component';
 import { ConfirmationCodePaymentModalComponent } from 'src/app/confirmation-code-payment-modal/confirmation-code-payment-modal.component';
+import { BusinessEstimateService } from 'src/app/estimate/services/business-estimate.service';
+import { AddressMatrix } from 'src/app/_models/address-matrix';
+import { Estimate } from 'src/app/_models/estimate';
 
 @Component({
   selector: 'app-cart-detail',
@@ -30,18 +33,25 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
   canBeDeliver: boolean = false;
   hasAddressSelected: boolean = false;
   showLoader: boolean;
-  addressChose: any;
   phoneCustomer: string;
   paymentValidation: boolean;
   responseDistanceGoogle: any;
   stripeKey = environment.stripeKey;
+  estimate: Estimate;
+  
+  addressOriginFormat: any;
+  addressDestFormat: any;
+  adrOrigin: AddressMatrix;
+  adrDest: AddressMatrix;
 
   constructor(
     private cartService: CartService,
-    private route: Router,
+    private router: Router,
+    private route: ActivatedRoute,
     private codeConfirmationModal: NgbModal,
     private infoModal: NgbModal,
-    private addressConfirmationModal: NgbModal
+    private addressConfirmationModal: NgbModal,
+    private estimateService: BusinessEstimateService
   ) {
     this.paymentValidation = false;
     this.showLoader = true;
@@ -53,75 +63,89 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
     // Choix de l'adresse
     this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
       this.cartCurrent = cartUpdated;
-      // if (this.cartCurrent.products.length < 1) {
-      //   this.route.navigate(['home']);
-      // }
-    });
-    // check if restau not closed
-    // this.userService.getUserAddresses().subscribe((result) => {
-      setTimeout(() => {
-        this.showLoader = false;
-      }, 1000);
-      this.addressChose = null;
-    //   this.phoneCustomer = result.data[0].phone;
-    //   this.userAddresses = result.data[0].addresses;
-    //   const modalRef = this.addressConfirmationModal.open(AddressModalComponent, {
-    //     backdrop: 'static',
-    //     keyboard: false,
-    //   });
+    });  
 
-    //   if (typeof this.userAddresses[0] === 'undefined') {
-    //     modalRef.componentInstance.address = null;
-    //   } else {
-    //     modalRef.componentInstance.address = this.userAddresses[0];
-    //     modalRef.componentInstance.firstname = this.userAddresses[0].firstname;
-    //   }
-    //   modalRef.componentInstance.phoneCustomer = this.phoneCustomer;
-    //   modalRef.result.then((res) => {
-    //     const origin = `${this.cartCurrent.restaurant.street},
-    //      ${this.cartCurrent.restaurant.city},
-    //      ${this.cartCurrent.restaurant.zipcode}`
-    //     ;
-    //     // save phone user number
-    //     // this.userService.savePhoneNumber(res.phone)
-    //     //   .subscribe((responseServer) => {
-    //     //   });
-        // const addressChoosen = `${res.street}, ${res.city}, ${res.zipcode}`;
+    // this.userService.getUserAddresses().subscribe((result) => {});
+    setTimeout(() => {
+      this.showLoader = false;
+    }, 1000);
+    // {
+    //   street : "28 Rue Ampere",
+    //   city : "CLUSES",
+    //   zipcode : "74300",
+    // };
+
+    console.log(this.route.snapshot);
+    const devis = this.route.snapshot.queryParams.devis;
+    const mail = this.route.snapshot.queryParams.mail;
+    const phone = this.route.snapshot.queryParams.phone;
+    const infoUser = {
+      mail: mail,
+      phone: phone,
+    }
+    this.estimateService.getEstimateByUserInfo(devis, infoUser).pipe( ).subscribe( estimate => {
+      // console.log("estimateById", estimateById);
+      // let order: Estimate = new Order();
+      console.info("this.estimate", estimate);
+      this.estimate = estimate;
+      this.showLoader = false;
+      
+      this.adrOrigin = new AddressMatrix()
+      .setStreet(this.estimate.customer.addresses[0].street)
+      .setCity(this.estimate.customer.addresses[0].street)
+      .setZipCode(this.estimate.customer.addresses[0].street) ;
+
+      this.adrDest = new AddressMatrix()
+      .setStreet(this.estimate.customer.addresses[0].street)
+      .setCity(this.estimate.customer.addresses[0].street)
+      .setZipCode(this.estimate.customer.addresses[0].street) ;
+
+    this.addressOriginFormat= `${this.adrOrigin.street}, ${this.adrOrigin.city}, ${this.adrOrigin.zipcode}`;
+    this.addressDestFormat = `${this.adrDest.street}, ${this.adrDest.city}, ${this.adrDest.zipcode}`;
     //     // send result google for calculate backend side
-    //     const directionsService = new google.maps.DistanceMatrixService();
-    //     directionsService.getDistanceMatrix({
-    //       origins: [origin],
-    //       destinations: [addressChoosen],
-    //       travelMode: google.maps.TravelMode.DRIVING,
-    //     }, (response, status) => {
-    //       if (response.rows === null) {
-    //         this.showModalErrorAddress();
-    //       }
-    //       if (response.rows[0].elements[0].status === 'OK') {
-    //         const responseDistance = response.rows[0].elements[0];
-    //         this.responseDistanceGoogle = responseDistance;
-    //         this.cartService.getCostDelivery(responseDistance)
-    //           .subscribe((resp) => {
-    //             setTimeout(() => {
-    //               this.showLoader = false;
-    //             }, 1000);
-    //             const pro = new Promise(() => {
-    //               this.cartService.setDeliveryCost(resp.deliveryInfos);
-    //               this.hasAddressSelected = true;
-    //             });
-    //             pro.then((respPro) => {
-    //               this.cartService.generateTotalCart(true);
-    //               this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
-    //                 this.cartCurrent = cartUpdated;
-    //               });
-    //             });
-    //           });
-    //       } else {
-    //         this.showModalErrorAddress();
-    //       }
-    //     });
-    //   });
-    // });
+    const directionsService = new google.maps.DistanceMatrixService();
+    directionsService.getDistanceMatrix({
+      origins: [this.addressOriginFormat],
+      destinations: [this.addressDestFormat],
+      travelMode: google.maps.TravelMode.DRIVING,
+    },
+    (response, status) => {
+      console.info("ressss",response);
+      if (response.rows === null) {
+        this.showModalErrorAddress();
+      }
+      if (response.rows[0].elements[0].status === 'OK') {
+        const responseDistance = response.rows[0].elements[0];
+        this.responseDistanceGoogle = responseDistance;
+        this.cartService.getCostDelivery(responseDistance)
+          .subscribe((resp) => {
+            setTimeout(() => {
+              this.showLoader = false;
+            }, 1000);
+            const pro = new Promise(() => {
+              this.cartService.setDeliveryCost(resp.deliveryInfos);
+              this.hasAddressSelected = true;
+            });
+            pro.then((respPro) => {
+              this.cartService.generateTotalCart(true);
+              this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
+                this.cartCurrent = cartUpdated;
+              });
+            });
+          });
+      } else {
+        this.showModalErrorAddress();
+      }
+    });
+    },        
+    error => {
+      console.error(error);
+      if (/Invalid/.test(error)) {
+        error = 'Numero de devis ou coordonnées incorrects';
+      }
+      console.log(error);
+    });
+
   }
 
   ngAfterViewInit() {
@@ -130,6 +154,16 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
 
   private loadStripe(): void {
     this.loadStripeElements();
+  }
+
+  private showModalErrorAddress() {
+    // const modalError = this.infoModal.open(InfoModalComponent, {
+    //   backdrop: 'static',
+    //   keyboard: false
+    // });
+    // modalError.componentInstance.title = 'Erreur';
+    // modalError.componentInstance.message = 'Cette adresse est introuvable.';
+    // modalError.componentInstance.isCartError = true;
   }
 
   private loadStripeElements(): void {
@@ -178,9 +212,10 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       this.paymentValidation = true;
       event.preventDefault();
       this.cartService.getTokenPaymentIntent(
-        +(this.cartCurrent.total) * 100,
+        + (this.cartCurrent.total) * 100,
         this.cartCurrent.deliveryCost
-      ).subscribe((token: any ) => {
+      ).subscribe(
+        (token: any ) => {
           if (token.errorClosed) {
             this.showLoader = false;
             const modalRef = this.infoModal.open(InfoModalComponent, {
@@ -281,8 +316,9 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
           }
         }, (error) => {
           if (/Expired JWT/.test(error)) {
-            this.route.navigate(['/login']);
+            this.router.navigate(['/login']);
           }
+          this.showLoader = false;
         }
       );
     });

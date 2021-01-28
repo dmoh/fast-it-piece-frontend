@@ -20,10 +20,6 @@ const routes: Routes = [
     {path: 'password', component: PasswordComponent},
     {path: 'customer', component: CustomerComponent},
     {path: 'professional', component: ProfessionalComponent},
-    // { path: 'show-devis', component: EstimateComponent },
-    // { path: 'admin', component: AdminComponent, canActivate: [AuthGuard]  },
-    {path: '', redirectTo: '/login', pathMatch: 'full'},
-    {path: '**', component: Page404Component },
     // {path: 'estimate', component: EstimateComponent, canActivate: [AuthGuard],
     //   children: [
     //   {
@@ -35,6 +31,10 @@ const routes: Routes = [
     //     component: MyEstimateComponent,
     //   }
     // ]},
+    // { path: 'show-devis', component: EstimateComponent },
+    // { path: 'admin', component: AdminComponent, canActivate: [AuthGuard]  },
+    //{path: '', redirectTo: '/login', pathMatch: 'full'},
+    // {path: '**', component: Page404Component },
 ];
 
 @NgModule({

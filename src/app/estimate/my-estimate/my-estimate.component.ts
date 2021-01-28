@@ -29,7 +29,7 @@ export class MyEstimateComponent implements OnInit {
     this.estimateService.getEstimates().subscribe( estimates => {
       // get Orders awaiting delivery
       console.log("estimates", estimates);
-      this.estimates = estimates;
+      this.estimates = estimates.estimates;
     });
   }
 

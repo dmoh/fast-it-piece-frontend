@@ -51,7 +51,7 @@ export class NavbarComponent implements OnInit {
       });
 
     this.router.events.subscribe((res) => {
-      const url =  /(restaurant-dashboard|admin|delivery|customer)/i;
+      const url =  /(estimate|admin|delivery|customer)/i;
       // @ts-ignore
       if (typeof res.url !== 'undefined') {
         // @ts-ignore
@@ -77,22 +77,6 @@ export class NavbarComponent implements OnInit {
   onLogout(){
     this.authentication.logout();
   }
-
-  goTo() {
-    // this.restaurantDashboardService.getUrlRestaurant()
-    //   .subscribe((response) => {
-    //     if (response.error) {
-    //       this.snackBar.open(response.error, 'OK', {
-    //         duration: 5000,
-    //         horizontalPosition: 'center',
-    //         verticalPosition: 'top',
-    //       });
-    //     } else {
-    //       this.router.navigate([`restaurant-dashboard/${response.restaurantId}/overview`]);
-    //     }
-    //   });
-  }
-
 
   @HostListener('window:resize', [])
   onResize() {
