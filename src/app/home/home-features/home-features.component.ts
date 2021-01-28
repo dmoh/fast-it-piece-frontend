@@ -22,7 +22,7 @@ export class HomeFeaturesComponent implements OnInit {
   showConfirmPassword: boolean;
   showRegisterPassword: boolean;
   selectedAddress: any;
-  
+
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private route: ActivatedRoute,
@@ -31,7 +31,7 @@ export class HomeFeaturesComponent implements OnInit {
               ) { }
 
   ngOnInit(): void {
-    
+
     this.proForm = this.formBuilder.group({
       proDevis: ['', Validators.required],
       proName: ['', Validators.required],
@@ -59,18 +59,18 @@ export class HomeFeaturesComponent implements OnInit {
   sendEstimate(typeCustomer: string) {
 
     switch (typeCustomer) {
-      case 'professional': {
+      case ' professional': {
         if ( this.proForm.value.customerDevis != "") this.saveEstimateProfessional();
         // this.router.navigate(['/professional']);
       }
       break;
       case 'customer': {
-        if ( this.customerForm.value.customerDevis != "" && 
-        (this.customerForm.value.customerMail != "" || this.customerForm.value.customerPhone != "")) 
+        if ( this.customerForm.value.customerDevis != "" &&
+        (this.customerForm.value.customerMail != "" || this.customerForm.value.customerPhone != ""))
         {
           this.saveEstimateCustomer();
           // this.router.navigate(['/customer']);
-        } 
+        }
       }
       break;
       default : console.log(this.customerForm.value.customerDevis);
