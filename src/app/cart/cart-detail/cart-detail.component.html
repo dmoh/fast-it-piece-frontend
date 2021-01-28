@@ -1,11 +1,11 @@
 <div *ngIf="showLoader" class="wrapper-loader mb-5">
   <div class="loader"></div>
 </div>
-<ng-container *ngIf="estimate; else notFound">
+<!-- <div *ngIf="estimate; else notFound"> -->
   <section class="content">
     <div class="row">
       <div class="col-md-12">
-        <h3 class="recap-title">Récapitulatif devis n° {{estimate.estimate_number}}</h3>
+        <h3 class="recap-title">Récapitulatif - Devis n° {{estimate.estimate_number}}</h3>
       </div>
     </div>
     <hr>
@@ -96,8 +96,9 @@
       </div>
     </div>
   </section>
-</ng-container>
-<ng-template #notFound>
+<!-- </ng-container> -->
+
+<!-- <ng-template #notFound>
   <div class="row">
     <div class="col-md-12">
       <div class="loader"> 
@@ -105,4 +106,4 @@
       </div>
     </div>
   </div>
-</ng-template>
+</ng-template> -->

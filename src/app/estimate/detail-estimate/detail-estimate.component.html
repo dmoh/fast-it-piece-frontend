@@ -8,20 +8,37 @@
     <div class="row">
       <div class="col-md-12 card businessCard" style="flex-direction: row; flex-grow: 3 1 3;">
         <div *ngIf="estimate.customer" class="col-md-6 col-xs-12 float-md-left">
-          <p>
-            Client
-          </p>
-          <div><b> {{estimate.customer?.username}} {{estimate.customer?.lastname}} {{estimate.customer?.firstname}}</b></div>
-          <div *ngIf="estimate.customer.addresses[0]?.street"><b>Adresse:</b>{{estimate.customer.addresses[0].street}}</div>
+          <div>
+            <h5>Client</h5>
+          </div>
+          <div *ngIf="estimate.customer?.lastname || estimate.customer?.firstname"><b>Nom : {{estimate.customer?.lastname}} {{estimate.customer?.firstname}}</b></div>
+          <div *ngIf="estimate.customer?.username"><b>Raison social: {{estimate.customer?.username}}</b></div>
+          <div *ngIf="estimate.customer.addresses[0]?.street"><b>Adresse:</b> {{estimate.customer.addresses[0].street}}</div>
           <div *ngIf="estimate.customer.addresses[0]?.city"><b>Ville:</b> {{estimate.customer.addresses[0].city}}</div>
           <div *ngIf="estimate.customer.addresses[0]?.zipcode"> <b>Code postal:</b> {{estimate.customer.addresses[0].zipcode}}</div>
           <div *ngIf="estimate.customer.phone"><b>Telephone:</b> <a style="text-decoration: none" href="tel:{{estimate.customer.phone}}"> {{estimate.customer.phone}} </a></div>
-          <div>
-            <h5>Navigation</h5>
-            <div *ngIf="estimate.customer.addresses[0]?.street"><a
-              (click)="linkToAddresses('' + estimate.customer.addresses[0].street + ', ' + estimate.customer.addresses[0].zipcode + ' ' + estimate.customer.addresses[0].city)">
-              {{estimate.customer.addresses[0].street}}, {{estimate.customer.addresses[0].zipcode}} {{estimate.customer.addresses[0].city}}</a></div>
+          
+          <div layout="row">
+            <hr flex/>
+            <div>
+              <h5>Information livraison</h5>
+              <div *ngIf="estimate.customer.addresses[0]?.street"><a
+                (click)="linkToAddresses('' + estimate.customer.addresses[0].street + ', ' + estimate.customer.addresses[0].zipcode + ' ' + estimate.customer.addresses[0].city)">
+                {{estimate.customer.addresses[0].street}}, {{estimate.customer.addresses[0].zipcode}} {{estimate.customer.addresses[0].city}}</a></div>
+                <div *ngIf="estimate.distanceMeter"><b>Distance:</b> {{estimate.distanceMeter}}</div>
+                <div *ngIf="estimate.date"><b>Date de création:</b> {{ estimate.date.date | date : "dd.mm.yyyy hh:mm" }}</div>
+                <div *ngIf="estimate.dateEstimated"><b>Date de livraison prévue:</b> {{ estimate.dateEstimated.date | date :"fullDate" }}</div>
+            </div>
+            <hr flex/>
           </div>
+
+          <div>
+            <h5>Recapitulatif montant</h5>
+            <div *ngIf="estimate.delivery_cost"><b>Cout de la livraison:</b> {{estimate.delivery_cost}}</div>
+            <div *ngIf="estimate.delivery_cost"><b>Montant:</b> {{estimate.amount}}</div>
+            <div *ngIf="estimate.delivery_cost"><b>Total:</b> {{(estimate.delivery_cost+estimate.amount)}}</div>
+          </div>
+
         </div>
       </div>
     </div>

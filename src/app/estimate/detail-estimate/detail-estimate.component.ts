@@ -28,7 +28,7 @@ export class DetailEstimateComponent implements OnInit {
       // console.log("estimateById", estimateById);
       // let order: Estimate = new Order();
       this.estimate = estimateById.estimates.find( x => x.estimateNumber == this.estimateId );
-      console.info("this.estimate", this.estimate.customer);
+      console.info("this.estimate", this.estimate);
     });  
   }
 
