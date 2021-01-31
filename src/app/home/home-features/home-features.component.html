@@ -99,7 +99,7 @@
         <p>
           <mat-form-field class="full-width" appearance="outline" floatLabel="always">
             <!-- <mat-label>Numero de telephone</mat-label> -->
-            <input matInput type="tel" formControlName="proPhone" placeholder="Numero de telephone">
+            <input matInput type="tel" formControlName="proPhone" placeholder="Exemple: 06...">
             <mat-icon matSuffix>phone</mat-icon>
             <mat-hint></mat-hint>
           </mat-form-field>
@@ -115,30 +115,10 @@
       </div>
       <div class="form-group">
         <p>
-          <!-- <mat-form-field class="full-width"  appearance="outline" floatLabel="always"> -->
-            <!-- <mat-label>Choose a date</mat-label> -->
-            <!-- <input type="radio" id="AM" formControlName="proTimeSlot" value="AM" checked>
-            <label for="AM">Matin</label>
-            <input type="radio" id="PM" formControlName="proTimeSlot" value="PM">
-            <label for="PM">Apres-Midi</label> -->
             <mat-radio-group formControlName="proTimeSlot">
               <mat-radio-button value="AM">Matin</mat-radio-button>
               <mat-radio-button value="PM">Apres-Midi</mat-radio-button>
             </mat-radio-group>
-          <!-- </mat-form-field> -->
-
-          <!-- <mat-radio-group aria-label="Select an option">
-            <mat-radio-button value="1">Option 1</mat-radio-button>
-            <mat-radio-button value="2">Option 2</mat-radio-button>
-          </mat-radio-group> 
-        
-          <mat-form-field >
-            <mat-radio-group [formControlName]="id">
-              <mat-radio-button *ngFor="let option of options" [value]="option.id">{{option.text}}</mat-radio-button>
-            </mat-radio-group>
-          </mat-form-field>
-
-        -->
         </p>
       </div>
       <div class="form-group">
@@ -146,7 +126,8 @@
           <mat-form-field class="full-width" appearance="outline" >
             <!-- <mat-label>Email</mat-label> -->
             <input matInput type="text"
-            formControlName="proAmountDevis"
+            (onAddressChange)="calculAmountChange($event, true)"
+            formControlName="proAmount"
             placeholder="Montant"/>
              <!-- [errorStateMatcher]="matcher" -->
             <mat-icon matSuffix>euro</mat-icon>
@@ -156,6 +137,24 @@
           <div *ngIf="f.username.errors.required">Username is required</div>
         </div>-->
       </div>
+      <hr>
+      <div class="align-row">
+        <hr>
+        <div style="display: flex" class="col-md-6">
+          <div style="flex: 1">Frais de service</div>
+          <div>0.80 €</div>
+        </div>
+      </div>
+      <div class="align-row">
+        <hr>
+        <div style="display: flex" class="col-md-6">
+          <div style="flex: 1">TOTAL</div>
+          <div>
+            {{ (totalAmountPro.toFixed(2)).replace('.', ',') }} €
+          </div>
+        </div>
+      </div>
+      <hr>
       <!-- <button mat-raised-button [disabled]="loading" color="primary" (click)= "sendEstimate('professional')"> -->
       <button mat-raised-button [disabled]="loading" color="primary">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
@@ -287,7 +286,7 @@
         <p>
           <mat-form-field class="full-width" appearance="outline" floatLabel="always">
             <!-- <mat-label>Numero de telephone</mat-label> -->
-            <input matInput type="tel" formControlName="customerPhone" placeholder="Numero de telephone">
+            <input matInput type="tel" formControlName="customerPhone" placeholder="Exemple: 06...">
             <mat-icon matSuffix>phone</mat-icon>
             <mat-hint></mat-hint>
           </mat-form-field>
@@ -317,7 +316,8 @@
           <mat-form-field class="full-width" appearance="outline" >
             <!-- <mat-label>Email</mat-label> -->
             <input matInput type="text"
-            formControlName="customerAmountDevis"
+            formControlName="customerAmount"
+            (onAddressChange)="calculAmountChange($event, true)"
             placeholder="Montant"/>
              <!-- [errorStateMatcher]="matcher" -->
             <mat-icon matSuffix>euro</mat-icon>
@@ -327,6 +327,30 @@
           <div *ngIf="f.username.errors.required">Username is required</div>
         </div>-->
       </div>
+      <hr>
+
+      <div class="row">
+        <div class="col-md-6">
+        </div>
+        <hr>
+        <div style="display: flex" class="col-md-6">
+          <div style="flex: 1">Frais de service</div>
+          <div>0.80 €</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+        </div>
+        <hr>
+        <div style="display: flex" class="col-md-6">
+          <div style="flex: 1">TOTAL</div>
+          <div>
+            {{ (totalAmountCustomer.toFixed(2)).replace('.', ',') }} €
+          </div>
+        </div>
+      </div>
+      <hr>
+
       <!-- <button mat-raised-button [disabled]="loading"  type="button" (click)="sendEstimate('customer')" color="primary"> -->
         <button mat-raised-button [disabled]="loading" color="primary">
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>

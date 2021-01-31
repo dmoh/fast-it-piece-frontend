@@ -22,8 +22,8 @@ export class CartService {
 
   constructor(private http: HttpClient, private authenticate: AuthenticationService, private router: Router) {
     this.headers = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
-    if (localStorage.getItem('cart_fast_eat')) {
-      this.setCart(JSON.parse(localStorage.getItem('cart_fast_eat')));
+    if (localStorage.getItem('cart_fast_eat_piece')) {
+      this.setCart(JSON.parse(localStorage.getItem('cart_fast_eat_piece')));
     }
     if (this.authenticate.tokenUserCurrent == null) {
       // this.router.navigate(['/login']);
@@ -52,7 +52,7 @@ export class CartService {
         }
 
         // this.cartCurrent.products = [...this.cartCurrent.products, product];
-        console.warn('products', this.cartCurrent.products);
+        // console.warn('products', this.cartCurrent.products);
 
         // this.cartCurrent.restaurant = restaurant;
         this.generateTotalCart();
@@ -89,10 +89,10 @@ export class CartService {
 
   emitCartSubject(empty?: string){
     if (empty === 'empty') {
-      localStorage.removeItem('cart_fast_eat');
+      localStorage.removeItem('cart_fast_eat_piece');
       this.cartCurrent = new Cart();
     } else {
-      localStorage.setItem('cart_fast_eat', JSON.stringify(this.cartCurrent));
+      localStorage.setItem('cart_fast_eat_piece', JSON.stringify(this.cartCurrent));
     }
     // todo voir si autre solution avec Elhad save on DB temporairement ??? le panier
 
@@ -128,16 +128,16 @@ export class CartService {
     //     this.cartCurrent.total = 150;
     //   }
     // }
-    if (typeof this.cartCurrent.tipDelivererAmount !== 'undefined'
-      && +this.cartCurrent.tipDelivererAmount > 0
-    ) {
-      this.cartCurrent.total += +this.cartCurrent.tipDelivererAmount;
-      this.cartCurrent.amountWithoutSpecialOffer += +this.cartCurrent.tipDelivererAmount;
-    }
+    // if (typeof this.cartCurrent.tipDelivererAmount !== 'undefined'
+    //   && +this.cartCurrent.tipDelivererAmount > 0
+    // ) {
+    //   this.cartCurrent.total += +this.cartCurrent.tipDelivererAmount;
+    //   this.cartCurrent.amountWithoutSpecialOffer += +this.cartCurrent.tipDelivererAmount;
+    // }
+    // this.cartCurrent.amountWithoutSpecialOffer += 0.80;
+    // this.cartCurrent.amountWithoutSpecialOffer += +(this.cartCurrent.deliveryCost);
     this.cartCurrent.total += 0.80;
-    this.cartCurrent.amountWithoutSpecialOffer += 0.80;
     this.cartCurrent.total += +(this.cartCurrent.deliveryCost);
-    this.cartCurrent.amountWithoutSpecialOffer += +(this.cartCurrent.deliveryCost);
     this.emitCartSubject();
   }
 
@@ -171,22 +171,13 @@ export class CartService {
       responseCustomer, this.headers);
   }
 
-
-  getStateRestaurant(restaurantId: number): Observable<any> {
-    return this.http.get<any>(`${this.urlApi}business/state/${restaurantId}`, this.headers);
-  }
-
-  getProducts() {
-    return this.cartCurrent.products;
-  }
-
   // getBusinessCurrent() {
   //   return this.cartCurrent.restaurant;
   // }
 
-  setTipDelivererAmount(tipAmount: number) {
-    this.cartCurrent.tipDelivererAmount = tipAmount;
-    this.generateTotalCart();
-    this.emitCartSubject();
-  }
+  // setTipDelivererAmount(tipAmount: number) {
+  //   this.cartCurrent.tipDelivererAmount = tipAmount;
+  //   this.generateTotalCart();
+  //   this.emitCartSubject();
+  // }
 }

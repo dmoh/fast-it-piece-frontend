@@ -9,7 +9,7 @@ import {environment} from '../../../environments/environment';
 import { InfoModalComponent } from 'src/app/info-modal/info-modal.component';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
 import { ToastService } from 'src/app/_services/toast.service';
-import { TipModalComponent } from 'src/app/tip-modal/tip-modal.component';
+// import { TipModalComponent } from 'src/app/tip-modal/tip-modal.component';
 import { ConfirmationCodePaymentModalComponent } from 'src/app/confirmation-code-payment-modal/confirmation-code-payment-modal.component';
 import { BusinessEstimateService } from 'src/app/estimate/services/business-estimate.service';
 import { AddressMatrix } from 'src/app/_models/address-matrix';
@@ -30,19 +30,20 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
   clientSecret: string;
   // todo declare constante frais de service
   paymentValidated: boolean;
-  canBeDeliver: boolean = false;
   hasAddressSelected: boolean = false;
   showLoader: boolean;
-  phoneCustomer: string;
   paymentValidation: boolean;
-  responseDistanceGoogle: any;
   stripeKey = environment.stripeKey;
+  responseDistanceGoogle: any;
   estimate: Estimate;
   
   addressOriginFormat: any;
   addressDestFormat: any;
   adrOrigin: AddressMatrix;
   adrDest: AddressMatrix;
+
+  readonly frais = 0.80;
+  amountTotal: number;
 
   constructor(
     private cartService: CartService,
@@ -91,60 +92,60 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       this.showLoader = false;
       
       this.adrOrigin = new AddressMatrix()
-      .setStreet(this.estimate.customer.addresses[0].street)
-      .setCity(this.estimate.customer.addresses[0].street)
-      .setZipCode(this.estimate.customer.addresses[0].street) ;
+      .setStreet(this.estimate.business.street)
+      .setCity(this.estimate.business.city)
+      .setZipCode(this.estimate.business.zipcode) ;
 
       this.adrDest = new AddressMatrix()
       .setStreet(this.estimate.customer.addresses[0].street)
-      .setCity(this.estimate.customer.addresses[0].street)
-      .setZipCode(this.estimate.customer.addresses[0].street) ;
+      .setCity(this.estimate.customer.addresses[0].city)
+      .setZipCode(this.estimate.customer.addresses[0].zipcode) ;
 
-    this.addressOriginFormat= `${this.adrOrigin.street}, ${this.adrOrigin.city}, ${this.adrOrigin.zipcode}`;
-    this.addressDestFormat = `${this.adrDest.street}, ${this.adrDest.city}, ${this.adrDest.zipcode}`;
-    //     // send result google for calculate backend side
-    const directionsService = new google.maps.DistanceMatrixService();
-    directionsService.getDistanceMatrix({
-      origins: [this.addressOriginFormat],
-      destinations: [this.addressDestFormat],
-      travelMode: google.maps.TravelMode.DRIVING,
-    },
-    (response, status) => {
-      console.info("ressss",response);
-      if (response.rows === null) {
-        this.showModalErrorAddress();
-      }
-      if (response.rows[0].elements[0].status === 'OK') {
-        const responseDistance = response.rows[0].elements[0];
-        this.responseDistanceGoogle = responseDistance;
-        this.cartService.getCostDelivery(responseDistance)
-          .subscribe((resp) => {
-            setTimeout(() => {
-              this.showLoader = false;
-            }, 1000);
-            const pro = new Promise(() => {
-              this.cartService.setDeliveryCost(resp.deliveryInfos);
-              this.hasAddressSelected = true;
-            });
-            pro.then((respPro) => {
-              this.cartService.generateTotalCart(true);
-              this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
-                this.cartCurrent = cartUpdated;
+      this.addressOriginFormat= `${this.adrOrigin.street}, ${this.adrOrigin.city}, ${this.adrOrigin.zipCode}`;
+      this.addressDestFormat = `${this.adrDest.street}, ${this.adrDest.city}, ${this.adrDest.zipCode}`;
+      //     // send result google for calculate backend side
+      const directionsService = new google.maps.DistanceMatrixService();
+      directionsService.getDistanceMatrix({
+        origins: [this.addressOriginFormat],
+        destinations: [this.addressDestFormat],
+        travelMode: google.maps.TravelMode.DRIVING,
+      },
+      (response, status) => {
+        console.info("getDistanceMatrix",response);
+        if (response.rows === null) {
+          this.showModalErrorAddress();
+        }
+        if (response.rows[0].elements[0].status === 'OK') {
+          const responseDistance = response.rows[0].elements[0];
+          this.responseDistanceGoogle = responseDistance;
+          this.cartService.getCostDelivery(responseDistance)
+            .subscribe((resp) => {
+              setTimeout(() => {
+                this.showLoader = false;
+              }, 1000);
+              const pro = new Promise(() => {
+                this.cartService.setDeliveryCost(resp.deliveryInfos);
+                this.hasAddressSelected = true;
+              });
+              pro.then((respPro) => {
+                this.cartService.generateTotalCart(true);
+                this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
+                  this.cartCurrent = cartUpdated;
+                });
               });
             });
-          });
-      } else {
-        this.showModalErrorAddress();
-      }
-    });
-    },        
-    error => {
-      console.error(error);
-      if (/Invalid/.test(error)) {
-        error = 'Numero de devis ou coordonnées incorrects';
-      }
-      console.log(error);
-    });
+        } else {
+          this.showModalErrorAddress();
+        }
+      });
+      },        
+      error => {
+        console.error(error);
+        if (/Invalid/.test(error)) {
+          error = 'Numero de devis ou coordonnées incorrects';
+        }
+        console.log(error);
+      });
 
   }
 
@@ -203,11 +204,11 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
 
 
   onProceedCheckout(event: Event): void {
-    const tipModalRef = this.infoModal.open(TipModalComponent, {
-      backdrop: 'static',
-      keyboard: false
-    });
-    tipModalRef.result.then(() => {
+    // const tipModalRef = this.infoModal.open(TipModalComponent, {
+    //   backdrop: 'static',
+    //   keyboard: false
+    // });
+    // tipModalRef.result.then(() => {
       this.showLoader = true;
       this.paymentValidation = true;
       event.preventDefault();
@@ -321,7 +322,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
           this.showLoader = false;
         }
       );
-    });
+    // });
 
 
   }

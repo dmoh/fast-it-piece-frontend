@@ -20,6 +20,7 @@ const routes: Routes = [
     {path: 'password', component: PasswordComponent},
     {path: 'customer', component: CustomerComponent},
     {path: 'professional', component: ProfessionalComponent},
+    {path: '', redirectTo: '/login', pathMatch: 'full'},
     // {path: 'estimate', component: EstimateComponent, canActivate: [AuthGuard],
     //   children: [
     //   {
@@ -33,7 +34,6 @@ const routes: Routes = [
     // ]},
     // { path: 'show-devis', component: EstimateComponent },
     // { path: 'admin', component: AdminComponent, canActivate: [AuthGuard]  },
-    //{path: '', redirectTo: '/login', pathMatch: 'full'},
     // {path: '**', component: Page404Component },
 ];
 

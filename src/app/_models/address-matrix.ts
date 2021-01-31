@@ -4,7 +4,7 @@ export class AddressMatrix {
     
     street : string;
     city : string;
-    zipcode : string;
+    zipCode : string;
     
     public setStreet(street : string): AddressMatrix {
         this.street = street;
@@ -17,7 +17,7 @@ export class AddressMatrix {
     }
 
     public setZipCode(zipCode : string) {
-        this.zipcode = zipCode;
+        this.zipCode = zipCode;
         return this;
     }
     

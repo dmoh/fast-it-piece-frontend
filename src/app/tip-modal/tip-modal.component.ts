@@ -35,13 +35,13 @@ export class TipModalComponent implements OnInit {
   }
 
 
-  onValidate() {
-      this.cartService.setTipDelivererAmount(this.tipAmount);
-      this.modalActive.close();
-  }
+  // onValidate() {
+  //     this.cartService.setTipDelivererAmount(this.tipAmount);
+  //     this.modalActive.close();
+  // }
 
-  onRefuse() {
-    this.cartService.setTipDelivererAmount(0);
-    this.modalActive.close();
-  }
+  // onRefuse() {
+  //   this.cartService.setTipDelivererAmount(0);
+  //   this.modalActive.close();
+  // }
 }
