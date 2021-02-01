@@ -163,7 +163,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       this.paymentValidation = true;
       event.preventDefault();
       this.cartService.getTokenPaymentIntent(
-        + (this.estimate.totalAmount) * 100,
+        + Math.round(this.estimate.totalAmount) * 100,
         + this.estimate.deliveryCost * 100
       ).subscribe(
         (token: any ) => {
@@ -234,7 +234,8 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
                       keyboard: false
                     });
                     modalRef.componentInstance.title = `Devis ${this.estimate.estimateNumber}`;
-                    modalRef.componentInstance.message = `Création de la Commande ${order.order_id}`;
+                    modalRef.componentInstance.message = `Création de la Commande`; 
+                    // ${order.order_id}`;
                     modalRef.result.then(() => this.ngOnInit());
                   });
                 } else {

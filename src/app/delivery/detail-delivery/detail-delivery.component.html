@@ -45,22 +45,22 @@
     <div class="row" [ngClass]="{ 'disabledContain': !isDelivering }">
       <div class="col-md-12 card" *ngIf="delivererForm" style="padding-top: 2rem" >
         <form [formGroup]="delivererForm" (ngSubmit)="onValidateDelivery()">
-          <h2>Validation livraison</h2>
-          <p>
+          <h2>Validation</h2>
+          <!-- <p>
             <mat-form-field style="width: 40%;" appearance="outline">
               <mat-label>Code Livraison</mat-label>
               <input matInput type="text" formControlName="code" required="true" disabled="{{order.deliverCode == null}}" placeholder="Placeholder">
               <mat-icon matSuffix>lock</mat-icon>
             </mat-form-field>
-          </p>
+          </p> -->
           <div *ngIf="!isValid" class="alert alert-danger">Code invalide</div>
           <div class="mb-3">
-            <button class="float-right mb-3" mat-raised-button color="basic" (click)="onValidateWithoutCode()" disabled={{!isDelivering}}>
-              Sans code
+            <button class="float-right mb-3" mat-raised-button color="primary" (click)="onValidateWithoutCode()" disabled={{!isDelivering}}>
+              Valider la livraison
             </button>
-            <button *ngIf="hasDeliveryCode" class="float-right mb-3" mat-raised-button type="submit" color="primary" disabled={{!isDelivering}}>
+            <!-- <button *ngIf="hasDeliveryCode" class="float-right mb-3" mat-raised-button type="submit" color="primary" disabled={{!isDelivering}}>
               Valider
-            </button>
+            </button> -->
           </div>
         </form>
       </div>
