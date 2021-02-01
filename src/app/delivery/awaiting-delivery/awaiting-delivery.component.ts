@@ -70,7 +70,7 @@ export class AwaitingDeliveryComponent implements OnInit {
         }
       } else {
         // get Orders awaiting delivery
-          console.log("delivererCurrentOrder", delivererCurrent);
+          // console.log("delivererCurrentOrder", delivererCurrent);
           this.deliverer = delivererCurrent;
           this.orders = (this.deliverer.orders != null) ? this.deliverer.orders : new Array();
         }
@@ -96,7 +96,7 @@ export class AwaitingDeliveryComponent implements OnInit {
       this.order = currentOrder;
       // console.log("currentOrder", currentOrder);
         this.deliveryService.getDeliverer().subscribe( (deliverer) => {
-          console.log("deliverer", deliverer);
+          // console.log("deliverer", deliverer);
 
           if ( currentOrder.deliverer == null && deliverer.id ) {
             let dateTakenDeliverer = Date.now();

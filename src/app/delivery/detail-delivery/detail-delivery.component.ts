@@ -33,12 +33,12 @@ export class DetailDeliveryComponent implements OnInit {
     this.orderId = this.route.snapshot.paramMap.get('id');
 
     this.deliveryService.getDeliverer().subscribe( deliverer => {
-      console.log("deliverer", deliverer);
+      // console.log("deliverer", deliverer);
       this.deliveryService.getOrderById(+this.orderId).subscribe( orderById => {
-        console.log("order", orderById);
+        // console.log("order", orderById);
 
-        console.log(orderById.deliverer?.id);
-        console.log(deliverer.id);
+        // console.log(orderById.deliverer?.id);
+        // console.log(deliverer.id);
         if (orderById.deliverer?.id !== deliverer.id) {
           this.router.navigate(['/delivery/awaiting-delivery']);
         }
