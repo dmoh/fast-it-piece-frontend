@@ -165,7 +165,7 @@ export class HomeFeaturesComponent implements OnInit {
     this.error = '';
     setTimeout(() => {
       this.router.navigate(['estimate/my-estimate']);
-    }, 300);
+    }, 500);
     // this.router.navigate([`/estimate/detail-estimate/${estimateSave.estimateNumber}`]);
     }
       , error => {
