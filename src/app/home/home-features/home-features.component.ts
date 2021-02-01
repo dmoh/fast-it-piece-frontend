@@ -269,8 +269,15 @@ export class HomeFeaturesComponent implements OnInit {
   }
 
   public generateAllPrices(isCustomer: boolean, response: any, amount: number): void {
-    const totalAmount = (<number> amount * <number> response.marginService.marginFastIt) 
-    + <number> response.marginService.serviceCharge + <number> response.deliveryCost.deliveryInfos; 
+    console.log(<number> amount );
+    console.log(<number> response.marginService.marginFastIt);
+    console.log(<number> response.marginService.marginFastIt * amount);
+
+    const marginCost = (<number> amount * <number> response.marginService.marginFastIt);
+    console.log("margin", marginCost);
+    const totalAmount = marginCost + amount + <number> response.marginService.serviceCharge 
+    + <number> response.deliveryCost.deliveryInfos; 
+    console.log("total", totalAmount);
 
     const distance = response?.deliveryCost?.distanceText?.replace("km","").trim() ?? null;
     const deliveryCost = response.deliveryCost.deliveryInfos ?? 0;
