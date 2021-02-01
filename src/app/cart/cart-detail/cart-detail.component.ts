@@ -66,15 +66,9 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       this.cartCurrent = cartUpdated;
     });  
 
-    // this.userService.getUserAddresses().subscribe((result) => {});
     setTimeout(() => {
       this.showLoader = false;
     }, 1000);
-    // {
-    //   street : "28 Rue Ampere",
-    //   city : "CLUSES",
-    //   zipcode : "74300",
-    // };
 
     console.log(this.route.snapshot);
     const devis = this.route.snapshot.queryParams.devis;
@@ -90,63 +84,19 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       console.info("this.estimate", estimate);
       this.estimate = estimate;
       this.showLoader = false;
-      
-      this.adrOrigin = new AddressMatrix()
-      .setStreet(this.estimate.business.street)
-      .setCity(this.estimate.business.city)
-      .setZipCode(this.estimate.business.zipcode) ;
 
-      this.adrDest = new AddressMatrix()
-      .setStreet(this.estimate.customer.addresses[0].street)
-      .setCity(this.estimate.customer.addresses[0].city)
-      .setZipCode(this.estimate.customer.addresses[0].zipcode) ;
-
-      this.addressOriginFormat= `${this.adrOrigin.street}, ${this.adrOrigin.city}, ${this.adrOrigin.zipCode}`;
-      this.addressDestFormat = `${this.adrDest.street}, ${this.adrDest.city}, ${this.adrDest.zipCode}`;
-      //     // send result google for calculate backend side
-      const directionsService = new google.maps.DistanceMatrixService();
-      directionsService.getDistanceMatrix({
-        origins: [this.addressOriginFormat],
-        destinations: [this.addressDestFormat],
-        travelMode: google.maps.TravelMode.DRIVING,
-      },
-      (response, status) => {
-        console.info("getDistanceMatrix",response);
-        if (response.rows === null) {
-          this.showModalErrorAddress();
-        }
-        if (response.rows[0].elements[0].status === 'OK') {
-          const responseDistance = response.rows[0].elements[0];
-          this.responseDistanceGoogle = responseDistance;
-          this.cartService.getCostDelivery(responseDistance)
-            .subscribe((resp) => {
-              setTimeout(() => {
-                this.showLoader = false;
-              }, 1000);
-              const pro = new Promise(() => {
-                this.cartService.setDeliveryCost(resp.deliveryInfos);
-                this.hasAddressSelected = true;
-              });
-              pro.then((respPro) => {
-                this.cartService.generateTotalCart(true);
-                this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
-                  this.cartCurrent = cartUpdated;
-                });
-              });
-            });
-        } else {
-          this.showModalErrorAddress();
-        }
+      this.cartService.generateTotalCart(true);
+      this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
+        this.cartCurrent = cartUpdated;
       });
-      },        
-      error => {
-        console.error(error);
-        if (/Invalid/.test(error)) {
-          error = 'Numero de devis ou coordonnées incorrects';
-        }
-        console.log(error);
-      });
-
+    },        
+    error => {
+      console.error(error);
+      if (/Invalid/.test(error)) {
+        error = 'Numero de devis ou coordonnées incorrects';
+      }
+      console.log(error);
+    });
   }
 
   ngAfterViewInit() {

@@ -35,6 +35,11 @@ export class HomeFeaturesComponent implements OnInit {
   
   totalAmountCustomer: number = 0;
   totalAmountPro: number = 0;
+  
+  deliveryCostCustomer: number = 0;
+  deliveryCostPro: number = 0;
+
+  serviceCharge: number = 0.80;
 
   userAdress: AddressMatrix;
   user: User;
@@ -153,7 +158,7 @@ export class HomeFeaturesComponent implements OnInit {
       }
     };
     estimateSave.amount = Math.round(estimateSave.amount * 100);
-    this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( orderSaved => {
+    this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( estimated => {
     this.success = `Devis n° ${estimateSave.estimate.estimateNumber} cree`;
     this.error = '';
     // this.router.navigate(['estimate/my-estimate']);
@@ -161,7 +166,7 @@ export class HomeFeaturesComponent implements OnInit {
     }
       , error => {
         this.error = error?.toString().toLowerCase().includes("integrity constraint violation") ? "Numero de devis (déja existant/mal renseigné)" : error;
-        this.success = '';
+        this.success = null;
       });
   }
 
@@ -195,15 +200,15 @@ export class HomeFeaturesComponent implements OnInit {
 
   onCalculChanges() {
     this.customerForm.get('customerAmount').valueChanges.subscribe(val => {
-      this.setDistance(this.customerForm.value, true);
+      this.onAmountChanges(this.customerForm.value, val, true);
     });
 
     this.proForm.get('proAmount').valueChanges.subscribe(val => {
-      this.setDistance(this.proForm.value);
+      this.onAmountChanges(this.proForm.value, val);
     });
   }
 
-  private setDistance(formValues: any, isCustomer: boolean=false) {    
+  private onAmountChanges(formValues: any, amount: any ,  isCustomer: boolean=false) {    
     const address = {
       addressName: (isCustomer) ? formValues.customerAddressName : formValues.proAddressName,
       street: (isCustomer) ? formValues.customerAddress : formValues.proAddress,
@@ -226,54 +231,57 @@ export class HomeFeaturesComponent implements OnInit {
       travelMode: google.maps.TravelMode.DRIVING,
     },
     (response, status) => {
-      console.info("getDistanceMatrix",response);
       if (response.rows === null) {
       }
       if (response.rows[0].elements[0].status === 'OK') {
         const responseDistance = response.rows[0].elements[0];
-        
+        const request = {
+          price : isCustomer ? amount : null,
+        }
         const observableList = new Array<Observable<any>> ();
         observableList.push(this.estimateService.getCostDelivery(responseDistance));
-        observableList.push(this.estimateService.getMarginService());
+        observableList.push(this.estimateService.getMarginService(request));
         
-        const exec = forkJoin( observableList).pipe(
+        const exec = forkJoin( observableList)
+        .pipe(
           map( ([deliveryCost, marginService]) => {
-            console.log("DLVCST", deliveryCost, "MRG", marginService);
             return {deliveryCost, marginService}
           })
-        );
-
-        this.estimateService.getCostDelivery(responseDistance).subscribe();
-        this.estimateService.getMarginService().subscribe();
+        )
+        ;
         
-        exec.subscribe( resp => {
-         console.log("RSPPPPPP", resp);
-          // const pro = new Promise(() => {
-          //   //getMargin
-          //   // this.generateAllPrices(isCustomer, resp.deliveryInfos);
-          //   // this.hasAddressSelected = true;
-          // });
-          // pro.then((respPro) => {
-          //   // this.generateAllPrices(isCustomer, resp.deliveryInfos);
-          // });
+        exec.subscribe( responseMarginService => {
+          console.log("exec", responseMarginService);
+          this.generateAllPrices(isCustomer, responseMarginService, amount);
         });
       }
        else {
-        console.log("ERROR")
+        console.log("Error distance")
       }
     });
   }
 
-  public generateAllPrices(isCustomer: boolean, distanceInfo: any): void {
+  public generateAllPrices(isCustomer: boolean, response: any, amount: number): void {
+    const totalAmount = (<number> amount * <number> response.marginService.marginFastIt) 
+    + <number> response.marginService.serviceCharge + <number> response.deliveryCost.deliveryInfos; 
+
+    const distance = response?.deliveryCost?.distanceText?.replace("km","").trim() ?? null;
+    const deliveryCost = response.deliveryCost.deliveryInfos ?? 0;
 
     if (isCustomer) {
-      this.customerCtrl['customerDeliveryCost'].setValue("");
-      this.customerForm.controls['customerTotalAmount'].setValue("");
-      this.distanceInfoCustomer = distanceInfo;
+      this.customerCtrl['customerDeliveryCost'].setValue(deliveryCost);
+      this.customerForm.controls['customerTotalAmount'].setValue(totalAmount);
+      this.distanceInfoCustomer = distance;
+      this.amountCustomer = amount;
+      this.totalAmountCustomer = totalAmount;
+      this.deliveryCostCustomer = deliveryCost;
     } else {
-      this.proCtrl['proDeliveryCost'].setValue("");
-      this.proForm.controls['proTotalAmount'].setValue("");
-      this.distanceInfoPro = distanceInfo;
+      this.proCtrl['proDeliveryCost'].setValue(deliveryCost);
+      this.proForm.controls['proTotalAmount'].setValue(totalAmount);
+      this.distanceInfoPro = distance;
+      this.amountPro = amount;
+      this.totalAmountPro = totalAmount;
+      this.deliveryCostPro = deliveryCost;
     }
       // total = cout livraison + frais de service
   }

@@ -125,7 +125,7 @@
         <p>
           <mat-form-field class="full-width" appearance="outline" >
             <!-- <mat-label>Email</mat-label> -->
-            <input matInput type="text"
+            <input matInput type="number"
             (onAddressChange)="calculAmountChange($event, true)"
             formControlName="proAmount"
             placeholder="Montant"/>
@@ -137,24 +137,52 @@
           <div *ngIf="f.username.errors.required">Username is required</div>
         </div>-->
       </div>
-      <hr>
-      <div class="align-row">
+      <div *ngIf="totalAmountPro">
         <hr>
-        <div style="display: flex" class="col-md-6">
-          <div style="flex: 1">Frais de service</div>
-          <div>0.80 €</div>
-        </div>
-      </div>
-      <div class="align-row">
-        <hr>
-        <div style="display: flex" class="col-md-6">
-          <div style="flex: 1">TOTAL</div>
-          <div>
-            {{ (totalAmountPro.toFixed(2)).replace('.', ',') }} €
+        <div class="align-row">
+          <div class="col-md-6">
+          </div>
+          <hr>
+          <div style="display: flex" class="col-md-6">
+            <div style="flex: 1">SOUS TOTAL</div>
+            <div>
+              {{ amountPro.replace('.', ',') }} €
+            </div>
           </div>
         </div>
+
+        <div class="align-row">
+          <div class="col-md-6">
+          </div>
+          <hr>
+          <div style="display: flex" class="col-md-6">
+            <div style="flex: 1">Frais de service</div>
+            <div> {{ (serviceCharge.toFixed(2)).replace('.', ',') }} €</div>
+          </div>
+        </div>
+        <div class="align-row">
+          <div class="col-md-6">
+          </div>
+          <hr>
+          <div style="display: flex" class="col-md-6">
+            <div style="flex: 1">Cout Livraison</div>
+            <div>
+              {{ (deliveryCostPro.toFixed(2)).replace('.', ',') }} €
+            </div>
+          </div>
+        </div>
+        <div class="align-row">
+          <hr>
+          <div style="display: flex" class="col-md-6">
+            <div style="flex: 1">TOTAL</div>
+            <div>
+              {{ (totalAmountPro.toFixed(2)).replace('.', ',') }} €
+            </div>
+          </div>
+        </div>
+        <hr>
       </div>
-      <hr>
+
       <!-- <button mat-raised-button [disabled]="loading" color="primary" (click)= "sendEstimate('professional')"> -->
       <button mat-raised-button [disabled]="loading" color="primary">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
@@ -315,7 +343,7 @@
         <p>
           <mat-form-field class="full-width" appearance="outline" >
             <!-- <mat-label>Email</mat-label> -->
-            <input matInput type="text"
+            <input matInput type="number"
             formControlName="customerAmount"
             (onAddressChange)="calculAmountChange($event, true)"
             placeholder="Montant"/>
@@ -327,29 +355,54 @@
           <div *ngIf="f.username.errors.required">Username is required</div>
         </div>-->
       </div>
-      <hr>
 
-      <div class="row">
-        <div class="col-md-6">
-        </div>
+      <div *ngIf="totalAmountCustomer">
         <hr>
-        <div style="display: flex" class="col-md-6">
-          <div style="flex: 1">Frais de service</div>
-          <div>0.80 €</div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-        </div>
-        <hr>
-        <div style="display: flex" class="col-md-6">
-          <div style="flex: 1">TOTAL</div>
-          <div>
-            {{ (totalAmountCustomer.toFixed(2)).replace('.', ',') }} €
+        <div class="align-row">
+          <div class="col-md-6">
+          </div>
+          <hr>
+          <div style="display: flex" class="col-md-6">
+            <div style="flex: 1">SOUS TOTAL</div>
+            <div>
+              {{ (amountCustomer.toFixed(2)).replace('.', ',') }} €
+            </div>
           </div>
         </div>
+
+        <div class="align-row">
+          <div class="col-md-6">
+          </div>
+          <hr>
+          <div style="display: flex" class="col-md-6">
+            <div style="flex: 1">Frais de service</div>
+            <div>{{serviceCharge}} €</div>
+          </div>
+        </div>
+        <div class="align-row">
+          <div class="col-md-6">
+          </div>
+          <hr>
+          <div style="display: flex" class="col-md-6">
+            <div style="flex: 1">Cout Livraison</div>
+            <div>
+              {{ (deliveryCostCustomer.toFixed(2)).replace('.', ',') }} €
+            </div>
+          </div>
+        </div>
+        <div class="align-row">
+          <div class="col-md-6">
+          </div>
+          <hr>
+          <div style="display: flex" class="col-md-6">
+            <div style="flex: 1">TOTAL</div>
+            <div>
+              {{ (totalAmountCustomer.toFixed(2)).replace('.', ',') }} €
+            </div>
+          </div>
+        </div>
+        <hr>
       </div>
-      <hr>
 
       <!-- <button mat-raised-button [disabled]="loading"  type="button" (click)="sendEstimate('customer')" color="primary"> -->
         <button mat-raised-button [disabled]="loading" color="primary">

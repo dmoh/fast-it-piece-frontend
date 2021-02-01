@@ -41,8 +41,8 @@ export class EstimateService {
       JSON.stringify(dataDistance), this.headers);
   }
 
-  getMarginService(): Observable<any> {
-    return this.http.post<any>(`${ this.urlApi }/const/marginservice`, null, this.headers);
+  getMarginService(request: any): Observable<any> {
+    return this.http.post<any>(`${ this.urlApi }/const/marginservice`, request, this.headers);
   }
 
   getUserAdress(): Observable<any> {
