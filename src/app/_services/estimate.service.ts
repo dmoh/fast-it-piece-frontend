@@ -36,4 +36,17 @@ export class EstimateService {
     return this.http.post<any>(`${this.urlApi}/estimate/save`, request, this.headers);
   }
 
+  getCostDelivery(dataDistance: any): Observable<any> {
+    return this.http.post<any>(`${ this.urlApi}/delivery/cost`,
+      JSON.stringify(dataDistance), this.headers);
+  }
+
+  getMarginService(request: any): Observable<any> {
+    return this.http.post<any>(`${ this.urlApi }/const/marginservice`, request, this.headers);
+  }
+
+  getUserAdress(): Observable<any> {
+    return this.http.get<any>(`${ this.urlApi }/user/address`);
+  }
+
 }

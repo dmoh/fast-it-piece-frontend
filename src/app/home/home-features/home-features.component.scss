@@ -1,6 +1,6 @@
-.example-container {
+.align-row {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;  
 }
 
 .example-container > * {

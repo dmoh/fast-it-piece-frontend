@@ -4,10 +4,13 @@ export class Estimate {
     customer: any; // {id: 32, email: "wactoob@gmail.com", username: "Wactoob", firstname: null, lastname: null, …}
     date: any; //{date: "2021-01-27 07:06:29.000000", timezone_type: 3, timezone: "Europe/Berlin"}
     dateEstimated: any; // {date: "2021-01-27 07:06:29.000000", timezone_type: 3, timezone: "Europe/Berlin"}
-    delivery_cost: number;
-    estimate_number: string;
+    deliveryCost: number;
+    estimateNumber: string;
+    totalAmount: number;
     id: number;
-    is_payed: boolean;
+    isPayed: boolean;
+    payedAt: string;
     status: string;
+    serviceCharge: number;
     timeSlot: any; //{date: "2021-01-27 07:06:29.000000", timezone_type: 3, timezone: "Europe/Berlin"}
 }

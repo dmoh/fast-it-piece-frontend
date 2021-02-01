@@ -25,7 +25,14 @@ export class AwaitingDeliveryComponent implements OnInit {
   orderId: string;
   error: string;
   headers: any;
-  // fastEatConst = fasteatconst;
+  
+  status = {
+    WAITING_RESPONSE_BUSINESS: 1,
+    WAITING_TAKING_BY_DELIVER: 2,
+    ORDER_ROUTING: 3,
+    ORDER_CLOSED_WITH_SUCCESS: 4,
+    ORDER_REFUSED: 0,
+};
 
   userNameNoLimit = "fasteat74@gmail.com"; 
   nbDeliveryMax = 2;
@@ -48,9 +55,11 @@ export class AwaitingDeliveryComponent implements OnInit {
       if (this.activatedRoute.snapshot.paramMap.get('id') != null ) {
         // console.log("Orders count", delivererCurrent?.orders?.find(order => order?.date_taken_deliverer != null) );
         // TODO: 10.01.2021 Ajouter 2 constantes ( Mail livreur admin && Nb de courses possible )
-        const canAffectDeliverer = delivererCurrent?.email === this.userNameNoLimit || 
         // delivererCurrent?.orders?.find(order => order?.date_taken_deliverer != null).length < 3;
-        delivererCurrent?.orders?.length < this.nbDeliveryMax;
+        // const canAffectDeliverer = delivererCurrent?.email === this.userNameNoLimit || 
+        // delivererCurrent?.orders?.length < this.nbDeliveryMax;
+        
+        const canAffectDeliverer = true;
 
         this.orderId = this.activatedRoute.snapshot.paramMap.get('id');
         if (canAffectDeliverer) {
@@ -134,6 +143,21 @@ export class AwaitingDeliveryComponent implements OnInit {
         break;
       case '3':
         libelleStatus = "En cours de livraison"
+        break;
+      default:
+        libelleStatus;
+    }
+    return libelleStatus;
+  }
+
+  getLibelleTimeSlot(status: string) {
+    let libelleStatus = "Matin";
+    switch (status) {
+      case 'AM':
+        libelleStatus = "Matin"
+        break;
+      case 'PM':
+        libelleStatus = "Apres-Midi"
         break;
       default:
         libelleStatus;

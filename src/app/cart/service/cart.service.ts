@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {environment} from '../../../environments/environment';
 import {isNumeric} from "tslint";
 import { AuthenticationService } from 'src/app/_services/authentication.service';
+import { Estimate } from 'src/app/_models/estimate';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +18,13 @@ export class CartService {
   cartUpdated = this.cartSubject.asObservable();
   protected tokenUserCurrent: string;
   headers: any;
-  urlApi: string = environment.apiUrl + '/';
+  urlApi: string = environment.apiUrl;
 
 
   constructor(private http: HttpClient, private authenticate: AuthenticationService, private router: Router) {
     this.headers = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
-    if (localStorage.getItem('cart_fast_eat')) {
-      this.setCart(JSON.parse(localStorage.getItem('cart_fast_eat')));
+    if (localStorage.getItem('cart_fast_eat_piece')) {
+      this.setCart(JSON.parse(localStorage.getItem('cart_fast_eat_piece')));
     }
     if (this.authenticate.tokenUserCurrent == null) {
       // this.router.navigate(['/login']);
@@ -52,7 +53,7 @@ export class CartService {
         }
 
         // this.cartCurrent.products = [...this.cartCurrent.products, product];
-        console.warn('products', this.cartCurrent.products);
+        // console.warn('products', this.cartCurrent.products);
 
         // this.cartCurrent.restaurant = restaurant;
         this.generateTotalCart();
@@ -89,18 +90,18 @@ export class CartService {
 
   emitCartSubject(empty?: string){
     if (empty === 'empty') {
-      localStorage.removeItem('cart_fast_eat');
+      localStorage.removeItem('cart_fast_eat_piece');
       this.cartCurrent = new Cart();
     } else {
-      localStorage.setItem('cart_fast_eat', JSON.stringify(this.cartCurrent));
+      localStorage.setItem('cart_fast_eat_piece', JSON.stringify(this.cartCurrent));
     }
     // todo voir si autre solution avec Elhad save on DB temporairement ??? le panier
 
     this.cartSubject.next(this.cartCurrent);
   }
 
-  public generateTotalCart(isCheckout?: boolean): void {
-    this.cartCurrent.total = 0;
+  public generateTotalCart(estimate?, isCheckout?: boolean): void {
+    this.cartCurrent.total = estimate;
     this.cartCurrent.totalAmountProduct = 0;
     this.cartCurrent.amountWithoutSpecialOffer = 0;
     // this.cartCurrent.products.forEach((prod: Product) => {
@@ -128,21 +129,21 @@ export class CartService {
     //     this.cartCurrent.total = 150;
     //   }
     // }
-    if (typeof this.cartCurrent.tipDelivererAmount !== 'undefined'
-      && +this.cartCurrent.tipDelivererAmount > 0
-    ) {
-      this.cartCurrent.total += +this.cartCurrent.tipDelivererAmount;
-      this.cartCurrent.amountWithoutSpecialOffer += +this.cartCurrent.tipDelivererAmount;
-    }
+    // if (typeof this.cartCurrent.tipDelivererAmount !== 'undefined'
+    //   && +this.cartCurrent.tipDelivererAmount > 0
+    // ) {
+    //   this.cartCurrent.total += +this.cartCurrent.tipDelivererAmount;
+    //   this.cartCurrent.amountWithoutSpecialOffer += +this.cartCurrent.tipDelivererAmount;
+    // }
+    // this.cartCurrent.amountWithoutSpecialOffer += 0.80;
+    // this.cartCurrent.amountWithoutSpecialOffer += +(this.cartCurrent.deliveryCost);
     this.cartCurrent.total += 0.80;
-    this.cartCurrent.amountWithoutSpecialOffer += 0.80;
     this.cartCurrent.total += +(this.cartCurrent.deliveryCost);
-    this.cartCurrent.amountWithoutSpecialOffer += +(this.cartCurrent.deliveryCost);
     this.emitCartSubject();
   }
 
   getTokenPaymentIntent(amountCart: number, delivery: number, currencyCart: string = 'EUR'): Observable<any> {
-    return this.http.post<any>(`${this.urlApi}payment/token-payment`,
+    return this.http.post<any>(`${this.urlApi}/payment/token-payment`,
       {
         amount: amountCart,
         currency: currencyCart,
@@ -158,35 +159,26 @@ export class CartService {
 
   // saveOrder()
   saveOrder(cartOrder: {}): Observable<any> {
-    return this.http.post<any>(`${ this.urlApi }order/save`,
+    return this.http.post<any>(`${ this.urlApi}/order/save`,
       JSON.stringify(cartOrder), this.headers);
   }
 
   getCostDelivery(dataDistance: any): Observable<any> {
-    return this.http.post<any>(`${ this.urlApi }delivery/cost`,
+    return this.http.post<any>(`${ this.urlApi }/delivery/cost`,
       JSON.stringify(dataDistance), this.headers);
   }
   saveCodeCustomerToDeliver(responseCustomer): Observable<any> {
-    return this.http.post<any>(`${this.urlApi}order/save/delivery-code`,
+    return this.http.post<any>(`${this.urlApi}/order/save/delivery-code`,
       responseCustomer, this.headers);
-  }
-
-
-  getStateRestaurant(restaurantId: number): Observable<any> {
-    return this.http.get<any>(`${this.urlApi}business/state/${restaurantId}`, this.headers);
-  }
-
-  getProducts() {
-    return this.cartCurrent.products;
   }
 
   // getBusinessCurrent() {
   //   return this.cartCurrent.restaurant;
   // }
 
-  setTipDelivererAmount(tipAmount: number) {
-    this.cartCurrent.tipDelivererAmount = tipAmount;
-    this.generateTotalCart();
-    this.emitCartSubject();
-  }
+  // setTipDelivererAmount(tipAmount: number) {
+  //   this.cartCurrent.tipDelivererAmount = tipAmount;
+  //   this.generateTotalCart();
+  //   this.emitCartSubject();
+  // }
 }
