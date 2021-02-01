@@ -159,7 +159,7 @@ export class HomeFeaturesComponent implements OnInit {
         isPayed: false,
       }
     };
-    estimateSave.amount = Math.round(estimateSave.amount * 100);
+    estimateSave.amount = Math.round(estimateSave.estimate.amount * 100);
     this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( estimated => {
     this.success = `Devis n° ${estimateSave.estimate.estimateNumber} cree`;
     this.error = '';

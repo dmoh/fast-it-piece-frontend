@@ -163,7 +163,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       this.paymentValidation = true;
       event.preventDefault();
       this.cartService.getTokenPaymentIntent(
-        + (this.estimate.totalAmount) * 100,
+        + Math.round(this.estimate.totalAmount) * 100,
         + this.estimate.deliveryCost * 100
       ).subscribe(
         (token: any ) => {
@@ -229,6 +229,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
                     estimate: this.estimate,
                     distanceInfos: this.responseDistanceGoogle
                   }).subscribe((order) => {
+                    console.log(order);
                     const modalRef = this.infoModal.open(InfoModalComponent, {
                       backdrop: 'static',
                       keyboard: false
