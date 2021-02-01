@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {environment} from '../../../environments/environment';
 import {isNumeric} from "tslint";
 import { AuthenticationService } from 'src/app/_services/authentication.service';
+import { Estimate } from 'src/app/_models/estimate';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class CartService {
   cartUpdated = this.cartSubject.asObservable();
   protected tokenUserCurrent: string;
   headers: any;
-  urlApi: string = environment.apiUrl + '/';
+  urlApi: string = environment.apiUrl;
 
 
   constructor(private http: HttpClient, private authenticate: AuthenticationService, private router: Router) {
@@ -99,8 +100,8 @@ export class CartService {
     this.cartSubject.next(this.cartCurrent);
   }
 
-  public generateTotalCart(isCheckout?: boolean): void {
-    this.cartCurrent.total = 0;
+  public generateTotalCart(estimate?, isCheckout?: boolean): void {
+    this.cartCurrent.total = estimate;
     this.cartCurrent.totalAmountProduct = 0;
     this.cartCurrent.amountWithoutSpecialOffer = 0;
     // this.cartCurrent.products.forEach((prod: Product) => {
@@ -142,7 +143,7 @@ export class CartService {
   }
 
   getTokenPaymentIntent(amountCart: number, delivery: number, currencyCart: string = 'EUR'): Observable<any> {
-    return this.http.post<any>(`${this.urlApi}payment/token-payment`,
+    return this.http.post<any>(`${this.urlApi}/payment/token-payment`,
       {
         amount: amountCart,
         currency: currencyCart,
@@ -158,16 +159,16 @@ export class CartService {
 
   // saveOrder()
   saveOrder(cartOrder: {}): Observable<any> {
-    return this.http.post<any>(`${ this.urlApi }order/save`,
+    return this.http.post<any>(`${ this.urlApi}/order/save`,
       JSON.stringify(cartOrder), this.headers);
   }
 
   getCostDelivery(dataDistance: any): Observable<any> {
-    return this.http.post<any>(`${ this.urlApi }delivery/cost`,
+    return this.http.post<any>(`${ this.urlApi }/delivery/cost`,
       JSON.stringify(dataDistance), this.headers);
   }
   saveCodeCustomerToDeliver(responseCustomer): Observable<any> {
-    return this.http.post<any>(`${this.urlApi}order/save/delivery-code`,
+    return this.http.post<any>(`${this.urlApi}/order/save/delivery-code`,
       responseCustomer, this.headers);
   }
 

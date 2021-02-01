@@ -69,7 +69,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.showLoader = false;
     }, 1000);
-
+    this.estimate = new Estimate();
     console.log(this.route.snapshot);
     const devis = this.route.snapshot.queryParams.devis;
     const mail = this.route.snapshot.queryParams.mail;
@@ -86,9 +86,6 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       this.showLoader = false;
 
       this.cartService.generateTotalCart(true);
-      this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
-        this.cartCurrent = cartUpdated;
-      });
     },        
     error => {
       console.error(error);
@@ -152,7 +149,6 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   onProceedCheckout(event: Event): void {
     // const tipModalRef = this.infoModal.open(TipModalComponent, {
     //   backdrop: 'static',
@@ -163,8 +159,8 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       this.paymentValidation = true;
       event.preventDefault();
       this.cartService.getTokenPaymentIntent(
-        + (this.cartCurrent.total) * 100,
-        this.cartCurrent.deliveryCost
+        + (this.estimate.totalAmount) * 100,
+        + this.estimate.deliveryCost * 100
       ).subscribe(
         (token: any ) => {
           if (token.errorClosed) {
@@ -226,31 +222,10 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
                   // save order payment succeeded
                   this.cartService.saveOrder({
                     stripeResponse: responsePayment,
-                    cartDetail: this.cartCurrent,
+                    estimate: this.estimate,
                     distanceInfos: this.responseDistanceGoogle
                   }).subscribe((confCode) => {
-                    const codeModal = this.codeConfirmationModal.open(ConfirmationCodePaymentModalComponent,
-                      { backdrop: 'static', keyboard: false, size: 'lg' });
-                    codeModal.componentInstance.infos = confCode;
-                    codeModal.result.then((response) => {
-                      this.cartService.emptyCart();
-                      if (response) {
-                        // send code to db
-                        this.cartService.saveCodeCustomerToDeliver({ responseCustomer: response})
-                          .subscribe((responseServer) => {
-                            if (responseServer.ok) {
-                              this.cartService.UpdateCart('empty-cart');
-                              this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
-                                this.cartCurrent = cartUpdated;
-                                setTimeout(() => {
-                                  window.location.href = `${window.location.origin}/customer/notification`;
-                                }, 100);
-                                // this.router.navigate(['customer/notification']);
-                              });
-                            }
-                          });
-                      }
-                    });
+                    this.cartService.emptyCart();
                   });
                 } else {
                   this.showLoader = false;
@@ -276,32 +251,6 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
 
 
   }
-
-  onSubmit(event: Event): void {
-  }
-
-
-  onDeleteProduct(product: any) {
-    // tslint:disable-next-line:no-conditional-assignment
-    if (this.cartCurrent.products.length <= 1) {
-      this.cartService.emitCartSubject('empty');
-    } else {
-      this.cartService.UpdateCart('remove', product);
-    }
-  }
-
-
-  onUpdateCart(type: string, product: any) {
-    if (type === 'less') {
-      if (product.quantity > 1) {
-        product.quantity--;
-      }
-    } else {
-      product.quantity++;
-    }
-    this.cartService.UpdateCart('update', product);
-  }
-
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
