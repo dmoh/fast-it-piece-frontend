@@ -55,7 +55,7 @@
           </p> -->
           <div *ngIf="!isValid" class="alert alert-danger">Code invalide</div>
           <div class="mb-3">
-            <button class="float-right mb-3" mat-raised-button color="basic" (click)="onValidateWithoutCode()" disabled={{!isDelivering}}>
+            <button class="float-right mb-3" mat-raised-button color="primary" (click)="onValidateWithoutCode()" disabled={{!isDelivering}}>
               Valider la livraison
             </button>
             <!-- <button *ngIf="hasDeliveryCode" class="float-right mb-3" mat-raised-button type="submit" color="primary" disabled={{!isDelivering}}>
