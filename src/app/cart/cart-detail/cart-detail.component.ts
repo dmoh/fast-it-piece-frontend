@@ -70,6 +70,10 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       this.showLoader = false;
     }, 1000);
     this.estimate = new Estimate();
+    this.estimate.deliveryCost = 0;
+    this.estimate.totalAmount = 0;
+    this.estimate.serviceCharge = 0;
+    // this.estimate.serv = 0;
     console.log(this.route.snapshot);
     const devis = this.route.snapshot.queryParams.devis;
     const mail = this.route.snapshot.queryParams.mail;
@@ -224,8 +228,14 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
                     stripeResponse: responsePayment,
                     estimate: this.estimate,
                     distanceInfos: this.responseDistanceGoogle
-                  }).subscribe((confCode) => {
-                    this.cartService.emptyCart();
+                  }).subscribe((order) => {
+                    const modalRef = this.infoModal.open(InfoModalComponent, {
+                      backdrop: 'static',
+                      keyboard: false
+                    });
+                    modalRef.componentInstance.title = `Devis ${this.estimate.estimateNumber}`;
+                    modalRef.componentInstance.message = `Création de la Commande ${order.order_id}`;
+                    modalRef.result.then(() => this.ngOnInit());
                   });
                 } else {
                   this.showLoader = false;

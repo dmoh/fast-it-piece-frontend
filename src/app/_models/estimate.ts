@@ -11,5 +11,6 @@ export class Estimate {
     isPayed: boolean;
     payedAt: string;
     status: string;
+    serviceCharge: number;
     timeSlot: any; //{date: "2021-01-27 07:06:29.000000", timezone_type: 3, timezone: "Europe/Berlin"}
 }
