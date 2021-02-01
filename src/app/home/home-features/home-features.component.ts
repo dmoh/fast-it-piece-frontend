@@ -19,7 +19,7 @@ export class HomeFeaturesComponent implements OnInit {
   customerForm: FormGroup;
   proForm: FormGroup;
   submitted = false;
-  loading = false;
+  disabledButton = true;
   hide = true;
   error = '';
   success = '';
@@ -32,6 +32,8 @@ export class HomeFeaturesComponent implements OnInit {
 
   amountCustomer: number = 0;
   amountPro: number = 0;
+
+  loading: boolean = false;
   
   totalAmountCustomer: number = 0;
   totalAmountPro: number = 0;
@@ -209,6 +211,9 @@ export class HomeFeaturesComponent implements OnInit {
   }
 
   private onAmountChanges(formValues: any, amount: any ,  isCustomer: boolean=false) {    
+    this.disabledButton = true;    
+    this.loading = true;  
+    
     const address = {
       addressName: (isCustomer) ? formValues.customerAddressName : formValues.proAddressName,
       street: (isCustomer) ? formValues.customerAddress : formValues.proAddress,
@@ -253,6 +258,8 @@ export class HomeFeaturesComponent implements OnInit {
         exec.subscribe( responseMarginService => {
           console.log("exec", responseMarginService);
           this.generateAllPrices(isCustomer, responseMarginService, amount);
+          this.loading = false;
+          this.disabledButton = false;
         });
       }
        else {
@@ -283,6 +290,8 @@ export class HomeFeaturesComponent implements OnInit {
       this.totalAmountPro = totalAmount;
       this.deliveryCostPro = deliveryCost;
     }
+    console.log(this.amountPro);
+
       // total = cout livraison + frais de service
   }
 

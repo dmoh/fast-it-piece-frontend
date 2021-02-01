@@ -126,7 +126,6 @@
           <mat-form-field class="full-width" appearance="outline" >
             <!-- <mat-label>Email</mat-label> -->
             <input matInput type="number"
-            (onAddressChange)="calculAmountChange($event, true)"
             formControlName="proAmount"
             placeholder="Montant"/>
              <!-- [errorStateMatcher]="matcher" -->
@@ -146,7 +145,7 @@
           <div style="display: flex" class="col-md-6">
             <div style="flex: 1">SOUS TOTAL</div>
             <div>
-              {{ amountPro.replace('.', ',') }} €
+              {{ (amountPro.toFixed(2)).replace('.', ',').replace('.', ',') }} €
             </div>
           </div>
         </div>
@@ -183,8 +182,8 @@
         <hr>
       </div>
 
-      <!-- <button mat-raised-button [disabled]="loading" color="primary" (click)= "sendEstimate('professional')"> -->
-      <button mat-raised-button [disabled]="loading" color="primary">
+      <!-- <button mat-raised-button [disabled]="disabledButton" color="primary" (click)= "sendEstimate('professional')"> -->
+      <button mat-raised-button [disabled]="disabledButton" color="primary">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
         Envoyer devis
         <mat-icon>send</mat-icon>
@@ -345,7 +344,6 @@
             <!-- <mat-label>Email</mat-label> -->
             <input matInput type="number"
             formControlName="customerAmount"
-            (onAddressChange)="calculAmountChange($event, true)"
             placeholder="Montant"/>
              <!-- [errorStateMatcher]="matcher" -->
             <mat-icon matSuffix>euro</mat-icon>
@@ -404,8 +402,8 @@
         <hr>
       </div>
 
-      <!-- <button mat-raised-button [disabled]="loading"  type="button" (click)="sendEstimate('customer')" color="primary"> -->
-        <button mat-raised-button [disabled]="loading" color="primary">
+      <!-- <button mat-raised-button [disabled]="disabledButton"  type="button" (click)="sendEstimate('customer')" color="primary"> -->
+        <button mat-raised-button [disabled]="disabledButton" color="primary">
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
           Envoyer devis 
         <mat-icon>send</mat-icon>
