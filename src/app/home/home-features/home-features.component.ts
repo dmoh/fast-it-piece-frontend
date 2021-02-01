@@ -163,7 +163,9 @@ export class HomeFeaturesComponent implements OnInit {
     this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( estimated => {
     this.success = `Devis n° ${estimateSave.estimate.estimateNumber} cree`;
     this.error = '';
-    // this.router.navigate(['estimate/my-estimate']);
+    setTimeout(() => {
+      this.router.navigate(['estimate/my-estimate']);
+    }, 300);
     // this.router.navigate([`/estimate/detail-estimate/${estimateSave.estimateNumber}`]);
     }
       , error => {

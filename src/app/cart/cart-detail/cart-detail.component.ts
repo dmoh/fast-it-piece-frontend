@@ -229,13 +229,13 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
                     estimate: this.estimate,
                     distanceInfos: this.responseDistanceGoogle
                   }).subscribe((order) => {
-                    console.log(order);
                     const modalRef = this.infoModal.open(InfoModalComponent, {
                       backdrop: 'static',
                       keyboard: false
                     });
                     modalRef.componentInstance.title = `Devis ${this.estimate.estimateNumber}`;
-                    modalRef.componentInstance.message = `Création de la Commande ${order.order_id}`;
+                    modalRef.componentInstance.message = `Création de la Commande`; 
+                    // ${order.order_id}`;
                     modalRef.result.then(() => this.ngOnInit());
                   });
                 } else {
