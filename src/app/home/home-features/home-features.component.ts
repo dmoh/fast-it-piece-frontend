@@ -41,6 +41,9 @@ export class HomeFeaturesComponent implements OnInit {
   deliveryCostCustomer: number = 0;
   deliveryCostPro: number = 0;
 
+  deliveryExpressCustomer: boolean = false;
+  deliveryExpressPro: boolean = false;
+
   serviceCharge: number = 0.80;
 
   userAdress: AddressMatrix;
@@ -75,7 +78,10 @@ export class HomeFeaturesComponent implements OnInit {
       proTimeSlot: ['', Validators.required],
       proMail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
       proPhone: [''],
+      proExpress: [''],
+      proComment: [''],
     });
+    this.proForm.controls['proExpress'].setValue(this.deliveryExpressPro);
 
     this.customerForm = this.formBuilder.group({
       customerDevis: ['', Validators.required],
@@ -93,7 +99,10 @@ export class HomeFeaturesComponent implements OnInit {
       customerTimeSlot: ['', Validators.required],
       customerMail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
       customerPhone: ['', Validators.required],
+      customerExpress: [''],
+      customerComment: [''],
     });
+    this.customerForm.controls['customerExpress'].setValue(this.deliveryExpressCustomer);
 
     this.estimateService.getUserAdress().subscribe( x => {
       const userAddress = x.userAdress
@@ -109,6 +118,7 @@ export class HomeFeaturesComponent implements OnInit {
                         .setZipCode(userAddress.zipcode);
     });
 
+
     this.onCalculChanges();
   }
 
@@ -116,7 +126,10 @@ export class HomeFeaturesComponent implements OnInit {
 
     switch (typeCustomer) {
       case 'professional': {
-        if ( this.proForm.value.customerDevis != "") {
+        if ( this.proForm.value.proDevis != "") {
+          this.totalAmountPro = (this.deliveryExpressPro) ? this.totalAmountPro + 10 : this.totalAmountPro;
+          console.log(this.totalAmountPro);
+          this.proForm.controls['proTotalAmount'].setValue(this.totalAmountPro);
           this.saveEstimate(this.proForm.value);
         }
       }
@@ -125,6 +138,9 @@ export class HomeFeaturesComponent implements OnInit {
         if ( this.customerForm.value.customerDevis != "" && 
         (this.customerForm.value.customerMail != "" || this.customerForm.value.customerPhone != "")) 
         {
+          this.totalAmountCustomer = (this.deliveryExpressCustomer) ? this.totalAmountCustomer + 10 : this.totalAmountCustomer;
+          console.log(this.totalAmountCustomer);
+          this.customerForm.controls['customerTotalAmount'].setValue(this.totalAmountCustomer);
           this.saveEstimate(this.customerForm.value, true);
         } 
       }
@@ -136,6 +152,7 @@ export class HomeFeaturesComponent implements OnInit {
 
   private saveEstimate(formValues: any, isCustomer: boolean = false) {
     let estimateSave: any;
+    
     estimateSave = {
       estimate : {
         estimateNumber: (isCustomer) ? formValues.customerDevis : formValues.proDevis,
@@ -152,21 +169,24 @@ export class HomeFeaturesComponent implements OnInit {
         phone: (isCustomer) ? formValues.customerPhone : formValues.proPhone,
         dateEstimated: (isCustomer) ? formValues.customerDateEstimated : formValues.proDateEstimated,
         timeSlot: (isCustomer) ? formValues.customerTimeSlot : formValues.proTimeSlot,
+        comment: (isCustomer) ? formValues.customerComment : formValues.proComment,
         distanceInfos: (isCustomer) ? this.distanceInfoCustomer : this.distanceInfoPro, // * 100
         deliveryCost: (isCustomer) ? formValues.customerDeliveryCost : formValues.proDeliveryCost, // * 100
         business: this.authenticationService?.currentUserValue?.id,
+        // comment: this.authenticationService?.currentUserValue?.id,
         serviceCharge: "",
         isPayed: false,
       }
     };
-    estimateSave.amount = Math.round(estimateSave.estimate.amount * 100);
+    // estimateSave.estimate.amount = Math.round(estimateSave.estimate.amount * 100);
+    estimateSave.estimate.totalAmount = Math.round(estimateSave.estimate.totalAmount);
     this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( estimated => {
-    this.success = `Devis n° ${estimateSave.estimate.estimateNumber} cree`;
-    this.error = '';
-    setTimeout(() => {
-      this.router.navigate(['estimate/my-estimate']);
-    }, 500);
-    // this.router.navigate([`/estimate/detail-estimate/${estimateSave.estimateNumber}`]);
+      this.success = `Devis n° ${estimateSave.estimate.estimateNumber} cree`;
+      this.error = '';
+      setTimeout(() => {
+        this.router.navigate(['estimate/my-estimate']);
+      }, 500);
+      // this.router.navigate([`/estimate/detail-estimate/${estimateSave.estimateNumber}`]);
     }
       , error => {
         this.error = error?.toString().toLowerCase().includes("integrity constraint violation") ? "Numero de devis (déja existant/mal renseigné)" : error;

@@ -116,8 +116,8 @@
       <div class="form-group">
         <p>
             <mat-radio-group formControlName="proTimeSlot">
-              <mat-radio-button value="AM">Matin</mat-radio-button>
-              <mat-radio-button value="PM">Apres-Midi</mat-radio-button>
+              <mat-radio-button value="AM">9h30</mat-radio-button>
+              <mat-radio-button value="PM">17h00</mat-radio-button>
             </mat-radio-group>
         </p>
       </div>
@@ -132,6 +132,12 @@
             <mat-icon matSuffix>euro</mat-icon>
           </mat-form-field>
         </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
+      </div>
+      <div class="form-group">
+        <mat-slide-toggle formControlName="proExpress">Livraison express</mat-slide-toggle>
         <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
           <div *ngIf="f.username.errors.required">Username is required</div>
         </div>-->
@@ -332,8 +338,8 @@
           <!-- <mat-form-field class="full-width"  appearance="outline" floatLabel="always"> -->
             <!-- <mat-label>Choose a date</mat-label> -->
             <mat-radio-group formControlName="customerTimeSlot" id="gui">
-              <mat-radio-button value="AM">Matin</mat-radio-button>
-              <mat-radio-button value="PM">Apres-Midi</mat-radio-button>
+              <mat-radio-button value="AM">9h30</mat-radio-button>
+              <mat-radio-button value="PM">17h00</mat-radio-button>
             </mat-radio-group>
           <!-- </mat-form-field> -->
         </p>
@@ -349,6 +355,13 @@
             <mat-icon matSuffix>euro</mat-icon>
           </mat-form-field>
         </p>
+        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>-->
+      </div>
+    
+      <div class="form-group">
+        <mat-slide-toggle formControlName="customerExpress">Livraison express</mat-slide-toggle>
         <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
           <div *ngIf="f.username.errors.required">Username is required</div>
         </div>-->
