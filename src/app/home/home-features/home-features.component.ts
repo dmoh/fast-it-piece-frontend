@@ -43,6 +43,8 @@ export class HomeFeaturesComponent implements OnInit {
 
   deliveryExpressCustomer: boolean = false;
   deliveryExpressPro: boolean = false;
+  expressCostCustomer: number = null;
+  expressCostPro: number = null;
 
   serviceCharge: number = 0.80;
 
@@ -81,7 +83,6 @@ export class HomeFeaturesComponent implements OnInit {
       proExpress: [''],
       proComment: [''],
     });
-    this.proForm.controls['proExpress'].setValue(this.deliveryExpressPro);
 
     this.customerForm = this.formBuilder.group({
       customerDevis: ['', Validators.required],
@@ -102,7 +103,6 @@ export class HomeFeaturesComponent implements OnInit {
       customerExpress: [''],
       customerComment: [''],
     });
-    this.customerForm.controls['customerExpress'].setValue(this.deliveryExpressCustomer);
 
     this.estimateService.getUserAdress().subscribe( x => {
       const userAddress = x.userAdress
@@ -120,6 +120,7 @@ export class HomeFeaturesComponent implements OnInit {
 
 
     this.onCalculChanges();
+    this.onCheckCost();
   }
 
   sendEstimate(typeCustomer: string) {
@@ -219,16 +220,41 @@ export class HomeFeaturesComponent implements OnInit {
       }
       // console.log("adr_maps", event?.address_components);
       this.selectedAddress = event;
+      
+      if (isCustomer) {
+        this.onAmountChanges(this.customerForm.value, this.amountCustomer, isCustomer);
+      } else {
+        this.onAmountChanges(this.proForm.value, this.amountPro);
+      }
+
     }
   }
-
+  
   onCalculChanges() {
     this.customerForm.get('customerAmount').valueChanges.subscribe(val => {
+      this.amountCustomer = val;
       this.onAmountChanges(this.customerForm.value, val, true);
     });
-
+    
     this.proForm.get('proAmount').valueChanges.subscribe(val => {
+      this.amountPro = val;
       this.onAmountChanges(this.proForm.value, val);
+    });
+  }
+
+  onCheckCost() {
+    this.customerForm.get('customerExpress').valueChanges.subscribe(val => {
+      this.deliveryExpressCustomer = val;
+      this.expressCostCustomer = val ? 10 : -10;
+      this.totalAmountCustomer += this.expressCostCustomer;
+      this.customerForm.controls['customerTotalAmount'].setValue(this.totalAmountCustomer);
+    });
+    
+    this.proForm.get('proExpress').valueChanges.subscribe(val => {
+      this.deliveryExpressPro = val;
+      this.expressCostPro = val ? 10 : -10;
+      this.totalAmountPro += this.expressCostPro;
+      this.customerForm.controls['customerTotalAmount'].setValue(this.totalAmountCustomer);
     });
   }
 
@@ -274,58 +300,56 @@ export class HomeFeaturesComponent implements OnInit {
           map( ([deliveryCost, marginService]) => {
             return {deliveryCost, marginService}
           })
-        )
-        ;
-        
-        exec.subscribe( responseMarginService => {
-          console.log("exec", responseMarginService);
-          this.generateAllPrices(isCustomer, responseMarginService, amount);
-          this.loading = false;
-          this.disabledButton = false;
-        });
-      }
-       else {
-        console.log("Error distance")
-      }
-    });
-  }
-
-  public generateAllPrices(isCustomer: boolean, response: any, amount: number): void {
-    console.log(<number> amount );
-    console.log(<number> response.marginService.marginFastIt);
-    console.log(<number> response.marginService.marginFastIt * amount);
-
-    const marginCost = (<number> amount * <number> response.marginService.marginFastIt);
-    console.log("margin", marginCost);
-    const totalAmount = marginCost + amount + <number> response.marginService.serviceCharge 
-    + <number> response.deliveryCost.deliveryInfos; 
-    console.log("total", totalAmount);
-
-    const distance = response?.deliveryCost?.distanceText?.replace("km","").trim() ?? null;
-    const deliveryCost = response.deliveryCost.deliveryInfos ?? 0;
-
-    if (isCustomer) {
-      this.customerCtrl['customerDeliveryCost'].setValue(deliveryCost);
-      this.customerForm.controls['customerTotalAmount'].setValue(totalAmount);
-      this.distanceInfoCustomer = distance;
-      this.amountCustomer = amount;
-      this.totalAmountCustomer = totalAmount;
-      this.deliveryCostCustomer = deliveryCost;
-    } else {
-      this.proCtrl['proDeliveryCost'].setValue(deliveryCost);
-      this.proForm.controls['proTotalAmount'].setValue(totalAmount);
-      this.distanceInfoPro = distance;
-      this.amountPro = amount;
-      this.totalAmountPro = totalAmount;
-      this.deliveryCostPro = deliveryCost;
+          )
+          ;
+          
+          exec.subscribe( responseMarginService => {
+            console.log("exec", responseMarginService);
+            this.generateAllPrices(isCustomer, responseMarginService, amount);
+            this.loading = false;
+            this.disabledButton = false;
+          });
+        }
+        else {
+          console.log("Error distance")
+        }
+      });
     }
-    console.log(this.amountPro);
-
+    
+    public generateAllPrices(isCustomer: boolean, response: any, amount: number): void {
+      // console.log(<number> amount );
+      // console.log(<number> response.marginService.marginFastIt);
+      // console.log(<number> response.marginService.marginFastIt * amount);
+      
+      const marginCost = (<number> amount * <number> response.marginService.marginFastIt);
+      console.log("margin", marginCost);
+      const totalAmount = marginCost + amount + <number> response.marginService.serviceCharge 
+      + <number> response.deliveryCost.deliveryInfos; 
+      console.log("total", totalAmount);
+      
+      const distance = response?.deliveryCost?.distanceText?.replace("km","").trim() ?? null;
+      const deliveryCost = response.deliveryCost.deliveryInfos ?? 0;
+      
+      if (isCustomer) {
+        this.customerCtrl['customerDeliveryCost'].setValue(deliveryCost);
+        this.customerForm.controls['customerTotalAmount'].setValue(totalAmount);
+        this.distanceInfoCustomer = distance;
+        this.totalAmountCustomer = totalAmount;
+        this.deliveryCostCustomer = deliveryCost;
+      } else {
+        this.proCtrl['proDeliveryCost'].setValue(deliveryCost);
+        this.proForm.controls['proTotalAmount'].setValue(totalAmount);
+        this.distanceInfoPro = distance;
+        this.totalAmountPro = totalAmount;
+        this.deliveryCostPro = deliveryCost;
+      }
+      
       // total = cout livraison + frais de service
+    }
+    
+    // convenience getter for easy access to form fields
+    get proCtrl() { return this.proForm.controls; }
+    get customerCtrl() { return this.customerForm.controls; }
+    
   }
-
-  // convenience getter for easy access to form fields
-  get proCtrl() { return this.proForm.controls; }
-  get customerCtrl() { return this.customerForm.controls; }
-
-}
+  
