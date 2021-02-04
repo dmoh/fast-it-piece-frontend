@@ -171,6 +171,7 @@ export class HomeFeaturesComponent implements OnInit {
         dateEstimated: (isCustomer) ? formValues.customerDateEstimated : formValues.proDateEstimated,
         timeSlot: (isCustomer) ? formValues.customerTimeSlot : formValues.proTimeSlot,
         comment: (isCustomer) ? formValues.customerComment : formValues.proComment,
+        isExpress: (isCustomer) ? formValues.customerExpress : formValues.proExpress,
         distanceInfos: (isCustomer) ? this.distanceInfoCustomer : this.distanceInfoPro, // * 100
         deliveryCost: (isCustomer) ? formValues.customerDeliveryCost : formValues.proDeliveryCost, // * 100
         business: this.authenticationService?.currentUserValue?.id,
@@ -179,14 +180,16 @@ export class HomeFeaturesComponent implements OnInit {
         isPayed: false,
       }
     };
-    // estimateSave.estimate.amount = Math.round(estimateSave.estimate.amount * 100);
-    estimateSave.estimate.totalAmount = Math.round(estimateSave.estimate.totalAmount);
+    
+    estimateSave.estimate.amount = Math.round(estimateSave.estimate.amount * 100)/100;
+    estimateSave.estimate.totalAmount = Math.round(estimateSave.estimate.totalAmount * 100)/100;
+
     this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( estimated => {
-      this.success = `Devis n° ${estimateSave.estimate.estimateNumber} cree`;
+      this.success = `Devis n° ${estimateSave.estimate.estimateNumber} créé`;
       this.error = '';
       setTimeout(() => {
         this.router.navigate(['estimate/my-estimate']);
-      }, 500);
+      }, 700);
       // this.router.navigate([`/estimate/detail-estimate/${estimateSave.estimateNumber}`]);
     }
       , error => {
@@ -300,8 +303,7 @@ export class HomeFeaturesComponent implements OnInit {
           map( ([deliveryCost, marginService]) => {
             return {deliveryCost, marginService}
           })
-          )
-          ;
+        );
           
           exec.subscribe( responseMarginService => {
             console.log("exec", responseMarginService);
@@ -327,7 +329,7 @@ export class HomeFeaturesComponent implements OnInit {
       + <number> response.deliveryCost.deliveryInfos; 
       console.log("total", totalAmount);
       
-      const distance = response?.deliveryCost?.distanceText?.replace("km","").trim() ?? null;
+      const distance = Math.round(response?.deliveryCost?.distanceText?.replace("km","").trim() * 100) ?? null;
       const deliveryCost = response.deliveryCost.deliveryInfos ?? 0;
       
       if (isCustomer) {
