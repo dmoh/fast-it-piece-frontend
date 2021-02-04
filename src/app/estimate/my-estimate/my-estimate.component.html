@@ -8,8 +8,8 @@
       <tr>
         <th>Numéro de devis</th>
         <th>Nom du client</th>
-        <th>Date</th>
-        <th>Heure</th>
+        <th>Date de création</th>
+        <th>Date de livraison</th>
         <th>Montant</th>
         <th>Status</th>
         <!-- <th>Notification</th> -->
@@ -19,17 +19,17 @@
       <tr class="order" *ngFor="let estimate of estimates" routerLink="/estimate/detail-estimate/{{estimate.estimateNumber}}" >
         <td>{{ estimate.estimateNumber }}</td>
         <td *ngIf="estimate.customer?.username || estimate.customer?.lastname else elseBlock">{{ estimate.customer.username }}{{ estimate.customer.lastname }}</td>
-        <ng-template #elseBlock><td>John Doe</td></ng-template>
-        <td>{{ estimate.date.date | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ estimate.date.date | date: 'HH:mm' }}</td>
-        <td>{{ estimate.amount / 100 }}</td>
+        <ng-template #elseBlock><td></td></ng-template>
+        <td>{{ estimate.date.date | date: 'dd/MM/yyyy HH:mm' }}</td>
+        <td>{{ estimate.dateEstimated.date | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ estimate.amount.toFixed(2) }}</td>
         <td>
           <div [ngSwitch]="estimate.isPayed">
-            <span *ngSwitchCase="false" class="badge badge-warning">
-            <!-- <span>  En attente de paiement -->
+            <span *ngSwitchCase="false || null" class="badge badge-alert">
+              En attente de paiement
             </span>
             <span *ngSwitchCase="true" class="badge badge-info">
-            <!-- <span> Payé -->
+              Payé
             </span>
           </div>
         </td>

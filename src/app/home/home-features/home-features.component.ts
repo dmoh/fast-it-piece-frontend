@@ -39,6 +39,11 @@ export class HomeFeaturesComponent implements OnInit {
   deliveryCostCustomer: number = 0;
   deliveryCostPro: number = 0;
 
+  deliveryExpressCustomer: boolean = false;
+  deliveryExpressPro: boolean = false;
+  expressCostCustomer: number = null;
+  expressCostPro: number = null;
+
   serviceCharge: number = 0.80;
 
   userAdress: AddressMatrix;
@@ -73,6 +78,8 @@ export class HomeFeaturesComponent implements OnInit {
       proTimeSlot: ['', Validators.required],
       proMail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
       proPhone: [''],
+      proExpress: [''],
+      proComment: [''],
     });
 
     this.customerForm = this.formBuilder.group({
@@ -91,6 +98,8 @@ export class HomeFeaturesComponent implements OnInit {
       customerTimeSlot: ['', Validators.required],
       customerMail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
       customerPhone: ['', Validators.required],
+      customerExpress: [''],
+      customerComment: [''],
     });
 
     this.estimateService.getUserAdress().subscribe( x => {
@@ -107,14 +116,19 @@ export class HomeFeaturesComponent implements OnInit {
                         .setZipCode(userAddress.zipcode);
     });
 
+
     this.onCalculChanges();
+    this.onCheckCost();
   }
 
   sendEstimate(typeCustomer: string) {
 
     switch (typeCustomer) {
       case 'professional': {
-        if ( this.proForm.value.customerDevis != "") {
+        if ( this.proForm.value.proDevis != "") {
+          this.totalAmountPro = (this.deliveryExpressPro) ? this.totalAmountPro + 10 : this.totalAmountPro;
+          console.log(this.totalAmountPro);
+          this.proForm.controls['proTotalAmount'].setValue(this.totalAmountPro);
           this.saveEstimate(this.proForm.value);
         }
       }
@@ -123,6 +137,9 @@ export class HomeFeaturesComponent implements OnInit {
         if ( this.customerForm.value.customerDevis != "" &&
         (this.customerForm.value.customerMail != "" || this.customerForm.value.customerPhone != ""))
         {
+          this.totalAmountCustomer = (this.deliveryExpressCustomer) ? this.totalAmountCustomer + 10 : this.totalAmountCustomer;
+          console.log(this.totalAmountCustomer);
+          this.customerForm.controls['customerTotalAmount'].setValue(this.totalAmountCustomer);
           this.saveEstimate(this.customerForm.value, true);
         }
       }
@@ -134,6 +151,7 @@ export class HomeFeaturesComponent implements OnInit {
 
   private saveEstimate(formValues: any, isCustomer: boolean = false) {
     let estimateSave: any;
+
     estimateSave = {
       estimate : {
         estimateNumber: (isCustomer) ? formValues.customerDevis : formValues.proDevis,
@@ -150,21 +168,27 @@ export class HomeFeaturesComponent implements OnInit {
         phone: (isCustomer) ? formValues.customerPhone : formValues.proPhone,
         dateEstimated: (isCustomer) ? formValues.customerDateEstimated : formValues.proDateEstimated,
         timeSlot: (isCustomer) ? formValues.customerTimeSlot : formValues.proTimeSlot,
+        comment: (isCustomer) ? formValues.customerComment : formValues.proComment,
+        isExpress: (isCustomer) ? formValues.customerExpress : formValues.proExpress,
         distanceInfos: (isCustomer) ? this.distanceInfoCustomer : this.distanceInfoPro, // * 100
         deliveryCost: (isCustomer) ? formValues.customerDeliveryCost : formValues.proDeliveryCost, // * 100
         business: this.authenticationService?.currentUserValue?.id,
+        // comment: this.authenticationService?.currentUserValue?.id,
         serviceCharge: "",
         isPayed: false,
       }
     };
-    estimateSave.amount = Math.round(estimateSave.estimate.amount * 100);
+
+    estimateSave.estimate.amount = Math.round(estimateSave.estimate.amount * 100)/100;
+    estimateSave.estimate.totalAmount = Math.round(estimateSave.estimate.totalAmount * 100)/100;
+
     this.estimateService.saveEstimateByBusiness(estimateSave).subscribe( estimated => {
-    this.success = `Devis n° ${estimateSave.estimate.estimateNumber} cree`;
-    this.error = '';
-    setTimeout(() => {
-      this.router.navigate(['estimate/my-estimate']);
-    }, 500);
-    // this.router.navigate([`/estimate/detail-estimate/${estimateSave.estimateNumber}`]);
+      this.success = `Devis n° ${estimateSave.estimate.estimateNumber} créé`;
+      this.error = '';
+      setTimeout(() => {
+        this.router.navigate(['estimate/my-estimate']);
+      }, 700);
+      // this.router.navigate([`/estimate/detail-estimate/${estimateSave.estimateNumber}`]);
     }
       , error => {
         this.error = error?.toString().toLowerCase().includes("integrity constraint violation") ? "Numero de devis (déja existant/mal renseigné)" : error;
@@ -197,16 +221,41 @@ export class HomeFeaturesComponent implements OnInit {
       }
       // console.log("adr_maps", event?.address_components);
       this.selectedAddress = event;
+
+      if (isCustomer) {
+        this.onAmountChanges(this.customerForm.value, this.amountCustomer, isCustomer);
+      } else {
+        this.onAmountChanges(this.proForm.value, this.amountPro);
+      }
+
     }
   }
 
   onCalculChanges() {
     this.customerForm.get('customerAmount').valueChanges.subscribe(val => {
+      this.amountCustomer = val;
       this.onAmountChanges(this.customerForm.value, val, true);
     });
 
     this.proForm.get('proAmount').valueChanges.subscribe(val => {
+      this.amountPro = val;
       this.onAmountChanges(this.proForm.value, val);
+    });
+  }
+
+  onCheckCost() {
+    this.customerForm.get('customerExpress').valueChanges.subscribe(val => {
+      this.deliveryExpressCustomer = val;
+      this.expressCostCustomer = val ? 10 : -10;
+      this.totalAmountCustomer += this.expressCostCustomer;
+      this.customerForm.controls['customerTotalAmount'].setValue(this.totalAmountCustomer);
+    });
+
+    this.proForm.get('proExpress').valueChanges.subscribe(val => {
+      this.deliveryExpressPro = val;
+      this.expressCostPro = val ? 10 : -10;
+      this.totalAmountPro += this.expressCostPro;
+      this.customerForm.controls['customerTotalAmount'].setValue(this.totalAmountCustomer);
     });
   }
 
@@ -251,59 +300,54 @@ export class HomeFeaturesComponent implements OnInit {
           map( ([deliveryCost, marginService]) => {
             return {deliveryCost, marginService}
           })
-        )
-        ;
+        );
 
-        exec.subscribe( responseMarginService => {
-          console.log("exec", responseMarginService);
-          this.generateAllPrices(isCustomer, responseMarginService, amount);
-          this.loading = false;
-          this.disabledButton = false;
-        });
-      }
-       else {
-        console.log("Error distance")
-      }
-    });
-  }
-
-  public generateAllPrices(isCustomer: boolean, response: any, amount: number): void {
-
-    console.log(<number> amount );
-    console.log(<number> response.marginService.marginFastIt);
-    console.log(<number> response.marginService.marginFastIt * amount);
-
-    const marginCost = (<number> amount * <number> response.marginService.marginFastIt);
-    console.log("margin", marginCost);
-    const totalAmount = marginCost + amount + <number> response.marginService.serviceCharge
-    + <number> response.deliveryCost.deliveryInfos;
-    console.log("total", totalAmount);
-
-    const distance = response?.deliveryCost?.distanceText?.replace("km","").trim() ?? null;
-    const deliveryCost = response.deliveryCost.deliveryInfos ?? 0;
-
-    if (isCustomer) {
-      this.customerCtrl['customerDeliveryCost'].setValue(deliveryCost);
-      this.customerForm.controls['customerTotalAmount'].setValue(totalAmount);
-      this.distanceInfoCustomer = distance;
-      this.amountCustomer = amount;
-      this.totalAmountCustomer = totalAmount;
-      this.deliveryCostCustomer = deliveryCost;
-    } else {
-      this.proCtrl['proDeliveryCost'].setValue(deliveryCost);
-      this.proForm.controls['proTotalAmount'].setValue(totalAmount);
-      this.distanceInfoPro = distance;
-      this.amountPro = amount;
-      this.totalAmountPro = totalAmount;
-      this.deliveryCostPro = deliveryCost;
+          exec.subscribe( responseMarginService => {
+            console.log("exec", responseMarginService);
+            this.generateAllPrices(isCustomer, responseMarginService, amount);
+            this.loading = false;
+            this.disabledButton = false;
+          });
+        }
+        else {
+          console.log("Error distance")
+        }
+      });
     }
-    console.log(this.amountPro);
+
+    public generateAllPrices(isCustomer: boolean, response: any, amount: number): void {
+      // console.log(<number> amount );
+      // console.log(<number> response.marginService.marginFastIt);
+      // console.log(<number> response.marginService.marginFastIt * amount);
+
+      const marginCost = (<number> amount * <number> response.marginService.marginFastIt);
+      console.log("margin", marginCost);
+      const totalAmount = marginCost + amount + <number> response.marginService.serviceCharge
+      + <number> response.deliveryCost.deliveryInfos;
+      console.log("total", totalAmount);
+
+      const distance = Math.round(response?.deliveryCost?.distanceText?.replace("km","").trim() * 100) ?? null;
+      const deliveryCost = response.deliveryCost.deliveryInfos ?? 0;
+
+      if (isCustomer) {
+        this.customerCtrl['customerDeliveryCost'].setValue(deliveryCost);
+        this.customerForm.controls['customerTotalAmount'].setValue(totalAmount);
+        this.distanceInfoCustomer = distance;
+        this.totalAmountCustomer = totalAmount;
+        this.deliveryCostCustomer = deliveryCost;
+      } else {
+        this.proCtrl['proDeliveryCost'].setValue(deliveryCost);
+        this.proForm.controls['proTotalAmount'].setValue(totalAmount);
+        this.distanceInfoPro = distance;
+        this.totalAmountPro = totalAmount;
+        this.deliveryCostPro = deliveryCost;
+      }
 
       // total = cout livraison + frais de service
+    }
+
+    // convenience getter for easy access to form fields
+    get proCtrl() { return this.proForm.controls; }
+    get customerCtrl() { return this.customerForm.controls; }
+
   }
-
-  // convenience getter for easy access to form fields
-  get proCtrl() { return this.proForm.controls; }
-  get customerCtrl() { return this.customerForm.controls; }
-
-}

@@ -74,7 +74,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
     this.estimate.totalAmount = 0;
     this.estimate.serviceCharge = 0;
     // this.estimate.serv = 0;
-    console.log(this.route.snapshot);
+    // console.log(this.route.snapshot);
     const devis = this.route.snapshot.queryParams.devis;
     const mail = this.route.snapshot.queryParams.mail;
     const phone = this.route.snapshot.queryParams.phone;
@@ -234,7 +234,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
                       keyboard: false
                     });
                     modalRef.componentInstance.title = `Devis ${this.estimate.estimateNumber}`;
-                    modalRef.componentInstance.message = `Création de la Commande`; 
+                    modalRef.componentInstance.message = `Création de la commande`; 
                     // ${order.order_id}`;
                     modalRef.result.then(() => this.ngOnInit());
                   });
