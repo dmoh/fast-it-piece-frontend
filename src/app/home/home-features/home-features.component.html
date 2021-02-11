@@ -33,24 +33,22 @@
         </div>-->
       </div>
       <div class="form-group">
-        <!-- <p>
-
+         <p>
           <mat-form-field class="full-width" appearance="outline" >
             <mat-label>Email</mat-label>
             <input matInput type="text"
             formControlName="proAddress"
             (onAddressChange)="handleAddressChange($event)"
             autocomplete="off"
-            type="text"
-            id="locate-me"
+            id="locate-mePro"
             ngx-google-places-autocomplete
             [options]='options'
             #placesRef="ngx-places"
             placeholder="Adresse"/>
-              [errorStateMatcher]="matcher"
+             <!-- [errorStateMatcher]="matcher"-->
             <mat-icon matSuffix>apartment</mat-icon>
           </mat-form-field>
-        </p> -->
+        </p>
         <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
           <div *ngIf="f.username.errors.required">Username is required</div>
         </div>-->
@@ -280,7 +278,6 @@
             formControlName="customerAddress"
             (onAddressChange)="handleAddressChange($event, true)"
             autocomplete="off"
-            type="text"
             id="locate-me"
             ngx-google-places-autocomplete
             [options]='options'
@@ -381,14 +378,14 @@
           <div *ngIf="f.username.errors.required">Username is required</div>
         </div>-->
       </div>
-    
+
       <div class="form-group">
         <mat-slide-toggle formControlName="customerExpress">Livraison express</mat-slide-toggle>
         <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
           <div *ngIf="f.username.errors.required">Username is required</div>
         </div>-->
       </div>
-      
+
       <div class="form-group">
         <p>
           <mat-form-field class="full-width"  appearance="outline" floatLabel="always">
@@ -443,7 +440,7 @@
           </div>
         </div>
         <hr>
-        
+
         <div class="align-row">
           <div class="col-md-6">
           </div>
@@ -457,7 +454,7 @@
         </div>
         <hr>
       </div>
-      
+
 
       <!-- <button mat-raised-button [disabled]="disabledButton"  type="button" (click)="sendEstimate('customer')" color="primary"> -->
         <button mat-raised-button [disabled]="disabledButton" color="primary">
