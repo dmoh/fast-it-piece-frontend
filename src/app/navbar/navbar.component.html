@@ -11,25 +11,20 @@
       </a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <!-- <a style="display: flex; flex-direction: row"  *ngIf="cart.total > 0" [ngClass]="{'not-allowed': cart.total == 0}" class="nav-link btn btn-sm" routerLink="/cart-detail">
-            <div style="color: white; font-size: large;padding-right: .4rem;" class="material-icons">shopping_basket</div><div *ngIf="cart.total > 0" style="color: white; font-size: small">{{ cart.total.toFixed(2) }} €</div>
-          </a> -->
-        </li>
 
-        <!-- <li >
-          <button *ngIf="!user.token" mat-button [matMenuTriggerFor]="menu">
+        <li >
+          <button *ngIf="user.token" mat-button [matMenuTriggerFor]="menu" style="color: white">
             <mat-icon>home</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
             <button *ngIf="user.token"  mat-menu-item>
-              <a style="text-decoration: none; color: #0a0a0a" routerLink="customer">Profil</a>
+                  <a style="text-decoration: none; color: #0a0a0a" routerLink="/home">Accueil</a>
             </button>
             <button *ngIf="user.token"  mat-menu-item>
-              <a style="text-decoration: none; color: #0a0a0a" routerLink="professional">Pro</a>
+              <a style="text-decoration: none; color: #0a0a0a" routerLink="/estimate/my-estimate">Mes Devis</a>
             </button>
           </mat-menu>
-        </li> -->
+        </li>
         
         <li class="nav-item">
           <div style="display: flex">
@@ -42,11 +37,6 @@
             <mat-icon>account_circle</mat-icon>
           </a>
         </li>
-        <li class="nav-item">
-          <a *ngIf="user.token" class="nav-link" routerLink="/home" style="color: white">
-            <mat-icon>home</mat-icon>
-          </a>
-      </li>
       </ul>
     </div>
   </div>

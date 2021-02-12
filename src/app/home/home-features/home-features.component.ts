@@ -9,11 +9,15 @@ import { AddressMatrix } from 'src/app/_models/address-matrix';
 import { SimpleChanges } from '@angular/core';
 import { forkJoin, Observable } from 'rxjs';
 import { Address } from 'cluster';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 @Component({
   selector: 'app-home-features',
   templateUrl: './home-features.component.html',
-  styleUrls: ['./home-features.component.scss']
+  styleUrls: ['./home-features.component.scss'],
+  // providers: [
+  //   {provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
+  // ],
 })
 export class HomeFeaturesComponent implements OnInit {
   customerForm: FormGroup;
@@ -51,6 +55,9 @@ export class HomeFeaturesComponent implements OnInit {
   userAdress: AddressMatrix;
   user: User;
 
+  showExpressPro = true;
+  showExpressCustomer = true;
+
   constructor(private router: Router,
     private formBuilder: FormBuilder,
     private estimateService: EstimateService,
@@ -76,7 +83,7 @@ export class HomeFeaturesComponent implements OnInit {
       proZipCode: ['', Validators.required],
       proCountry: [''],
       proAddressName: [''],
-      proDateEstimated: ['', Validators.required],
+      proDateEstimated: [''],
       proTimeSlot: ['', Validators.required],
       proMail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
       proPhone: [''],
@@ -96,7 +103,7 @@ export class HomeFeaturesComponent implements OnInit {
       customerZipCode: ['', Validators.required],
       customerCountry: [''],
       customerAddressName: [''],
-      customerDateEstimated: ['', Validators.required],
+      customerDateEstimated: [''],
       customerTimeSlot: ['', Validators.required],
       customerMail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
       customerPhone: ['', Validators.required],
@@ -121,29 +128,55 @@ export class HomeFeaturesComponent implements OnInit {
 
     this.onCalculChanges();
     this.onCheckCost();
+    this.onShowExpress();
   }
 
   sendEstimate(typeCustomer: string) {
-
+    this.error = "";
     switch (typeCustomer) {
       case 'professional': {
-        if ( this.proForm.value.proDevis != "") {
-          this.totalAmountPro = (this.deliveryExpressPro) ? this.totalAmountPro + 10 : this.totalAmountPro;
-          console.log(this.totalAmountPro);
-          this.proForm.controls['proTotalAmount'].setValue(this.totalAmountPro);
-          this.saveEstimate(this.proForm.value);
+        if ( this.proForm.value.proDevis.trim() == "") {
+          this.error = "Renseigner le n° de devis !";
+          return;
         }
+        this.totalAmountPro = (this.deliveryExpressPro) ? this.totalAmountPro + 10 : this.totalAmountPro;
+        this.proForm.controls['proTotalAmount'].setValue(this.totalAmountPro);
+        if (this.proForm.invalid) {
+          this.error = "Renseigner les champs obligatoire ";
+        } 
+        if (!this.showExpressPro && this.proCtrl['proDateEstimated'].value == null ) {
+          this.error = "Veuillez appliqué la livraison express ou renseigner une date de livraison.";
+        }
+        if (this.error != null || this.error.trim() != "") {
+          return;
+        }
+        this.saveEstimate(this.proForm.value);
       }
       break;
       case 'customer': {
-        if ( this.customerForm.value.customerDevis != "" && 
-        (this.customerForm.value.customerMail != "" || this.customerForm.value.customerPhone != "")) 
-        {
-          this.totalAmountCustomer = (this.deliveryExpressCustomer) ? this.totalAmountCustomer + 10 : this.totalAmountCustomer;
-          console.log(this.totalAmountCustomer);
-          this.customerForm.controls['customerTotalAmount'].setValue(this.totalAmountCustomer);
-          this.saveEstimate(this.customerForm.value, true);
+        if ( this.customerForm.value.customerDevis?.trim() == "") {
+          this.error = "Renseigner le n° de devis !";
+          return;
         } 
+        if (this.customerForm.value.customerMail == "" && this.customerForm.value.customerPhone == "") {
+          this.error = "Renseigner l'adresse mail ou le numero de telephone !";
+          return;  
+        } 
+        this.totalAmountCustomer = (this.deliveryExpressCustomer) ? this.totalAmountCustomer + 10 : this.totalAmountCustomer;
+        console.log(this.totalAmountCustomer);
+        this.customerForm.controls['customerTotalAmount'].setValue(this.totalAmountCustomer);
+        if (this.customerForm.invalid) {
+          this.error = "Renseigner les champs obligatoire ";
+        } 
+        if (!this.showExpressCustomer && this.customerCtrl['customerDateEstimated'].value == null ) {
+          this.error = "Veuillez appliqué la livraison express ou renseigner une date de livraison.";
+        }
+        alert("custom "+ this.error);
+
+        if (this.error != null || this.error.trim() != "") {
+          return;
+        }
+        this.saveEstimate(this.customerForm.value, true);
       }
       break;
       default : console.log(this.customerForm.value.customerDevis);
@@ -305,53 +338,74 @@ export class HomeFeaturesComponent implements OnInit {
           })
         );
           
-          exec.subscribe( responseMarginService => {
-            console.log("exec", responseMarginService);
-            this.generateAllPrices(isCustomer, responseMarginService, amount);
-            this.loading = false;
-            this.disabledButton = false;
-          });
-        }
-        else {
-          console.log("Error distance")
-        }
-      });
-    }
-    
-    public generateAllPrices(isCustomer: boolean, response: any, amount: number): void {
-      // console.log(<number> amount );
-      // console.log(<number> response.marginService.marginFastIt);
-      // console.log(<number> response.marginService.marginFastIt * amount);
-      
-      const marginCost = (<number> amount * <number> response.marginService.marginFastIt);
-      console.log("margin", marginCost);
-      const totalAmount = marginCost + amount + <number> response.marginService.serviceCharge 
-      + <number> response.deliveryCost.deliveryInfos; 
-      console.log("total", totalAmount);
-      
-      const distance = Math.round(response?.deliveryCost?.distanceText?.replace("km","").trim() * 100) ?? null;
-      const deliveryCost = response.deliveryCost.deliveryInfos ?? 0;
-      
-      if (isCustomer) {
-        this.customerCtrl['customerDeliveryCost'].setValue(deliveryCost);
-        this.customerForm.controls['customerTotalAmount'].setValue(totalAmount);
-        this.distanceInfoCustomer = distance;
-        this.totalAmountCustomer = totalAmount;
-        this.deliveryCostCustomer = deliveryCost;
-      } else {
-        this.proCtrl['proDeliveryCost'].setValue(deliveryCost);
-        this.proForm.controls['proTotalAmount'].setValue(totalAmount);
-        this.distanceInfoPro = distance;
-        this.totalAmountPro = totalAmount;
-        this.deliveryCostPro = deliveryCost;
+        exec.subscribe( responseMarginService => {
+          console.log("exec", responseMarginService);
+          this.generateAllPrices(isCustomer, responseMarginService, amount);
+          this.loading = false;
+          this.disabledButton = false;
+        });
       }
-      
-      // total = cout livraison + frais de service
+      else {
+        console.log("Error distance")
+      }
+    });
+  }
+
+  onShowExpress() {
+    this.proForm.get("proDateEstimated").valueChanges.subscribe(val => {
+      this.showExpressPro = true;
+      if (val != null && val.trim() != "" ) {
+        this.deliveryExpressPro = false;
+        this.showExpressPro = false;
+        this.proForm.controls["proExpress"].setValue(this.deliveryExpressPro); 
+      }
+    });
+    
+    this.customerForm.get("customerDateEstimated").valueChanges.subscribe(val => {
+      this.showExpressCustomer = true;
+      if (val != null && val.trim() != "" )
+      {
+        this.deliveryExpressCustomer = false;
+        this.showExpressCustomer = false;
+        this.customerForm.controls["customerExpress"].setValue(this.deliveryExpressCustomer);
+      }  
+    });
+  }
+    
+  public generateAllPrices(isCustomer: boolean, response: any, amount: number): void {
+    // console.log(<number> amount );
+    // console.log(<number> response.marginService.marginFastIt);
+    // console.log(<number> response.marginService.marginFastIt * amount);
+    
+    const marginCost = (<number> amount * <number> response.marginService.marginFastIt);
+    console.log("margin", marginCost);
+    const totalAmount = marginCost + amount + <number> response.marginService.serviceCharge 
+    + <number> response.deliveryCost.deliveryInfos; 
+    console.log("total", totalAmount);
+    
+    const distance = Math.round(response?.deliveryCost?.distanceText?.replace("km","").trim() * 100) ?? null;
+    const deliveryCost = response.deliveryCost.deliveryInfos ?? 0;
+    
+    if (isCustomer) {
+      this.customerCtrl['customerDeliveryCost'].setValue(deliveryCost);
+      this.customerForm.controls['customerTotalAmount'].setValue(totalAmount);
+      this.distanceInfoCustomer = distance;
+      this.totalAmountCustomer = totalAmount;
+      this.deliveryCostCustomer = deliveryCost;
+    } else {
+      this.proCtrl['proDeliveryCost'].setValue(deliveryCost);
+      this.proForm.controls['proTotalAmount'].setValue(totalAmount);
+      this.distanceInfoPro = distance;
+      this.totalAmountPro = totalAmount;
+      this.deliveryCostPro = deliveryCost;
     }
     
-    // convenience getter for easy access to form fields
-    get proCtrl() { return this.proForm.controls; }
-    get customerCtrl() { return this.customerForm.controls; }
-    
+    // total = cout livraison + frais de service
   }
+  
+  // convenience getter for easy access to form fields
+  get proCtrl() { return this.proForm.controls; }
+  get customerCtrl() { return this.customerForm.controls; }
+  
+}
   
