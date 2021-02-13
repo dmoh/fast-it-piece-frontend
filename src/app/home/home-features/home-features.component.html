@@ -134,11 +134,8 @@
           <div *ngIf="f.username.errors.required">Username is required</div>
         </div>-->
       </div>
-      <div class="form-group">
+      <div *ngIf="showExpressPro" class="form-group">
         <mat-slide-toggle formControlName="proExpress">Livraison express</mat-slide-toggle>
-        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-          <div *ngIf="f.username.errors.required">Username is required</div>
-        </div>-->
       </div>
 
       <div class="form-group">
@@ -378,12 +375,8 @@
           <div *ngIf="f.username.errors.required">Username is required</div>
         </div>-->
       </div>
-
-      <div class="form-group">
+      <div *ngIf="showExpressCustomer" class="form-group">
         <mat-slide-toggle formControlName="customerExpress">Livraison express</mat-slide-toggle>
-        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-          <div *ngIf="f.username.errors.required">Username is required</div>
-        </div>-->
       </div>
 
       <div class="form-group">

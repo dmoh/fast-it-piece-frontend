@@ -22,6 +22,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   padding-bottom: .4375em !important;
 }
 
+
 /*$background-color-primary: #f1d723;
 $btn-color-primary: #dcc738;*/
 $background-color-primary: #3f51b5;
@@ -30,6 +31,15 @@ $color-primary-transparent: rgba(63,81,181,.15);
 $box-shadow-primary: $color-primary-transparent;
 $btn-color-primary: #2c41b4;
 $btn-color-secondary: white;
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.8em 0 0.8em 0 !important;
+}
+
+/* Border */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #5c6ab98f;
+}
 
 .example-container {
   display: flex;
@@ -120,7 +130,8 @@ div.input-group .mat-form-field-wrapper {
 }
 
 input {
-  padding: 7px !important;
+  padding: 5px !important;
+  border: black;
 }
 
 .full-width{
