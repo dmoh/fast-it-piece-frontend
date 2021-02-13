@@ -5,7 +5,7 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline" >
-            <!-- <mat-label>Email</mat-label> -->
+            <mat-label>Numero de devis</mat-label>
             <input matInput type="text"
             formControlName="proDevis"
             placeholder="Numero de devis"/>
@@ -20,7 +20,7 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline" >
-            <!-- <mat-label>Email</mat-label> -->
+            <mat-label>Nom de la societe</mat-label>
             <input matInput type="text"
             formControlName="proName"
             placeholder="Nom de la societe"/>
@@ -36,7 +36,7 @@
         <p>
           
           <mat-form-field class="full-width" appearance="outline" >
-            <!-- <mat-label>Email</mat-label> -->
+            <mat-label>Adresse</mat-label>
             <input matInput type="text"
             formControlName="proAddress"
             (onAddressChange)="handleAddressChange($event)"
@@ -58,7 +58,7 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline" >
-            <!-- <mat-label>Email</mat-label> -->
+            <mat-label>Ville</mat-label>
             <input matInput type="text"
             formControlName="proCity"
             placeholder="Ville"/>
@@ -70,7 +70,7 @@
         <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline" >
-            <!-- <mat-label>Email</mat-label> -->
+            <mat-label>Code Postal</mat-label>
             <input matInput type="text"
             formControlName="proZipCode"
             placeholder="Code Postal"/>
@@ -85,7 +85,7 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline">
-            <!-- <mat-label>Email</mat-label> -->
+            <mat-label>Email</mat-label>
             <input matInput type="email" formControlName="proMail" placeholder="Email">
             <mat-icon matSuffix>alternate_email</mat-icon>
             <mat-hint></mat-hint>
@@ -98,26 +98,26 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline" floatLabel="always">
-            <!-- <mat-label>Numero de telephone</mat-label> -->
+            <mat-label>Numero de telephone</mat-label>
             <input matInput type="tel" formControlName="proPhone" placeholder="Exemple: 06...">
             <mat-icon matSuffix>phone</mat-icon>
             <mat-hint></mat-hint>
           </mat-form-field>
         </p>
       </div>
-      <div class="form-group">
+      <div *ngIf="showDateEstimatedPro" class="form-group">
         <p>
           <mat-form-field class="full-width"  appearance="outline" floatLabel="always">
-            <!-- <mat-label>Choose a date</mat-label> -->
+            <mat-label>Date de livraison estimée</mat-label>
             <input matInput type="date" formControlName="proDateEstimated" placeholder="Date de livraison estimée">
           </mat-form-field>
         </p>
       </div>
-      <div class="form-group">
+      <div *ngIf="showDateEstimatedPro" class="form-group">
         <p>
             <mat-radio-group formControlName="proTimeSlot">
-              <mat-radio-button value="AM">9h30</mat-radio-button>
-              <mat-radio-button value="PM">17h00</mat-radio-button>
+              <mat-radio-button value="9h30">9h30</mat-radio-button>
+              <mat-radio-button value="17h00">17h00</mat-radio-button>
             </mat-radio-group>
         </p>
       </div>
@@ -143,7 +143,7 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width"  appearance="outline" floatLabel="always">
-            <!-- <mat-label>Choose a date</mat-label> -->
+            <mat-label>Commentaire</mat-label>
             <input matInput type="text" formControlName="proComment" placeholder="Commentaire">
           </mat-form-field>
         </p>
@@ -227,10 +227,10 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline" >
-            <!-- <mat-label>Email</mat-label> -->
+            <mat-label>Numéro de devis</mat-label>
             <input matInput type="text"
             formControlName="customerDevis"
-            placeholder="Numero de devis"/>
+            placeholder="Numéro de devis"/>
              <!-- [errorStateMatcher]="matcher" -->
             <mat-icon matSuffix>receipt</mat-icon>
           </mat-form-field>
@@ -257,7 +257,7 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline" >
-            <!-- <mat-label>Email</mat-label> -->
+            <mat-label>Prénom</mat-label>
             <input matInput type="text"
             formControlName="customerFirstName"
             placeholder="Prénom"/>
@@ -272,7 +272,7 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline" >
-            <!-- <mat-label>Email</mat-label> -->
+            <mat-label>Adresse</mat-label>
             <input matInput type="text"
             formControlName="customerAddress"
             (onAddressChange)="handleAddressChange($event, true)"
@@ -294,7 +294,7 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline" >
-            <!-- <mat-label>Email</mat-label> -->
+            <!-- <mat-label>Ville</mat-label> -->
             <input matInput type="text"
             formControlName="customerCity"
             placeholder="Ville"/>
@@ -309,7 +309,7 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline" >
-            <!-- <mat-label>Email</mat-label> -->
+            <mat-label>Code Postal</mat-label>
             <input matInput type="text"
             formControlName="customerZipCode"
             placeholder="Code Postal"/>
@@ -324,7 +324,7 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline">
-            <!-- <mat-label>Email</mat-label> -->
+            <mat-label>Email</mat-label>
             <input matInput type="email" formControlName="customerMail" placeholder="Email">
             <mat-icon matSuffix>alternate_email</mat-icon>
             <mat-hint></mat-hint>
@@ -337,17 +337,17 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline" floatLabel="always">
-            <!-- <mat-label>Numero de telephone</mat-label> -->
+            <mat-label>Numero de telephone</mat-label>
             <input matInput type="tel" formControlName="customerPhone" placeholder="Exemple: 06...">
             <mat-icon matSuffix>phone</mat-icon>
             <mat-hint></mat-hint>
           </mat-form-field>
         </p>
       </div>
-      <div class="form-group">
+      <div *ngIf="showDateEstimatedCustomer" class="form-group">
         <p>
           <mat-form-field class="full-width"  appearance="outline" floatLabel="always">
-            <!-- <mat-label>Choose a date</mat-label> -->
+            <mat-label>Date de livraison estimée</mat-label>
             <input matInput type="date" formControlName="customerDateEstimated" placeholder="Date de livraison estimée">
           </mat-form-field>
         </p>
@@ -357,8 +357,8 @@
           <!-- <mat-form-field class="full-width"  appearance="outline" floatLabel="always"> -->
             <!-- <mat-label>Choose a date</mat-label> -->
             <mat-radio-group formControlName="customerTimeSlot" id="gui">
-              <mat-radio-button value="AM">9h30</mat-radio-button>
-              <mat-radio-button value="PM">17h00</mat-radio-button>
+              <mat-radio-button value="9h30">9h30</mat-radio-button>
+              <mat-radio-button value="17h00">17h00</mat-radio-button>
             </mat-radio-group>
           <!-- </mat-form-field> -->
         </p>
@@ -366,7 +366,7 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline" >
-            <!-- <mat-label>Email</mat-label> -->
+            <mat-label>Montant</mat-label>
             <input matInput type="number"
             formControlName="customerAmount"
             placeholder="Montant"/>

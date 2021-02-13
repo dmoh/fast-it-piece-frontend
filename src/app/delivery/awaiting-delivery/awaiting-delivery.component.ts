@@ -150,18 +150,18 @@ export class AwaitingDeliveryComponent implements OnInit {
     return libelleStatus;
   }
 
-  getLibelleTimeSlot(status: string) {
-    let libelleStatus = "9h30";
-    switch (status) {
+  getLibelleTimeSlot(timeSlot: string) {
+    let libelleTimeSlot = timeSlot;
+    switch (timeSlot) {
       case 'AM':
-        libelleStatus = "9h30"
+        libelleTimeSlot = "9h30"
         break;
       case 'PM':
-        libelleStatus = "17h00"
+        libelleTimeSlot = "17h00"
         break;
       default:
-        libelleStatus;
+        libelleTimeSlot;
     }
-    return libelleStatus;
+    return libelleTimeSlot;
   }
 }
