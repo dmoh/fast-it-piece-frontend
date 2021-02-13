@@ -14,7 +14,7 @@
           <h3>
             Commerçant
           </h3>
-          <div><b>Nom: {{order.business.name}}</b></div>
+          <div *ngIf="order.business.name"><b>Nom: {{order.business.name}}</b></div>
           <div *ngIf="order.business.street"><b>Adresse:</b>{{order.business.street}}</div>
           <div *ngIf="order.business.city"><b>Ville:</b> {{order.business.city}}</div>
           <div *ngIf="order.business.zipCode"> <b>Code postal:</b> {{order.business.zipCode}}</div>
@@ -30,14 +30,14 @@
           <h3>
             Client
           </h3>
-          <div><b>Nom: {{order.customer.username | titlecase }} {{order.customer.lastname | titlecase }} {{order.customer.firstname | titlecase }}</b></div>
+          <div *ngIf="order.customer"><b>Nom: {{order.customer.username | titlecase }} {{order.customer.lastname | titlecase }} {{order.customer.firstname | titlecase }}</b></div>
           <div *ngIf="order.customer.addresses && order.customer.addresses[0]?.name"><b>Nom adresse:</b>{{order.customer.addresses[0].name}}</div>
           <div *ngIf="order.customer.addresses"><b>Adresse:</b>{{order.customer.addresses[0].street}}</div>
           <div *ngIf="order.customer.addresses"><b>Ville:</b> {{order.customer.addresses[0].city}}</div>
           <div *ngIf="order.customer.addresses"><b>Code postal:</b> {{order.customer.addresses[0].zipCode}}</div>
           <div *ngIf="order.customer.addresses && order.customer.addresses[0].comment"><b>Commentaire:</b> {{order.customer.addresses[0].comment}}</div>
           <div *ngIf="order.customer.phone"><b>Téléphone:</b> <a style="text-decoration: none" href="tel:{{order.customer.phone}}">{{order.customer.phone}}</a></div>
-          <hr>
+          <mat-divider></mat-divider>
           <div>
             <h4>Navigation</h4>
             <div *ngIf="order.customer.addresses[0].street"><a (click)="linkToAddresses('' + order.customer.addresses[0].street + ', ' + order.customer.addresses[0].zipCode + ' ' + order.customer.addresses[0].city)">{{order.customer.addresses[0].street}}, {{order.customer.addresses[0].zipCode}} {{order.customer.addresses[0].city}}</a></div>
