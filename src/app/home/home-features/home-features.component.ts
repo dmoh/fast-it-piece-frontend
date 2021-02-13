@@ -206,8 +206,8 @@ export class HomeFeaturesComponent implements OnInit {
         zipCode: (isCustomer) ? formValues.customerZipCode : formValues.proZipCode,
         mail: (isCustomer) ? formValues.customerMail : formValues.proMail,
         phone: (isCustomer) ? formValues.customerPhone : formValues.proPhone,
-        dateEstimated: ((isCustomer) ? formValues.customerDateEstimated : formValues.proDateEstimated) ?? new Date().toLocaleDateString(),
-        timeSlot: (isCustomer) ? formValues.customerTimeSlot : formValues.proTimeSlot ?? timeSlot,
+        dateEstimated: ((isCustomer) ? formValues.customerDateEstimated : formValues.proDateEstimated) ?? dateEstimated,
+        timeSlot: ((isCustomer) ? formValues.customerTimeSlot : formValues.proTimeSlot) ?? timeSlot,
         comment: (isCustomer) ? formValues.customerComment : formValues.proComment,
         isExpress: (isCustomer) ? formValues.customerExpress : formValues.proExpress,
         distanceInfos: (isCustomer) ? this.distanceInfoCustomer : this.distanceInfoPro, // * 100
@@ -285,7 +285,6 @@ export class HomeFeaturesComponent implements OnInit {
   }
 
   onCheckExpress() {
-
     this.customerForm.get('customerExpress').valueChanges.subscribe(val => {
       this.showDateEstimatedCustomer = true;
       this.deliveryExpressCustomer = val;
@@ -294,9 +293,8 @@ export class HomeFeaturesComponent implements OnInit {
       this.customerCtrl['customerTotalAmount'].setValue(this.totalAmountCustomer);
       if (val) {
         this.showDateEstimatedCustomer = false;
-        const timeSlot = (new Date().getHours()+1).toString() + "h" + (new Date().getMinutes()).toString();
         this.customerCtrl['customerDateEstimated'].setValue(null);
-        this.customerCtrl['customerTimeSlot'].setValue(timeSlot);
+        this.customerCtrl['customerTimeSlot'].setValue(null);
       }
     });
     
@@ -308,15 +306,13 @@ export class HomeFeaturesComponent implements OnInit {
       this.proCtrl['proTotalAmount'].setValue(this.totalAmountPro);
       if (val) {
         this.showDateEstimatedPro = false;
-        const timeSlot = (new Date().getHours()+1).toString() + "h" + (new Date().getMinutes()).toString();
-        
         this.proCtrl['proDateEstimated'].setValue(null);
-        this.proCtrl['proTimeSlot'].setValue(timeSlot);
+        this.proCtrl['proTimeSlot'].setValue(null);
       }
     });
   }
 
-  private onAmountChanges(formValues: any, amount: any ,  isCustomer: boolean=false) {    
+  private onAmountChanges(formValues: any, amount: any,  isCustomer: boolean=false) {    
     this.disabledButton = true;    
     this.loading = true;  
     
@@ -420,8 +416,6 @@ export class HomeFeaturesComponent implements OnInit {
       this.totalAmountPro = totalAmount;
       this.deliveryCostPro = deliveryCost;
     }
-    
-    // total = cout livraison + frais de service
   }
   
   // convenience getter for easy access to form fields
