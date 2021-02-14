@@ -223,6 +223,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
                 if (responsePayment.status === 'succeeded') {
                   this.paymentValidation = false;
                   this.showLoader = false;
+                  console.info(this.estimate);
                   // save order payment succeeded
                   this.cartService.saveOrder({
                     stripeResponse: responsePayment,
@@ -234,7 +235,13 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
                       keyboard: false
                     });
                     modalRef.componentInstance.title = `Devis ${this.estimate.estimateNumber}`;
-                    modalRef.componentInstance.message = `Création de la commande`; 
+                    let datePayedString = new Date().toLocaleString();
+                    let dateEstimatedString = this.estimate.dateEstimated?.date?.substr(0,10) ?? "";
+                    datePayedString = `Paiement pris en compte à ${datePayedString}. `;
+                    dateEstimatedString = (dateEstimatedString != "") ? `Préparation de la livraison prévu pour le ${dateEstimatedString} à ${this.estimate.timeSlot}. ` : "Préparation de la livraison. ";
+
+                    modalRef.componentInstance.message = `${datePayedString} 
+                                                          ${dateEstimatedString}`; 
                     // ${order.order_id}`;
                     modalRef.result.then(() => this.ngOnInit());
                   });

@@ -11,32 +11,35 @@
     <div class="row">
       <div class="col-md-12 card businessCard" style="flex-direction: row; flex-grow: 3 1 3;">
         <div *ngIf="order.business" class="col-md-6 col-xs-12 float-md-left">
-          <p>
+          <h3>
             Commerçant
-          </p>
-          <div><b>{{order.business.name}}</b></div>
+          </h3>
+          <div *ngIf="order.business.name"><b>Nom: {{order.business.name}}</b></div>
           <div *ngIf="order.business.street"><b>Adresse:</b>{{order.business.street}}</div>
           <div *ngIf="order.business.city"><b>Ville:</b> {{order.business.city}}</div>
-          <div *ngIf="order.business.zipcode"> <b>Code postal:</b> {{order.business.zipcode}}</div>
+          <div *ngIf="order.business.zipCode"> <b>Code postal:</b> {{order.business.zipCode}}</div>
           <div *ngIf="order.business.phone"><b>Telephone:</b> <a style="text-decoration: none" href="tel:{{order.business.phone}}">{{order.business.phone}}</a></div>
+          <hr>
           <div>
-            <h5>Navigation</h5>
+            <h4>Navigation</h4>
             <div *ngIf="order.business.street"><a
               (click)="linkToAddresses('' + order.business.street + ', ' + order.business.zipcode + ' ' + order.business.city)">{{order.business.street}}, {{order.business.zipcode}} {{order.business.city}}</a></div>
           </div>
         </div>
         <div class="col-md-6 col-xs-12">
-          <p>
+          <h3>
             Client
-          </p>
-          <div><b>Nom: {{order.customer.addresses[0].name | titlecase }}</b></div>
+          </h3>
+          <div *ngIf="order.customer"><b>Nom: {{order.customer.username | titlecase }} {{order.customer.lastname | titlecase }} {{order.customer.firstname | titlecase }}</b></div>
+          <div *ngIf="order.customer.addresses && order.customer.addresses[0]?.name"><b>Nom adresse:</b>{{order.customer.addresses[0].name}}</div>
           <div *ngIf="order.customer.addresses"><b>Adresse:</b>{{order.customer.addresses[0].street}}</div>
           <div *ngIf="order.customer.addresses"><b>Ville:</b> {{order.customer.addresses[0].city}}</div>
           <div *ngIf="order.customer.addresses"><b>Code postal:</b> {{order.customer.addresses[0].zipCode}}</div>
           <div *ngIf="order.customer.addresses && order.customer.addresses[0].comment"><b>Commentaire:</b> {{order.customer.addresses[0].comment}}</div>
           <div *ngIf="order.customer.phone"><b>Téléphone:</b> <a style="text-decoration: none" href="tel:{{order.customer.phone}}">{{order.customer.phone}}</a></div>
+          <mat-divider></mat-divider>
           <div>
-            <h5>Navigation</h5>
+            <h4>Navigation</h4>
             <div *ngIf="order.customer.addresses[0].street"><a (click)="linkToAddresses('' + order.customer.addresses[0].street + ', ' + order.customer.addresses[0].zipCode + ' ' + order.customer.addresses[0].city)">{{order.customer.addresses[0].street}}, {{order.customer.addresses[0].zipCode}} {{order.customer.addresses[0].city}}</a></div>
           </div>
         </div>

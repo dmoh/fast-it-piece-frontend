@@ -48,6 +48,9 @@ export class HomeFeaturesComponent implements OnInit {
   expressCostCustomer: number = null;
   expressCostPro: number = null;
 
+  showDateEstimatedCustomer: boolean = true;
+  showDateEstimatedPro: boolean = true;
+
   serviceCharge: number = 0.80;
 
   userAdress: AddressMatrix;
@@ -82,7 +85,7 @@ export class HomeFeaturesComponent implements OnInit {
       proCountry: [''],
       proAddressName: [''],
       proDateEstimated: [''],
-      proTimeSlot: ['', Validators.required],
+      proTimeSlot: [''],
       proMail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
       proPhone: [''],
       proExpress: [''],
@@ -102,7 +105,7 @@ export class HomeFeaturesComponent implements OnInit {
       customerCountry: [''],
       customerAddressName: [''],
       customerDateEstimated: [''],
-      customerTimeSlot: ['', Validators.required],
+      customerTimeSlot: [''],
       customerMail: ['', Validators.pattern('[a-zA-Z0-9\-_.]{2,}(@)+[a-zA-Z0-9\-_.]{2,}.+[a-zA-Z0-9\-_.]{2,}')],
       customerPhone: ['', Validators.required],
       customerExpress: [''],
@@ -125,7 +128,7 @@ export class HomeFeaturesComponent implements OnInit {
 
 
     this.onCalculChanges();
-    this.onCheckCost();
+    this.onCheckExpress();
     this.onShowExpress();
   }
 
@@ -145,7 +148,8 @@ export class HomeFeaturesComponent implements OnInit {
         if (!this.showExpressPro && this.proCtrl['proDateEstimated'].value == null ) {
           this.error = "Veuillez appliqué la livraison express ou renseigner une date de livraison.";
         }
-        if (this.error != null || this.error.trim() != "") {
+
+        if (this.error == null && this.error.trim() != "") {
           return;
         }
         this.saveEstimate(this.proForm.value);
@@ -170,9 +174,8 @@ export class HomeFeaturesComponent implements OnInit {
         if (!this.showExpressCustomer && this.customerCtrl['customerDateEstimated'].value == null ) {
           this.error = "Veuillez appliqué la livraison express ou renseigner une date de livraison.";
         }
-        alert("custom "+ this.error);
 
-        if (this.error != null || this.error.trim() != "") {
+        if (this.error == null || this.error.trim() != "") {
           return;
         }
         this.saveEstimate(this.customerForm.value, true);
@@ -184,6 +187,8 @@ export class HomeFeaturesComponent implements OnInit {
   }
 
   private saveEstimate(formValues: any, isCustomer: boolean = false) {
+    const dateEstimated = (new Date().getFullYear()).toString() + "-" + (new Date().getMonth()).toString() + "-" + (new Date().getDay()).toString();
+    const timeSlot = (new Date().getHours()+1).toString() + "h" + (new Date().getMinutes()).toString();
     let estimateSave: any;
 
     estimateSave = {
@@ -200,8 +205,8 @@ export class HomeFeaturesComponent implements OnInit {
         zipCode: (isCustomer) ? formValues.customerZipCode : formValues.proZipCode,
         mail: (isCustomer) ? formValues.customerMail : formValues.proMail,
         phone: (isCustomer) ? formValues.customerPhone : formValues.proPhone,
-        dateEstimated: (isCustomer) ? formValues.customerDateEstimated : formValues.proDateEstimated,
-        timeSlot: (isCustomer) ? formValues.customerTimeSlot : formValues.proTimeSlot,
+        dateEstimated: ((isCustomer) ? formValues.customerDateEstimated : formValues.proDateEstimated) ?? dateEstimated,
+        timeSlot: ((isCustomer) ? formValues.customerTimeSlot : formValues.proTimeSlot) ?? timeSlot,
         comment: (isCustomer) ? formValues.customerComment : formValues.proComment,
         isExpress: (isCustomer) ? formValues.customerExpress : formValues.proExpress,
         distanceInfos: (isCustomer) ? this.distanceInfoCustomer : this.distanceInfoPro, // * 100
@@ -227,6 +232,7 @@ export class HomeFeaturesComponent implements OnInit {
       , error => {
         this.error = error?.toString().toLowerCase().includes("integrity constraint violation") ? "Numero de devis (déja existant/mal renseigné)" : error;
         this.success = null;
+        console.error(error);
       });
   }
 
@@ -277,23 +283,35 @@ export class HomeFeaturesComponent implements OnInit {
     });
   }
 
-  onCheckCost() {
+  onCheckExpress() {
     this.customerForm.get('customerExpress').valueChanges.subscribe(val => {
+      this.showDateEstimatedCustomer = true;
       this.deliveryExpressCustomer = val;
       this.expressCostCustomer = val ? 10 : -10;
       this.totalAmountCustomer += this.expressCostCustomer;
-      this.customerForm.controls['customerTotalAmount'].setValue(this.totalAmountCustomer);
+      this.customerCtrl['customerTotalAmount'].setValue(this.totalAmountCustomer);
+      if (val) {
+        this.showDateEstimatedCustomer = false;
+        this.customerCtrl['customerDateEstimated'].setValue(null);
+        this.customerCtrl['customerTimeSlot'].setValue(null);
+      }
     });
 
     this.proForm.get('proExpress').valueChanges.subscribe(val => {
+      this.showDateEstimatedPro = true;
       this.deliveryExpressPro = val;
       this.expressCostPro = val ? 10 : -10;
       this.totalAmountPro += this.expressCostPro;
-      this.customerForm.controls['customerTotalAmount'].setValue(this.totalAmountCustomer);
+      this.proCtrl['proTotalAmount'].setValue(this.totalAmountPro);
+      if (val) {
+        this.showDateEstimatedPro = false;
+        this.proCtrl['proDateEstimated'].setValue(null);
+        this.proCtrl['proTimeSlot'].setValue(null);
+      }
     });
   }
 
-  private onAmountChanges(formValues: any, amount: any ,  isCustomer: boolean=false) {
+  private onAmountChanges(formValues: any, amount: any,  isCustomer: boolean=false) {
     this.disabledButton = true;
     this.loading = true;
     const address = {
@@ -355,17 +373,17 @@ export class HomeFeaturesComponent implements OnInit {
       if (val != null && val.trim() != "" ) {
         this.deliveryExpressPro = false;
         this.showExpressPro = false;
-        this.proForm.controls["proExpress"].setValue(this.deliveryExpressPro);
+
+        this.proCtrl["proExpress"].setValue(this.deliveryExpressPro);
       }
     });
 
     this.customerForm.get("customerDateEstimated").valueChanges.subscribe(val => {
       this.showExpressCustomer = true;
-      if (val != null && val.trim() != "" )
-      {
+      if (val != null && val.trim() != "" ) {
         this.deliveryExpressCustomer = false;
         this.showExpressCustomer = false;
-        this.customerForm.controls["customerExpress"].setValue(this.deliveryExpressCustomer);
+        this.customerCtrl["customerExpress"].setValue(this.deliveryExpressCustomer);
       }
     });
   }
@@ -386,19 +404,17 @@ export class HomeFeaturesComponent implements OnInit {
 
     if (isCustomer) {
       this.customerCtrl['customerDeliveryCost'].setValue(deliveryCost);
-      this.customerForm.controls['customerTotalAmount'].setValue(totalAmount);
+      this.customerCtrl['customerTotalAmount'].setValue(totalAmount);
       this.distanceInfoCustomer = distance;
       this.totalAmountCustomer = totalAmount;
       this.deliveryCostCustomer = deliveryCost;
     } else {
       this.proCtrl['proDeliveryCost'].setValue(deliveryCost);
-      this.proForm.controls['proTotalAmount'].setValue(totalAmount);
+      this.proCtrl['proTotalAmount'].setValue(totalAmount);
       this.distanceInfoPro = distance;
       this.totalAmountPro = totalAmount;
       this.deliveryCostPro = deliveryCost;
     }
-
-    // total = cout livraison + frais de service
   }
 
   // convenience getter for easy access to form fields
