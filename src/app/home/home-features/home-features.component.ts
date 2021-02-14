@@ -237,6 +237,14 @@ export class HomeFeaturesComponent implements OnInit {
       });
   }
 
+  onValidateAmount(isCustomer: boolean = false) {
+    const formValues = isCustomer ? this.customerForm.value : this.proForm.value;
+    const amount = isCustomer ? this.amountCustomer : this.amountPro;
+
+    console.log("frmValues", formValues, isCustomer);
+    this.onAmountChanges(formValues, amount,  isCustomer);
+  }
+
   handleAddressChange(event, isCustomer:boolean = false) {
     if (!!event.formatted_address) {
       console.log("event", event);
@@ -262,25 +270,27 @@ export class HomeFeaturesComponent implements OnInit {
       }
       // console.log("adr_maps", event?.address_components);
       this.selectedAddress = event;
-      
-      if (isCustomer) {
-        this.onAmountChanges(this.customerForm.value, this.amountCustomer, isCustomer);
-      } else {
-        this.onAmountChanges(this.proForm.value, this.amountPro);
-      }
 
+      this.disabledButton = true;
+      // if (isCustomer) {
+      //   this.onAmountChanges(this.customerForm.value, this.amountCustomer, isCustomer);
+      // } else {
+      //   this.onAmountChanges(this.proForm.value, this.amountPro);
+      // }
     }
   }
   
   onCalculChanges() {
     this.customerForm.get('customerAmount').valueChanges.subscribe(val => {
       this.amountCustomer = val;
-      this.onAmountChanges(this.customerForm.value, val, true);
+      this.disabledButton = true;
+      // this.onAmountChanges(this.customerForm.value, val, true);
     });
     
     this.proForm.get('proAmount').valueChanges.subscribe(val => {
       this.amountPro = val;
-      this.onAmountChanges(this.proForm.value, val);
+      this.disabledButton = true;
+      // this.onAmountChanges(this.proForm.value, val);
     });
   }
 
@@ -330,7 +340,9 @@ export class HomeFeaturesComponent implements OnInit {
 
     const addressOriginFormat= `${this.userAdress.street}, ${this.userAdress.city}, ${this.userAdress.zipCode}`;
     const addressDestFormat = `${adrDest.street}, ${adrDest.city}, ${adrDest.zipCode}`;
-    //     // send result google for calculate backend side
+
+    console.log(addressOriginFormat , addressDestFormat);
+    // send result google for calculate backend side
     const directionsService = new google.maps.DistanceMatrixService();
     directionsService.getDistanceMatrix({
       origins: [addressOriginFormat],
@@ -339,7 +351,7 @@ export class HomeFeaturesComponent implements OnInit {
     },
     (response, status) => {
       if (response.rows === null) {
-      }
+      } 
       if (response.rows[0].elements[0].status === 'OK') {
         const responseDistance = response.rows[0].elements[0];
         const request = {
@@ -357,14 +369,15 @@ export class HomeFeaturesComponent implements OnInit {
         );
           
         exec.subscribe( responseMarginService => {
-          console.log("exec", responseMarginService);
+          // console.log("exec", responseMarginService);
           this.generateAllPrices(isCustomer, responseMarginService, amount);
           this.loading = false;
           this.disabledButton = false;
         });
       }
       else {
-        console.log("Error distance")
+        console.log("Error distance");
+        this.loading = false;
       }
     });
   }
