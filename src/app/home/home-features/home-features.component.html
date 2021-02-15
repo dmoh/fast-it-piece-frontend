@@ -147,7 +147,7 @@
         </p>
       </div>
 
-      <div *ngIf="totalAmountPro && amountPro">
+      <div *ngIf="totalAmountPro && amountPro && !disabledButton">
         <hr>
         <div class="align-row">
           <div class="col-md-6">
@@ -206,6 +206,10 @@
       </div>
 
       <!-- <button mat-raised-button [disabled]="disabledButton" color="primary" (click)= "sendEstimate('professional')"> -->
+      <button type="button" mat-raised-button (click)="onValidateAmount()" color="primary">
+        Calculer montant total
+        <mat-icon>calculate</mat-icon>
+      </button>
       <button mat-raised-button [disabled]="disabledButton" color="primary">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
         Envoyer devis
@@ -385,7 +389,7 @@
         </p>
       </div>
 
-      <div *ngIf="totalAmountCustomer && amountCustomer">
+      <div *ngIf="totalAmountCustomer && amountCustomer && !disabledButton">
         <hr>
         <div class="align-row">
           <div class="col-md-6">
@@ -445,7 +449,10 @@
         <hr>
       </div>
 
-
+      <button type="button" mat-raised-button (click)="onValidateAmount(true)" color="primary">
+        Calculer montant total
+        <mat-icon>calculate</mat-icon>
+      </button>
       <!-- <button mat-raised-button [disabled]="disabledButton"  type="button" (click)="sendEstimate('customer')" color="primary"> -->
         <button mat-raised-button [disabled]="disabledButton" color="primary">
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
