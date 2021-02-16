@@ -26,7 +26,7 @@
                 (click)="linkToAddresses('' + estimate.customer.addresses[0].street + ', ' + estimate.customer.addresses[0].zipcode + ' ' + estimate.customer.addresses[0].city)">
                 {{estimate.customer.addresses[0].street}}, {{estimate.customer.addresses[0].zipcode}} {{estimate.customer.addresses[0].city}}</a></div>
                 <div *ngIf="estimate.distanceMeter"><b>Distance:</b> {{estimate.distanceMeter}} Km</div>
-                <div *ngIf="estimate.date"><b>Date de création:</b> {{ estimate.date.date | date : "dd.MM.yyyy à hh:mm" }}</div>
+                <div *ngIf="estimate.date"><b>Date de création:</b> {{ estimate.date.date | date : "dd.MM.yyyy à hh" }}h{{estimate.date.date | date : "mm" }}</div>
                 <div *ngIf="estimate.dateEstimated"><b>Date de livraison prévue:</b> {{ estimate.dateEstimated.date | date : "dd.MM.yyyy à" }} {{estimate.timeSlot}}</div>
             </div>
             <hr flex/>
@@ -36,6 +36,7 @@
             <h3>Recapitulatif montant</h3>
             <div *ngIf="estimate.delivery_cost"><b>Cout de la livraison:</b> {{ (estimate.delivery_cost.toFixed(2)) }} €</div>
             <div *ngIf="estimate.amount"><b>Montant:</b> {{ (estimate.amount.toFixed(2)) }} €</div>
+            <div *ngIf="marginCost"><b>Marge:</b> {{ (marginCost.toFixed(2)) }} €</div>
             <div *ngIf="estimate.totalAmount"><b>Total:</b> {{ (estimate.totalAmount.toFixed(2)) }} €</div>
           </div>
 

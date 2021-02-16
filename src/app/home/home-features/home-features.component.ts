@@ -187,7 +187,7 @@ export class HomeFeaturesComponent implements OnInit {
   }
 
   private saveEstimate(formValues: any, isCustomer: boolean = false) {
-    const dateEstimated = (new Date().getFullYear()).toString() + "-" + (new Date().getMonth()).toString() + "-" + (new Date().getDay()).toString();
+    const dateEstimated = (new Date().getFullYear()).toString() + "-" + (new Date().getMonth()+1).toString() + "-" + (new Date().getDate()).toString();
     const timeSlot = (new Date().getHours()+1).toString() + "h" + (new Date().getMinutes()).toString();
     let estimateSave: any;
 
