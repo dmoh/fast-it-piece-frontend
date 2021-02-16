@@ -9,6 +9,7 @@ export class Estimate {
     totalAmount: number;
     id: number;
     isPayed: boolean;
+    isExpress: boolean;
     payedAt: any;
     status: string;
     serviceCharge: number;

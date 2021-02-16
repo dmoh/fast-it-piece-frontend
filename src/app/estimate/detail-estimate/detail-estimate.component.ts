@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BusinessEstimateService } from '../services/business-estimate.service';
 import { ActivatedRoute, Router, RouterState } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Estimate } from 'src/app/_models/estimate';
 
 @Component({
   selector: 'app-detail-estimate',
@@ -13,6 +14,7 @@ export class DetailEstimateComponent implements OnInit {
   estimateId: string;
   estimate: any;
   isDelivering: boolean;
+  marginCost: number = 0;
 
   constructor(private fb: FormBuilder,
     private estimateService: BusinessEstimateService,
@@ -29,6 +31,8 @@ export class DetailEstimateComponent implements OnInit {
       // let order: Estimate = new Order();
       this.estimate = estimateById.estimates.find( x => x.estimateNumber == this.estimateId );
       console.info("this.estimate", this.estimate);
+      this.marginCost = +this.estimate.totalAmount - this.estimate.amount - +this.estimate.delivery_cost - +this.estimate.service_charge ;
+      this.marginCost = this.estimate.isExpress ? this.marginCost - 10: this.marginCost;
     });  
   }
 
