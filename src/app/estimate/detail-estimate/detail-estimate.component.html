@@ -17,6 +17,7 @@
           <div *ngIf="estimate.customer.addresses[0]?.city"><b>Ville:</b> {{estimate.customer.addresses[0].city}}</div>
           <div *ngIf="estimate.customer.addresses[0]?.zipcode"> <b>Code postal:</b> {{estimate.customer.addresses[0].zipcode}}</div>
           <div *ngIf="estimate.customer.phone"><b>Telephone:</b> <a style="text-decoration: none" href="tel:{{estimate.customer.phone}}"> {{estimate.customer.phone}} </a></div>
+          <div *ngIf="estimate.customer.email"><b>Adresse mail:</b> <a style="text-decoration: none" href="mailto:{{estimate.customer.email}}"> {{estimate.customer.email}} </a></div>
           
           <div layout="row">
             <hr flex/>

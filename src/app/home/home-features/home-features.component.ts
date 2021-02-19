@@ -143,7 +143,7 @@ export class HomeFeaturesComponent implements OnInit {
           return;
         }
         this.totalAmountPro = (this.deliveryExpressPro) ? this.totalAmountPro + 10 : this.totalAmountPro;
-        this.proForm.controls['proTotalAmount'].setValue(this.totalAmountPro);
+        this.proCtrl['proTotalAmount'].setValue(this.totalAmountPro);
         if (this.proForm.invalid) {
           this.error = "Renseigner les champs obligatoire ";
         } 
@@ -151,7 +151,16 @@ export class HomeFeaturesComponent implements OnInit {
           this.error = "Veuillez appliqué la livraison express ou renseigner une date de livraison.";
         }
 
-        if (this.error == null && this.error.trim() != "") {
+        if (this.proCtrl['proPhone'].value.indexOf("+") != 0) {
+          this.proCtrl['proPhone'].setErrors({
+            notValid: true
+          });
+          
+          console.log(this.proCtrl['proPhone']);
+          this.error = "Veuillez renseigné votre indicatif téléphonique suivi de votre n° telephone.";
+        }
+        
+        if (this.error?.trim() != "") {
           return;
         }
         this.saveEstimate(this.proForm.value);
@@ -168,17 +177,22 @@ export class HomeFeaturesComponent implements OnInit {
         } 
         this.totalAmountCustomer = (this.deliveryExpressCustomer) ? this.totalAmountCustomer + 10 : this.totalAmountCustomer;
         console.log(this.totalAmountCustomer);
-        this.customerForm.controls['customerTotalAmount'].setValue(this.totalAmountCustomer);
+        this.customerCtrl['customerTotalAmount'].setValue(this.totalAmountCustomer);
         if (this.customerForm.invalid) {
           this.error = "Renseigner les champs obligatoire ";
         } 
         if (!this.showExpressCustomer && this.customerCtrl['customerDateEstimated'].value == null ) {
           this.error = "Veuillez appliqué la livraison express ou renseigner une date de livraison.";
         }
+
+        if (this.customerCtrl['customerPhone'].value.indexOf("+") != 0) {
+          this.error = "Veuillez renseigné votre indicatif téléphonique suivi de votre telephone.";
+        }
         
-        if (this.error == null || this.error.trim() != "") {
+        if (this.error?.trim() != "") {
           return;
         }
+
         this.saveEstimate(this.customerForm.value, true);
       }
       break;
