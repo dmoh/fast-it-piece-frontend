@@ -87,6 +87,12 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       // let order: Estimate = new Order();
       console.info("this.estimate", estimate);
       this.estimate = estimate;
+      
+      this.estimate.customer.addresses = (this.estimate.customer.addresses as Array<any>).filter( adr => adr.date?.date == this.estimate.date?.date ) 
+      ?? (this.estimate.customer.addresses as Array<any>).filter( adr => adr.date?.date >= this.estimate.date?.date ) 
+      ?? (this.estimate.customer.addresses as Array<any>).filter( adr => adr.date?.date != this.estimate.date?.date )
+      ?? this.estimate.customer.addresses;
+
       this.showLoader = false;
 
       this.cartService.generateTotalCart(true);

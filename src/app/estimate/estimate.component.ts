@@ -64,7 +64,7 @@ export class EstimateComponent implements OnInit, AfterViewInit {
       });
 
       if (!isAuthorized) {
-        console.log("Vous n'avez pas acces à cette page vous n'êtes pas un livreur.");
+        console.log("Vous n'avez pas acces à cette page vous n'êtes pas un commercant.");
         this.router.navigate(['home']);
       }
     } else {

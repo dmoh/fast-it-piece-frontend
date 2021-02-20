@@ -31,6 +31,14 @@ export class DetailEstimateComponent implements OnInit {
       // let order: Estimate = new Order();
       this.estimate = estimateById.estimates.find( x => x.estimateNumber == this.estimateId );
       console.info("this.estimate", this.estimate);
+      
+      this.estimate.customer.addresses = (this.estimate.customer.addresses as Array<any>).filter( adr => adr.date?.date == this.estimate.date?.date ) 
+                                          ?? (this.estimate.customer.addresses as Array<any>).filter( adr => adr.date?.date >= this.estimate.date?.date ) 
+                                          ?? (this.estimate.customer.addresses as Array<any>).filter( adr => adr.date?.date != this.estimate.date?.date )
+                                          ?? this.estimate.customer.addresses;
+
+      this.estimate.customer.addresses = this.estimate.customer.addresses.sort((adrA, adrB) => adrB.id - adrA.id);
+      console.info("this.estimate.customer.addresses", this.estimate.customer.addresses);
       this.marginCost = +this.estimate.totalAmount - this.estimate.amount - +this.estimate.delivery_cost - +this.estimate.service_charge ;
       this.marginCost = this.estimate.isExpress ? this.marginCost - 10: this.marginCost;
     });  

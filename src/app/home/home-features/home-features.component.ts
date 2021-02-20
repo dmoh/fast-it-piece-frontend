@@ -157,7 +157,7 @@ export class HomeFeaturesComponent implements OnInit {
           });
           
           console.log(this.proCtrl['proPhone']);
-          this.error = "Veuillez renseigné votre indicatif téléphonique suivi de votre n° telephone.";
+          this.error = "Veuillez renseigner votre indicatif téléphonique suivi de votre n° telephone.";
         }
         
         if (this.error?.trim() != "") {
@@ -186,7 +186,7 @@ export class HomeFeaturesComponent implements OnInit {
         }
 
         if (this.customerCtrl['customerPhone'].value.indexOf("+") != 0) {
-          this.error = "Veuillez renseigné votre indicatif téléphonique suivi de votre telephone.";
+          this.error = "Veuillez renseigner votre indicatif téléphonique suivi de votre telephone.";
         }
         
         if (this.error?.trim() != "") {
