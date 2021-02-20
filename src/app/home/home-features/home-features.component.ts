@@ -156,7 +156,6 @@ export class HomeFeaturesComponent implements OnInit {
             notValid: true
           });
           
-          console.log(this.proCtrl['proPhone']);
           this.error = "Veuillez renseigner votre indicatif téléphonique suivi de votre n° telephone.";
         }
         
@@ -186,6 +185,9 @@ export class HomeFeaturesComponent implements OnInit {
         }
 
         if (this.customerCtrl['customerPhone'].value.indexOf("+") != 0) {
+          this.customerCtrl['customerPhone'].setErrors({
+            notValid: true
+          });
           this.error = "Veuillez renseigner votre indicatif téléphonique suivi de votre telephone.";
         }
         
@@ -256,7 +258,8 @@ export class HomeFeaturesComponent implements OnInit {
     const amount = isCustomer ? this.amountCustomer : this.amountPro;
 
     console.log("frmValues", formValues, isCustomer);
-    this.onAmountChanges(formValues, amount,  isCustomer);
+
+      this.onAmountChanges(formValues, amount,  isCustomer);
   }
 
   handleAddressChange(event, isCustomer:boolean = false) {

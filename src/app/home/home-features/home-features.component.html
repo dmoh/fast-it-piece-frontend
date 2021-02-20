@@ -413,7 +413,7 @@
           <hr>
           <div style="display: flex" class="col-md-6">
             <div style="flex: 1">Frais de service</div>
-            <div>{{serviceCharge}} €</div>
+            <div>{{ (serviceCharge.toFixed(2)).replace('.', ',') }} €</div>
           </div>
         </div>
         <div class="align-row">
