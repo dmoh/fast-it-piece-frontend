@@ -7,7 +7,7 @@
     <thead>
       <tr>
         <th>Numéro de commande</th>
-        <th>Restaurant</th>
+        <th>Destinataire</th>
         <th>Date</th>
         <th>Heure</th>
         <th>Cout de la livraison</th>
@@ -17,7 +17,7 @@
       <tbody *ngIf="deliverer">
         <tr *ngFor="let order of deliverer.orders" >
           <ng-container *ngIf="order">
-            <td>{{ order.id }}</td>
+            <td>{{ order.noOrder }}</td>
             <ng-container *ngIf="order.business">
               <td >{{ order.business.name }}</td>
             </ng-container>
