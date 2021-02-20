@@ -5,13 +5,16 @@
       <div class="wrapper-form">
         <div style="width: 100%; display: flex; justify-content: center">
           <div>
+            <img src="assets/logo_abpiece_auto.jpg" width="200" height="200" alt="logo ab pièce">
+          </div>
+          <div>
             <img src="assets/logo-fastit.jpg" width="200" height="200" alt="logo fast it">
           </div>
         </div>
         <div class="content">
 
           <mat-tab-group color="warn" mat-align-tabs="center">
-            
+
             <mat-tab label="Connexion">
               <form class="mt-3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
@@ -20,7 +23,7 @@
                       <!-- <mat-label>Email</mat-label> -->
                       <input matInput type="text"
                        formControlName="email"
-                       placeholder="Email" 
+                       placeholder="Email"
                        >
                         <!-- [errorStateMatcher]="matcher" -->
                       <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
@@ -41,7 +44,7 @@
                   <a routerLink="/password" class="ForgetPwd">Mot de passe oublié ?</a>
                 </div>
                 <button mat-raised-button [disabled]="loading" color="primary">
-                  Se connecter 
+                  Se connecter
                   <mat-icon>login</mat-icon></button>
                 <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
               </form>
@@ -82,9 +85,9 @@
                     </mat-form-field>
                   </p>
                 </div>
-                
+
                 <button mat-raised-button [disabled]="loading" (click)="onPayClick()" type="button" color="primary">
-                  Payer 
+                  Payer
                   <mat-icon>toll</mat-icon>
                 </button>
                 <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>

@@ -38,8 +38,9 @@
             <mat-label>Adresse</mat-label>
             <input matInput type="text"
             formControlName="proAddress"
+             name="proAddress"
             (onAddressChange)="handleAddressChange($event)"
-            (autocomplete)="'undefined'"
+            autocomplete="doNotAutocomplete"
             id="locate-mePro"
             ngx-google-places-autocomplete
             [options]='options'
@@ -277,8 +278,9 @@
             <mat-label>Adresse</mat-label>
             <input matInput type="text"
             formControlName="customerAddress"
+             name="customerAddress"
             (onAddressChange)="handleAddressChange($event, true)"
-            autocomplete="off"
+            autocomplete="doNotAutocomplete"
             id="locate-me"
             ngx-google-places-autocomplete
             [options]='options'
