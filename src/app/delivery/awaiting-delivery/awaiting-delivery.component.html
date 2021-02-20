@@ -16,8 +16,8 @@
       </tr>
     </thead>
     <tbody *ngIf="orders">
-      <tr class="order" *ngFor="let order of orders" routerLink="/delivery/detail-delivery/{{order.id}}" >
-        <td>{{ order.id }}</td>
+      <tr class="order" *ngFor="let order of orders" routerLink="/delivery/detail-delivery/{{order.noOrder}}" >
+        <td>{{ order.noOrder }}</td>
         <td *ngIf="order.customer.username">{{ order.customer.username }}</td>
         <td *ngIf="order.customer.lastName">{{ order.customer.lastName }}</td>
         <td>{{ order.date.date | date: 'dd/MM/yyyy HH:mm'}}</td>

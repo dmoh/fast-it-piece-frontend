@@ -141,7 +141,7 @@ export class HomeFeaturesComponent implements OnInit {
           return;
         }
         this.totalAmountPro = (this.deliveryExpressPro) ? this.totalAmountPro + 10 : this.totalAmountPro;
-        this.proForm.controls['proTotalAmount'].setValue(this.totalAmountPro);
+        this.proCtrl['proTotalAmount'].setValue(this.totalAmountPro);
         if (this.proForm.invalid) {
           this.error = "Renseigner les champs obligatoire ";
         }
@@ -149,7 +149,15 @@ export class HomeFeaturesComponent implements OnInit {
           this.error = "Veuillez appliqué la livraison express ou renseigner une date de livraison.";
         }
 
-        if (this.error == null && this.error.trim() != "") {
+        if (this.proCtrl['proPhone'].value.indexOf("+") != 0) {
+          this.proCtrl['proPhone'].setErrors({
+            notValid: true
+          });
+          
+          this.error = "Veuillez renseigner votre indicatif téléphonique suivi de votre n° telephone.";
+        }
+        
+        if (this.error?.trim() != "") {
           return;
         }
         this.saveEstimate(this.proForm.value);
@@ -167,7 +175,7 @@ export class HomeFeaturesComponent implements OnInit {
         }
         this.totalAmountCustomer = (this.deliveryExpressCustomer) ? this.totalAmountCustomer + 10 : this.totalAmountCustomer;
         console.log(this.totalAmountCustomer);
-        this.customerForm.controls['customerTotalAmount'].setValue(this.totalAmountCustomer);
+        this.customerCtrl['customerTotalAmount'].setValue(this.totalAmountCustomer);
         if (this.customerForm.invalid) {
           this.error = "Renseigner les champs obligatoire ";
         }
@@ -175,9 +183,21 @@ export class HomeFeaturesComponent implements OnInit {
           this.error = "Veuillez appliqué la livraison express ou renseigner une date de livraison.";
         }
 
+<<<<<<< HEAD
         if (this.error == null || this.error.trim() != "") {
+=======
+        if (this.customerCtrl['customerPhone'].value.indexOf("+") != 0) {
+          this.customerCtrl['customerPhone'].setErrors({
+            notValid: true
+          });
+          this.error = "Veuillez renseigner votre indicatif téléphonique suivi de votre telephone.";
+        }
+        
+        if (this.error?.trim() != "") {
+>>>>>>> 95d26bff466f6c0b0ba7567fd1ed9800d8972122
           return;
         }
+
         this.saveEstimate(this.customerForm.value, true);
       }
       break;
@@ -241,7 +261,8 @@ export class HomeFeaturesComponent implements OnInit {
     const amount = isCustomer ? this.amountCustomer : this.amountPro;
 
     console.log("frmValues", formValues, isCustomer);
-    this.onAmountChanges(formValues, amount,  isCustomer);
+
+      this.onAmountChanges(formValues, amount,  isCustomer);
   }
 
   handleAddressChange(event, isCustomer:boolean = false) {
