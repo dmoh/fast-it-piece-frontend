@@ -18,9 +18,8 @@
         <tr *ngFor="let order of deliverer.orders" >
           <ng-container *ngIf="order">
             <td>{{ order.noOrder }}</td>
-            <ng-container *ngIf="order.business">
-              <td >{{ order.business.name }}</td>
-            </ng-container>
+            <td *ngIf="order.customer.username">{{ order.customer.username }}</td>
+            <td *ngIf="order.customer.lastName">{{ order.customer.lastName }}</td>
             <td *ngIf="!order.business"> </td>
             <td>{{ order.date_delivered.date | date: 'dd/MM/yyyy' }}</td>
             <td>{{ order.date_delivered.date | date: 'HH:mm' }}</td>
