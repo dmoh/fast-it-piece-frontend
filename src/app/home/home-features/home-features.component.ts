@@ -36,6 +36,9 @@ export class HomeFeaturesComponent implements OnInit {
 
   amountCustomer: number = 0;
   amountPro: number = 0;
+  
+  priceCustomer: number = 0;
+  pricePro: number = 0;
 
   loading: boolean = false;
   
@@ -425,7 +428,7 @@ export class HomeFeaturesComponent implements OnInit {
     // console.log(<number> response.marginService.marginFastIt * amount);
     
     const marginCost = (<number> amount * <number> response.marginService.marginFastIt);
-    console.log("margin", marginCost);
+    console.log("margin", marginCost);  
     const totalAmount = marginCost + amount + <number> response.marginService.serviceCharge 
     + <number> response.deliveryCost.deliveryInfos; 
     console.log("total", totalAmount);
@@ -439,12 +442,14 @@ export class HomeFeaturesComponent implements OnInit {
       this.distanceInfoCustomer = distance;
       this.totalAmountCustomer = totalAmount;
       this.deliveryCostCustomer = deliveryCost;
+      this.priceCustomer = marginCost + amount;
     } else {
       this.proCtrl['proDeliveryCost'].setValue(deliveryCost);
       this.proCtrl['proTotalAmount'].setValue(totalAmount);
       this.distanceInfoPro = distance;
       this.totalAmountPro = totalAmount;
       this.deliveryCostPro = deliveryCost;
+      this.pricePro = marginCost + amount;
     }
   }
   
