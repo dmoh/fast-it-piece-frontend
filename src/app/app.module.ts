@@ -21,6 +21,7 @@ import { ProfessionalComponent } from './professional/professional.component';
 import { InfoModalComponent } from './info-modal/info-modal.component';
 import { EstimateModule } from './estimate/estimate.module';
 import { DeliveryModule } from './delivery/delivery.module';
+import { GeneralTermsModalComponent } from './general-terms-modal/general-terms-modal.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { DeliveryModule } from './delivery/delivery.module';
     SidenavResponsiveComponent,
     CustomerComponent,
     ProfessionalComponent,
+    GeneralTermsModalComponent,
     // ConfirmationCodePaymentModalComponent,
     // CheckoutComponent,
     // InfoModalComponent,
@@ -58,6 +60,7 @@ import { DeliveryModule } from './delivery/delivery.module';
     CoreModule,
     HomeComponent,
     Page404Component,
+    GeneralTermsModalComponent,
 ]
 })
 export class AppModule { }

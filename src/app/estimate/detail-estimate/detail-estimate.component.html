@@ -26,8 +26,8 @@
               <div *ngIf="estimate.customer.addresses[0]?.street"><a
                 (click)="linkToAddresses('' + estimate.customer.addresses[0].street + ', ' + estimate.customer.addresses[0].zipcode + ' ' + estimate.customer.addresses[0].city)">
                 {{estimate.customer.addresses[0].street}}, {{estimate.customer.addresses[0].zipcode}} {{estimate.customer.addresses[0].city}}</a></div>
-                <div *ngIf="estimate.distanceMeter"><b>Distance:</b> {{estimate.distanceMeter}} Km</div>
-                <div *ngIf="estimate.date"><b>Date de création:</b> {{ estimate.date.date | date : "dd.MM.yyyy à hh" }}h{{estimate.date.date | date : "mm" }}</div>
+                <div *ngIf="estimate.distanceMeter"><b>Distance:</b> {{(estimate.distanceMeter / 1000).toFixed(2)}} Km</div>
+                <div *ngIf="estimate.date"><b>Date de création:</b> {{ estimate.date.date | date : "dd.MM.yyyy à HH" }}h{{estimate.date.date | date : "mm" }}</div>
                 <div *ngIf="estimate.dateEstimated"><b>Date de livraison prévue:</b> {{ estimate.dateEstimated.date | date : "dd.MM.yyyy à" }} {{estimate.timeSlot}}</div>
             </div>
             <hr flex/>

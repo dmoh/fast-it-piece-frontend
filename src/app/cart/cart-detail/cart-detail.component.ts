@@ -14,6 +14,7 @@ import { ConfirmationCodePaymentModalComponent } from 'src/app/confirmation-code
 import { BusinessEstimateService } from 'src/app/estimate/services/business-estimate.service';
 import { AddressMatrix } from 'src/app/_models/address-matrix';
 import { Estimate } from 'src/app/_models/estimate';
+import {GeneralTermsModalComponent} from "../../general-terms-modal/general-terms-modal.component";
 
 @Component({
   selector: 'app-cart-detail',
@@ -36,7 +37,9 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
   stripeKey = environment.stripeKey;
   responseDistanceGoogle: any;
   estimate: Estimate;
-  
+  hasAboveEighteen: boolean = false;
+  agreeWithLegacy: boolean = false;
+
   addressOriginFormat: any;
   addressDestFormat: any;
   adrOrigin: AddressMatrix;
@@ -64,7 +67,7 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
     // Choix de l'adresse
     this.cartService.cartUpdated.subscribe((cartUpdated: Cart) => {
       this.cartCurrent = cartUpdated;
-    });  
+    });
 
     setTimeout(() => {
       this.showLoader = false;
@@ -87,16 +90,16 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       // let order: Estimate = new Order();
       console.info("this.estimate", estimate);
       this.estimate = estimate;
-      
-      this.estimate.customer.addresses = (this.estimate.customer.addresses as Array<any>).filter( adr => adr.date?.date == this.estimate.date?.date ) 
-      ?? (this.estimate.customer.addresses as Array<any>).filter( adr => adr.date?.date >= this.estimate.date?.date ) 
+
+      this.estimate.customer.addresses = (this.estimate.customer.addresses as Array<any>).filter( adr => adr.date?.date == this.estimate.date?.date )
+      ?? (this.estimate.customer.addresses as Array<any>).filter( adr => adr.date?.date >= this.estimate.date?.date )
       ?? (this.estimate.customer.addresses as Array<any>).filter( adr => adr.date?.date != this.estimate.date?.date )
       ?? this.estimate.customer.addresses;
 
       this.showLoader = false;
 
       this.cartService.generateTotalCart(true);
-    },        
+    },
     error => {
       console.error(error);
       if (/Invalid/.test(error)) {
@@ -229,7 +232,6 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
                 if (responsePayment.status === 'succeeded') {
                   this.paymentValidation = false;
                   this.showLoader = false;
-                  console.info(this.estimate);
                   // save order payment succeeded
                   this.cartService.saveOrder({
                     stripeResponse: responsePayment,
@@ -246,8 +248,8 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
                     datePayedString = `Paiement pris en compte à ${datePayedString}. `;
                     dateEstimatedString = (dateEstimatedString != "") ? `Préparation de la livraison prévu pour le ${dateEstimatedString} à ${this.estimate.timeSlot}. ` : "Préparation de la livraison. ";
 
-                    modalRef.componentInstance.message = `${datePayedString} 
-                                                          ${dateEstimatedString}`; 
+                    modalRef.componentInstance.message = `${datePayedString}
+                                                          ${dateEstimatedString}`;
                     // ${order.order_id}`;
                     modalRef.result.then(() => this.ngOnInit());
                   });
@@ -273,7 +275,12 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       );
     // });
 
+  }
 
+  onShowConditionSales() {
+    this.infoModal.open(GeneralTermsModalComponent, {
+      size: 'lg'
+    });
   }
 
   @HostListener('window:popstate', ['$event'])
@@ -282,4 +289,6 @@ export class CartDetailComponent implements OnInit, AfterViewInit {
       this.addressConfirmationModal.dismissAll();
     }
   }
+
+
 }

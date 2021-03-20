@@ -153,10 +153,10 @@ export class HomeFeaturesComponent implements OnInit {
           this.proCtrl['proPhone'].setErrors({
             notValid: true
           });
-          
+
           this.error = "Veuillez renseigner votre indicatif téléphonique suivi de votre n° telephone.";
         }
-        
+
         if (this.error?.trim() != "") {
           return;
         }
@@ -183,18 +183,14 @@ export class HomeFeaturesComponent implements OnInit {
           this.error = "Veuillez appliqué la livraison express ou renseigner une date de livraison.";
         }
 
-<<<<<<< HEAD
-        if (this.error == null || this.error.trim() != "") {
-=======
         if (this.customerCtrl['customerPhone'].value.indexOf("+") != 0) {
           this.customerCtrl['customerPhone'].setErrors({
             notValid: true
           });
           this.error = "Veuillez renseigner votre indicatif téléphonique suivi de votre telephone.";
         }
-        
+
         if (this.error?.trim() != "") {
->>>>>>> 95d26bff466f6c0b0ba7567fd1ed9800d8972122
           return;
         }
 
