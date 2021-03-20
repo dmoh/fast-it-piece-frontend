@@ -167,6 +167,18 @@
           </div>
           <hr>
           <div style="display: flex" class="col-md-6">
+            <div style="flex: 1">Prix Client</div>
+            <div>
+              {{ (pricePro.toFixed(2)).replace('.', ',').replace('.', ',') }} €
+            </div>
+          </div>
+        </div>
+
+        <div class="align-row">
+          <div class="col-md-6">
+          </div>
+          <hr>
+          <div style="display: flex" class="col-md-6">
             <div style="flex: 1">Frais de service</div>
             <div> {{ (serviceCharge.toFixed(2)).replace('.', ',') }} €</div>
           </div>
@@ -401,6 +413,18 @@
             <div style="flex: 1">SOUS TOTAL</div>
             <div>
               {{ (amountCustomer.toFixed(2)).replace('.', ',') }} €
+            </div>
+          </div>
+        </div>
+        
+        <div class="align-row">
+          <div class="col-md-6">
+          </div>
+          <hr>
+          <div style="display: flex" class="col-md-6">
+            <div style="flex: 1">Prix Client</div>
+            <div>
+              {{ (priceCustomer.toFixed(2)).replace('.', ',').replace('.', ',') }} €
             </div>
           </div>
         </div>
