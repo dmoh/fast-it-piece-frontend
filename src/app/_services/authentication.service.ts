@@ -32,8 +32,12 @@ export class AuthenticationService {
   public get tokenUserCurrent(): string {
     return this.currentUserSubject?.value?.token;
   }
-  
+
   login(email: string, password: string) {
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('roles');
+    this.currentUserSubject.next(null);
+    this.currentRolesSubject.next(null);
     const optionRequete = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'

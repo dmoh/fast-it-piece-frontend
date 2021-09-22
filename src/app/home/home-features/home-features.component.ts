@@ -96,9 +96,9 @@ export class HomeFeaturesComponent implements OnInit {
     });
 
     this.customerForm = this.formBuilder.group({
-      customerDevis: ['', Validators.required],
-      customerLastName: ['', Validators.required],
-      customerFirstName: ['', Validators.required],
+      customerDevis: [''],
+      customerLastName: [''],
+      customerFirstName: [''],
       customerAmount: ['', Validators.required],
       customerTotalAmount: [''],
       customerDeliveryCost: [''],
@@ -266,8 +266,6 @@ export class HomeFeaturesComponent implements OnInit {
 
   handleAddressChange(event, isCustomer:boolean = false) {
     if (!!event.formatted_address) {
-      console.log("event", event);
-
       const streetNumber = event?.address_components?.find(x => x.types.includes("street_number"));
       const street = event?.address_components?.find(x => x.types.includes("route"));
 
@@ -426,7 +424,11 @@ export class HomeFeaturesComponent implements OnInit {
     // console.log(<number> response.marginService.marginFastIt);
     // console.log(<number> response.marginService.marginFastIt * amount);
 
-    const marginCost = (<number> amount * <number> response.marginService.marginFastIt);
+    // const marginCost = (<number> amount * <number> response.marginService.marginFastIt);
+    let marginCost = 8;
+    if(amount < 70 ){
+      marginCost = 5;
+    }
 
     const totalAmount = marginCost + amount + <number> response.marginService.serviceCharge
     + <number> response.deliveryCost.deliveryInfos;

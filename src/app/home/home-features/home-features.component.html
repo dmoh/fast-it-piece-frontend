@@ -1,6 +1,6 @@
 <!-- Pro -->
 <mat-tab-group color="warn" mat-align-tabs="center">
-  <mat-tab label="Professionel">
+  <!--<mat-tab label="Professionel">
     <form class="mt-3" [formGroup]="proForm" (ngSubmit)="sendEstimate('professional')">
       <div class="form-group">
         <p>
@@ -9,13 +9,13 @@
             <input matInput type="text"
             formControlName="proDevis"
             placeholder="Numero de devis"/>
-             <!-- [errorStateMatcher]="matcher" -->
+             &lt;!&ndash; [errorStateMatcher]="matcher" &ndash;&gt;
             <mat-icon matSuffix>receipt</mat-icon>
           </mat-form-field>
         </p>
-        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+        &lt;!&ndash;<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
           <div *ngIf="f.username.errors.required">Username is required</div>
-        </div>-->
+        </div>&ndash;&gt;
       </div>
       <div class="form-group">
         <p>
@@ -24,13 +24,13 @@
             <input matInput type="text"
             formControlName="proName"
             placeholder="Nom de la societe"/>
-             <!-- [errorStateMatcher]="matcher" -->
+             &lt;!&ndash; [errorStateMatcher]="matcher" &ndash;&gt;
             <mat-icon matSuffix>apartment</mat-icon>
           </mat-form-field>
         </p>
-        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+        &lt;!&ndash;<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
           <div *ngIf="f.username.errors.required">Username is required</div>
-        </div>-->
+        </div>&ndash;&gt;
       </div>
       <div class="form-group">
          <p>
@@ -46,13 +46,13 @@
             [options]='options'
             #placesRef="ngx-places"
             placeholder="Adresse"/>
-             <!-- [errorStateMatcher]="matcher"-->
+             &lt;!&ndash; [errorStateMatcher]="matcher"&ndash;&gt;
             <mat-icon matSuffix>apartment</mat-icon>
           </mat-form-field>
         </p>
-        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+        &lt;!&ndash;<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
           <div *ngIf="f.username.errors.required">Username is required</div>
-        </div>-->
+        </div>&ndash;&gt;
       </div>
       <div class="form-group">
         <p>
@@ -61,7 +61,7 @@
             <input matInput type="text"
             formControlName="proCity"
             placeholder="Ville"/>
-             <!-- [errorStateMatcher]="matcher" -->
+             &lt;!&ndash; [errorStateMatcher]="matcher" &ndash;&gt;
             <mat-icon matSuffix>apartment</mat-icon>
           </mat-form-field>
         </p>
@@ -73,13 +73,13 @@
             <input matInput type="text"
             formControlName="proZipCode"
             placeholder="Code Postal"/>
-             <!-- [errorStateMatcher]="matcher" -->
+             &lt;!&ndash; [errorStateMatcher]="matcher" &ndash;&gt;
             <mat-icon matSuffix>apartment</mat-icon>
           </mat-form-field>
         </p>
-        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+        &lt;!&ndash;<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
           <div *ngIf="f.username.errors.required">Username is required</div>
-        </div>-->
+        </div>&ndash;&gt;
       </div>
       <div class="form-group">
         <p>
@@ -90,9 +90,9 @@
             <mat-hint></mat-hint>
           </mat-form-field>
         </p>
-        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+        &lt;!&ndash;<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
           <div *ngIf="f.username.errors.required">Username is required</div>
-        </div>-->
+        </div>&ndash;&gt;
       </div>
       <div class="form-group">
         <p>
@@ -123,17 +123,17 @@
       <div class="form-group">
         <p>
           <mat-form-field class="full-width" appearance="outline" >
-            <!-- <mat-label>Email</mat-label> -->
+            &lt;!&ndash; <mat-label>Email</mat-label> &ndash;&gt;
             <input matInput type="number"
             formControlName="proAmount"
             placeholder="Montant"/>
-             <!-- [errorStateMatcher]="matcher" -->
+             &lt;!&ndash; [errorStateMatcher]="matcher" &ndash;&gt;
             <mat-icon matSuffix>euro</mat-icon>
           </mat-form-field>
         </p>
-        <!--<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+        &lt;!&ndash;<div *ngIf="submitted && f.username.errors" class="invalid-feedback">
           <div *ngIf="f.username.errors.required">Username is required</div>
-        </div>-->
+        </div>&ndash;&gt;
       </div>
       <div *ngIf="showExpressPro" class="form-group">
         <mat-slide-toggle formControlName="proExpress">Livraison express</mat-slide-toggle>
@@ -218,7 +218,7 @@
         <hr>
       </div>
 
-      <!-- <button mat-raised-button [disabled]="disabledButton" color="primary" (click)= "sendEstimate('professional')"> -->
+      &lt;!&ndash; <button mat-raised-button [disabled]="disabledButton" color="primary" (click)= "sendEstimate('professional')"> &ndash;&gt;
       <button type="button" mat-raised-button (click)="onValidateAmount()" color="primary">
         Calculer montant total
         <mat-icon>calculate</mat-icon>
@@ -231,7 +231,7 @@
       <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
       <div *ngIf="success" class="alert alert-success mt-3 mb-0">{{success}}</div>
     </form>
-  </mat-tab>
+  </mat-tab>-->
 
 
 <!-- Client -->
@@ -404,27 +404,26 @@
       </div>
 
       <div *ngIf="totalAmountCustomer && amountCustomer && !disabledButton">
+        <div class="align-row">
+          <div class="col-md-6">
+          </div>
+          <hr>
+          <div style="display: flex; padding: 1rem; background: #90f777" class="col-md-6">
+            <div style="flex: 1; text-transform: uppercase">Prix Client</div>
+            <div>
+              {{ (priceCustomer.toFixed(2)).replace('.', ',').replace('.', ',') }} €
+            </div>
+          </div>
+        </div>
         <hr>
         <div class="align-row">
           <div class="col-md-6">
           </div>
           <hr>
-          <div style="display: flex" class="col-md-6">
-            <div style="flex: 1">SOUS TOTAL</div>
+          <div style="display: flex; color: #949494" class="col-md-6">
+            <div style="flex: 1">Montant Saisi</div>
             <div>
               {{ (amountCustomer.toFixed(2)).replace('.', ',') }} €
-            </div>
-          </div>
-        </div>
-        
-        <div class="align-row">
-          <div class="col-md-6">
-          </div>
-          <hr>
-          <div style="display: flex" class="col-md-6">
-            <div style="flex: 1">Prix Client</div>
-            <div>
-              {{ (priceCustomer.toFixed(2)).replace('.', ',').replace('.', ',') }} €
             </div>
           </div>
         </div>
